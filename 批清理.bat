@@ -1,12 +1,12 @@
 @echo off
-echo Çå³ıËùÓĞobj pch idb pdb ncb opt plg res sbr ilk suoÎÄ¼ş£¬ÇëÉÔµÈ......
+echo æ¸…é™¤æ‰€æœ‰obj pch idb pdb ncb opt plg res sbr ilk suoæ–‡ä»¶ï¼Œè¯·ç¨ç­‰......
 pause
 del /f /s /q .\*.obj
 del /f /s /q .\*.pch
 del /f /s /q .\*.idb
 del /f /s /q .\*.pdb
-del /f /s /q .\*.ncb 
-del /f /s /q .\*.opt 
+del /f /s /q .\*.ncb
+del /f /s /q .\*.opt
 del /f /s /q .\*.plg
 del /f /s /q .\*.sdf
 del /f /s /q .\*.sbr
@@ -29,5 +29,5 @@ rd  /s /q .\.idea
 
 
 
-echo Çå³ıÎÄ¼şÍê³É£¡
+echo æ¸…é™¤æ–‡ä»¶å®Œæˆï¼
 echo. & pause

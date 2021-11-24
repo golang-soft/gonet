@@ -7,23 +7,23 @@ import (
 	"testing"
 )
 
-const(
+const (
 	BUFF_DATA = "buff.dat"
 )
 
-type(
-	BuffData struct{
-		Id int
-		Series int
-		Lv int
-		Effect int64
-		Flag int
-		Target int
-		BuffIds []int
+type (
+	BuffData struct {
+		Id       int
+		Series   int
+		Lv       int
+		Effect   int64
+		Flag     int
+		Target   int
+		BuffIds  []int
 		BuffNums []int
 	}
 
-	BuffDataRes struct{
+	BuffDataRes struct {
 		common.BaseDataRes
 	}
 
@@ -32,21 +32,21 @@ type(
 	}
 )
 
-var(
-	BUFFDATA	IBuffDataRes
+var (
+	BUFFDATA IBuffDataRes
 )
 
-func (this *BuffDataRes) Read() bool{
+func (this *BuffDataRes) Read() bool {
 	this.Init()
 	var file base.CDataFile
 	lineData := &base.RData{}
 
-	if (!file.ReadDataFile(BUFF_DATA)) {
+	if !file.ReadDataFile(BUFF_DATA) {
 		log.Fatalf("read buff.dat error")
 		return false
 	}
 
-	for i := 0; i < file.RecordNum; i++{
+	for i := 0; i < file.RecordNum; i++ {
 		pData := BuffData{}
 		file.GetData(lineData)
 		pData.Id = lineData.Int(BUFF_DATA, "id")
@@ -76,7 +76,6 @@ func (this *BuffDataRes) Read() bool{
 		file.GetData(lineData)
 		pData.BuffNums = lineData.IntArray(BUFF_DATA, "BuffNums")
 
-
 		this.AddData(pData.Id, pData)
 	}
 
@@ -85,14 +84,14 @@ func (this *BuffDataRes) Read() bool{
 
 func (this *BuffDataRes) GetData(id int) *BuffData {
 	pData := this.BaseDataRes.GetBaseData(id)
-	if pData != nil{
+	if pData != nil {
 		return pData.(*BuffData)
 	}
 
 	return nil
 }
 
-func TestBuffData(t *testing.T){
+func TestBuffData(t *testing.T) {
 	data := BuffDataRes{}
 	data.Read()
 }

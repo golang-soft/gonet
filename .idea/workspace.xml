@@ -19,9 +19,10 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="48577825-a92d-4c0c-b73f-4177e3909d59" name="Default Changelist" comment="">
+    <list default="true" id="48577825-a92d-4c0c-b73f-4177e3909d59" name="Default Changelist" comment="修改文件编码">
+      <change beforePath="$PROJECT_DIR$/.idea/gonet.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gonet.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tool/Excel/data_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/tool/Excel/data_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/message/game.proto" beforeDir="false" afterPath="$PROJECT_DIR$/server/message/game.proto" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -42,18 +43,13 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="ProjectFrameBounds">
-    <option name="x" value="306" />
-    <option name="y" value="28" />
-    <option name="width" value="1845" />
-    <option name="height" value="1759" />
-  </component>
   <component name="ProjectId" id="21M65cP9jABdUGudQfAlI7OxLao" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="go.gopath.indexing.explicitly.defined" value="true" />
@@ -117,6 +113,14 @@
       <option name="presentableId" value="Default" />
       <updated>1637738426543</updated>
     </task>
+    <task id="LOCAL-00001" summary="修改文件编码">
+      <created>1637739386228</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1637739386228</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -132,6 +136,11 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="修改文件编码" />
+    <option name="LAST_COMMIT_MESSAGE" value="修改文件编码" />
   </component>
   <component name="VgoProject">
     <integration-enabled>true</integration-enabled>
@@ -141,5 +150,9 @@
       <screen x="0" y="0" width="1920" height="999" />
     </state>
     <state x="702" y="414" key="#GOROOT/1920.0.1920.999/0.0.1920.999@0.0.1920.999" timestamp="1637739217572" />
+    <state x="687" y="196" key="FileChooserDialogImpl" timestamp="1637821282851">
+      <screen x="0" y="0" width="1920" height="999" />
+    </state>
+    <state x="687" y="196" key="FileChooserDialogImpl/1920.0.1920.999/0.0.1920.999@0.0.1920.999" timestamp="1637821282851" />
   </component>
 </project>

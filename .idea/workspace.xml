@@ -16,13 +16,24 @@
         <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
       </path>
     </expand>
-    <select />
+    <select>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="BRANCH:origin/2.0.0" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </select>
   </component>
   <component name="ChangeListManager">
     <list default="true" id="48577825-a92d-4c0c-b73f-4177e3909d59" name="Default Changelist" comment="修改文件编码">
-      <change beforePath="$PROJECT_DIR$/.idea/gonet.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gonet.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/bin/GONET_SERVER.CFG" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/bin/NETGATES.CFG" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/message/game.proto" beforeDir="false" afterPath="$PROJECT_DIR$/server/message/game.proto" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/bin/gonet.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/server/bin/gonet.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/bin/server.bat" beforeDir="false" afterPath="$PROJECT_DIR$/server/bin/server.bat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/login/LoginServer.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/login/LoginServer.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/server.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/server.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -39,7 +50,7 @@
       <dir>D:\work\git\gonet</dir>
     </dirStrings>
   </component>
-  <component name="GOROOT" path="D:\Tools\go" />
+  <component name="GOROOT" path="C:\Program Files\Go" />
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
@@ -55,26 +66,35 @@
     <property name="go.gopath.indexing.explicitly.defined" value="true" />
     <property name="go.import.settings.migrated" value="true" />
     <property name="go.sdk.automatically.set" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../h5game/server" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="settings.editor.selected.configurable" value="go.vgo" />
   </component>
-  <component name="RunManager" selected="Go Build.go build gonet/client">
+  <component name="RunManager" selected="Go Build.Login">
+    <configuration name="Login" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true">
+      <module name="gonet" />
+      <working_directory value="$PROJECT_DIR$" />
+      <parameters value="login" />
+      <kind value="FILE" />
+      <filePath value="$PROJECT_DIR$/server/server.go" />
+      <directory value="$PROJECT_DIR$" />
+      <method v="2" />
+    </configuration>
+    <configuration name="go build LoginServer.go" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
+      <module name="gonet" />
+      <working_directory value="$PROJECT_DIR$" />
+      <kind value="FILE" />
+      <filePath value="$PROJECT_DIR$/server/login/LoginServer.go" />
+      <directory value="$PROJECT_DIR$" />
+      <method v="2" />
+    </configuration>
     <configuration name="go build client.go" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
       <module name="gonet" />
       <working_directory value="$PROJECT_DIR$/src/gonet" />
       <kind value="FILE" />
       <filePath value="$PROJECT_DIR$/src/gonet/client/client.go" />
       <directory value="$PROJECT_DIR$/" />
-      <method v="2" />
-    </configuration>
-    <configuration name="go build gonet/" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
-      <module name="gonet" />
-      <working_directory value="$PROJECT_DIR$/" />
-      <kind value="DIRECTORY" />
-      <filePath value="$PROJECT_DIR$/" />
-      <directory value="$PROJECT_DIR$" />
       <method v="2" />
     </configuration>
     <configuration name="go build gonet/client" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
@@ -95,12 +115,20 @@
       <directory value="$PROJECT_DIR$/" />
       <method v="2" />
     </configuration>
+    <list>
+      <item itemvalue="Go Build.go build client.go" />
+      <item itemvalue="Go Build.go build gonet/client" />
+      <item itemvalue="Go Build.go build gonet/server" />
+      <item itemvalue="Go Build.go build LoginServer.go" />
+      <item itemvalue="Go Build.Login" />
+    </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Go Build.Login" />
+        <item itemvalue="Go Build.go build LoginServer.go" />
         <item itemvalue="Go Build.go build gonet/client" />
         <item itemvalue="Go Build.go build client.go" />
         <item itemvalue="Go Build.go build gonet/server" />
-        <item itemvalue="Go Build.go build gonet/" />
       </list>
     </recent_temporary>
   </component>
@@ -131,7 +159,19 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="origin/2.0.0" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
           </value>
         </entry>
       </map>
@@ -146,13 +186,43 @@
     <integration-enabled>true</integration-enabled>
   </component>
   <component name="WindowStateProjectService">
-    <state x="702" y="414" key="#GOROOT" timestamp="1637739217572">
-      <screen x="0" y="0" width="1920" height="999" />
+    <state x="585" y="339" key="#GOROOT" timestamp="1638535687733">
+      <screen x="0" y="0" width="1600" height="819" />
     </state>
+    <state x="585" y="339" key="#GOROOT/0.0.1600.819@0.0.1600.819" timestamp="1638535687733" />
     <state x="702" y="414" key="#GOROOT/1920.0.1920.999/0.0.1920.999@0.0.1920.999" timestamp="1637739217572" />
-    <state x="687" y="196" key="FileChooserDialogImpl" timestamp="1637821282851">
-      <screen x="0" y="0" width="1920" height="999" />
+    <state x="254" y="64" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1638540866988">
+      <screen x="0" y="0" width="1600" height="819" />
     </state>
+    <state x="254" y="64" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1600.819@0.0.1600.819" timestamp="1638540866988" />
+    <state x="525" y="210" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1638541346202">
+      <screen x="0" y="0" width="1600" height="819" />
+    </state>
+    <state x="525" y="210" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1600.819@0.0.1600.819" timestamp="1638541346202" />
+    <state x="133" y="160" width="1416" height="635" key="DiffContextDialog" timestamp="1638541417110">
+      <screen x="0" y="0" width="1600" height="819" />
+    </state>
+    <state x="133" y="160" width="1416" height="635" key="DiffContextDialog/0.0.1600.819@0.0.1600.819" timestamp="1638541417110" />
+    <state x="573" y="161" key="FileChooserDialogImpl" timestamp="1638543065294">
+      <screen x="0" y="0" width="1600" height="819" />
+    </state>
+    <state x="573" y="161" key="FileChooserDialogImpl/0.0.1600.819@0.0.1600.819" timestamp="1638543065294" />
     <state x="687" y="196" key="FileChooserDialogImpl/1920.0.1920.999/0.0.1920.999@0.0.1920.999" timestamp="1637821282851" />
+    <state width="1557" height="259" key="GridCell.Tab.0.bottom" timestamp="1638542381719">
+      <screen x="0" y="0" width="1600" height="819" />
+    </state>
+    <state width="1557" height="259" key="GridCell.Tab.0.bottom/0.0.1600.819@0.0.1600.819" timestamp="1638542381719" />
+    <state width="1557" height="259" key="GridCell.Tab.0.center" timestamp="1638542381719">
+      <screen x="0" y="0" width="1600" height="819" />
+    </state>
+    <state width="1557" height="259" key="GridCell.Tab.0.center/0.0.1600.819@0.0.1600.819" timestamp="1638542381719" />
+    <state width="1557" height="259" key="GridCell.Tab.0.left" timestamp="1638542381719">
+      <screen x="0" y="0" width="1600" height="819" />
+    </state>
+    <state width="1557" height="259" key="GridCell.Tab.0.left/0.0.1600.819@0.0.1600.819" timestamp="1638542381719" />
+    <state width="1557" height="259" key="GridCell.Tab.0.right" timestamp="1638542381719">
+      <screen x="0" y="0" width="1600" height="819" />
+    </state>
+    <state width="1557" height="259" key="GridCell.Tab.0.right/0.0.1600.819@0.0.1600.819" timestamp="1638542381719" />
   </component>
 </project>

@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"gonet/base"
 	"gonet/server/account"
+	"gonet/server/login"
 	"gonet/server/netgate"
 	"gonet/server/world"
 	"os"
@@ -13,16 +14,18 @@ import (
 
 func main() {
 	args := os.Args
-	if args[1] == "account"{
+	if args[1] == "account" {
 		account.SERVER.Init()
-	}else if args[1] == "netgate"{
+	} else if args[1] == "netgate" {
 		netgate.SERVER.Init()
-	}else if args[1] == "world"{
+	} else if args[1] == "world" {
 		world.SERVER.Init()
+	} else if args[1] == "login" {
+		login.SERVER.Init()
 	}
 
 	base.SEVERNAME = args[1]
-	
+
 	InitMgr(args[1])
 
 	c := make(chan os.Signal, 1)

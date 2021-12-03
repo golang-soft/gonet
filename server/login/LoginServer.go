@@ -1,38 +1,38 @@
- package login
+package login
 
- import (
-	 "gonet/base"
-	 "gonet/base/ini"
-	 "gonet/common"
-	 "net/http"
- )
+import (
+	"gonet/base"
+	"gonet/base/ini"
+	"gonet/common"
+	"net/http"
+)
 
-type(
-	ServerMgr struct{
+type (
+	ServerMgr struct {
 		m_Inited      bool
 		m_config      ini.Config
 		m_Log         base.CLog
 		m_FileMonitor common.IFileMonitor
 	}
 
-	IServerMgr interface{
+	IServerMgr interface {
 		Init() bool
 		GetLog() *base.CLog
 		GetFileMonitor() common.IFileMonitor
 	}
 
 	Config struct {
-		common.Http	`yaml:"login"`
+		ListenAddr string `yaml:"login"`
 	}
 )
 
-var(
-	CONF Config
+var (
+	CONF   Config
 	SERVER ServerMgr
 )
 
-func (this *ServerMgr)Init() bool{
-	if(this.m_Inited){
+func (this *ServerMgr) Init() bool {
+	if this.m_Inited {
 		return true
 	}
 
@@ -48,14 +48,14 @@ func (this *ServerMgr)Init() bool{
 	NETGATECONF.Init()
 
 	http.HandleFunc("/login/", GetNetGateS)
-	http.ListenAndServe(CONF.Http.Listen, nil)
-	return  false
+	http.ListenAndServe(CONF.ListenAddr, nil)
+	return false
 }
 
- func (this *ServerMgr) GetLog() *base.CLog{
-	 return &this.m_Log
- }
+func (this *ServerMgr) GetLog() *base.CLog {
+	return &this.m_Log
+}
 
- func (this *ServerMgr) GetFileMonitor() common.IFileMonitor {
-	 return this.m_FileMonitor
- }
+func (this *ServerMgr) GetFileMonitor() common.IFileMonitor {
+	return this.m_FileMonitor
+}

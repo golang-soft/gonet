@@ -20,7 +20,7 @@ worldDB:
 account:
   ip: 127.0.0.1
   port: 31200
-
+  
 world:
   ip: 127.0.0.1
   port: 31300

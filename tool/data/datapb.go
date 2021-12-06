@@ -133,9 +133,9 @@ func OpenExcePb(filename string) {
 					case "int8":
 						dataTypes = append(dataTypes, base.DType_S8)
 						dataTypeNames = append(dataTypeNames, "int32")
-					case "int16":
-						dataTypes = append(dataTypes, base.DTypelinkClearS16)
-						dataTypeNames = append(dataTypeNames, "int32")
+						/*					case "int16":
+											dataTypes = append(dataTypes, base.DTypelinkClearS16)
+											dataTypeNames = append(dataTypeNames, "int32")*/
 					case "int":
 						dataTypes = append(dataTypes, base.DType_S32)
 						dataTypeNames = append(dataTypeNames, "int32")

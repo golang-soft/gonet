@@ -26,6 +26,7 @@ require (
 	google.golang.org/genproto v0.0.0-20200428115010-c45acf45369a // indirect
 	google.golang.org/protobuf v1.23.0
 	gopkg.in/yaml.v2 v2.2.2
+	github.com/tealeg/xlsx v1.0.5
 )
 
 replace google.golang.org/grpc => google.golang.org/grpc v1.26.0

@@ -1,7 +1,8 @@
 syntax = "proto3";
 import "message.proto";
-package message;
 
+package message;
+option go_package = "./;message";
 //登录
 message C_G_LoginResquest{
     Ipacket PacketHead = 1;

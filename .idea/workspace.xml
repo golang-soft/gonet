@@ -21,38 +21,36 @@
         <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
         <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
         <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
-        <item name="BRANCH:origin/2.0.0" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="BRANCH:origin/master" type="e8cecc67:BranchNodeDescriptor" />
       </path>
     </select>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="48577825-a92d-4c0c-b73f-4177e3909d59" name="Default Changelist" comment="修改文件编码">
-      <change afterPath="$PROJECT_DIR$/server/bin/GONET_SERVER.CFG" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/bin/NETGATES.CFG" afterDir="false" />
+    <list default="true" id="48577825-a92d-4c0c-b73f-4177e3909d59" name="Default Changelist" comment="补充遗漏的文件">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/bin/gonet.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/server/bin/gonet.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/bin/server.bat" beforeDir="false" afterPath="$PROJECT_DIR$/server/bin/server.bat" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/login/LoginServer.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/login/LoginServer.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/server.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/server.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="FindInProjectRecents">
-    <findStrings>
-      <find>gonet/message</find>
-      <find>gonet/server/comm</find>
-      <find>message.SERVICE_</find>
-    </findStrings>
-    <dirStrings>
-      <dir>D:\work\git\gonet</dir>
-    </dirStrings>
-  </component>
   <component name="GOROOT" path="C:\Program Files\Go" />
   <component name="Git.Settings">
+    <option name="PUSH_TAGS">
+      <GitPushTagMode>
+        <option name="argument" value="--tags" />
+        <option name="title" value="All" />
+      </GitPushTagMode>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GoLibraries">
+    <option name="urls">
+      <list>
+        <option value="file://$PROJECT_DIR$/../go" />
+      </list>
+    </option>
   </component>
   <component name="ProjectId" id="21M65cP9jABdUGudQfAlI7OxLao" />
   <component name="ProjectViewState">
@@ -63,28 +61,31 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="configurable.Global.GOPATH.is.expanded" value="true" />
+    <property name="configurable.Module.GOPATH.is.expanded" value="false" />
+    <property name="configurable.Project.GOPATH.is.expanded" value="true" />
     <property name="go.gopath.indexing.explicitly.defined" value="true" />
     <property name="go.import.settings.migrated" value="true" />
     <property name="go.sdk.automatically.set" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../h5game/server" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
-    <property name="settings.editor.selected.configurable" value="go.vgo" />
+    <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
   </component>
   <component name="RunManager" selected="Go Build.Login">
     <configuration name="Login" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true">
       <module name="gonet" />
       <working_directory value="$PROJECT_DIR$" />
       <parameters value="login" />
-      <kind value="FILE" />
+      <kind value="DIRECTORY" />
       <filePath value="$PROJECT_DIR$/server/server.go" />
-      <directory value="$PROJECT_DIR$" />
+      <directory value="$PROJECT_DIR$/server/login" />
       <method v="2" />
     </configuration>
     <configuration name="go build LoginServer.go" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
       <module name="gonet" />
       <working_directory value="$PROJECT_DIR$" />
-      <kind value="FILE" />
+      <kind value="DIRECTORY" />
       <filePath value="$PROJECT_DIR$/server/login/LoginServer.go" />
       <directory value="$PROJECT_DIR$" />
       <method v="2" />
@@ -106,29 +107,31 @@
       <directory value="$PROJECT_DIR$/" />
       <method v="2" />
     </configuration>
-    <configuration name="go build gonet/server" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
+    <configuration name="TestInsert in gonet/db" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
       <module name="gonet" />
-      <working_directory value="$PROJECT_DIR$/src/gonet" />
+      <working_directory value="$PROJECT_DIR$/db" />
+      <framework value="gotest" />
       <kind value="PACKAGE" />
-      <filePath value="$PROJECT_DIR$/" />
-      <package value="gonet/server" />
-      <directory value="$PROJECT_DIR$/" />
+      <package value="gonet/db" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$" />
+      <pattern value="^\QTestInsert\E$" />
       <method v="2" />
     </configuration>
     <list>
       <item itemvalue="Go Build.go build client.go" />
       <item itemvalue="Go Build.go build gonet/client" />
-      <item itemvalue="Go Build.go build gonet/server" />
       <item itemvalue="Go Build.go build LoginServer.go" />
       <item itemvalue="Go Build.Login" />
+      <item itemvalue="Go Test.TestInsert in gonet/db" />
     </list>
     <recent_temporary>
       <list>
         <item itemvalue="Go Build.Login" />
         <item itemvalue="Go Build.go build LoginServer.go" />
+        <item itemvalue="Go Test.TestInsert in gonet/db" />
         <item itemvalue="Go Build.go build gonet/client" />
         <item itemvalue="Go Build.go build client.go" />
-        <item itemvalue="Go Build.go build gonet/server" />
       </list>
     </recent_temporary>
   </component>
@@ -165,7 +168,7 @@
                   <entry key="branch">
                     <value>
                       <list>
-                        <option value="origin/2.0.0" />
+                        <option value="origin/master" />
                       </list>
                     </value>
                   </entry>
@@ -180,49 +183,102 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="修改文件编码" />
-    <option name="LAST_COMMIT_MESSAGE" value="修改文件编码" />
+    <MESSAGE value="补充遗漏的文件" />
+    <option name="LAST_COMMIT_MESSAGE" value="补充遗漏的文件" />
   </component>
   <component name="VgoProject">
     <integration-enabled>true</integration-enabled>
   </component>
   <component name="WindowStateProjectService">
+    <state x="873" y="377" key="#GOPATH" timestamp="1638765516784">
+      <screen x="0" y="0" width="2560" height="1400" />
+    </state>
+    <state x="873" y="377" key="#GOPATH/0.0.2560.1400@0.0.2560.1400" timestamp="1638765516784" />
     <state x="585" y="339" key="#GOROOT" timestamp="1638535687733">
       <screen x="0" y="0" width="1600" height="819" />
     </state>
     <state x="585" y="339" key="#GOROOT/0.0.1600.819@0.0.1600.819" timestamp="1638535687733" />
     <state x="702" y="414" key="#GOROOT/1920.0.1920.999/0.0.1920.999@0.0.1920.999" timestamp="1637739217572" />
-    <state x="254" y="64" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1638540866988">
+    <state x="254" y="63" width="1092" height="756" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1638634262932">
       <screen x="0" y="0" width="1600" height="819" />
     </state>
-    <state x="254" y="64" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1600.819@0.0.1600.819" timestamp="1638540866988" />
+    <state x="254" y="63" width="1092" height="756" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1600.819@0.0.1600.819" timestamp="1638634262932" />
     <state x="525" y="210" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1638541346202">
       <screen x="0" y="0" width="1600" height="819" />
     </state>
     <state x="525" y="210" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1600.819@0.0.1600.819" timestamp="1638541346202" />
-    <state x="133" y="160" width="1416" height="635" key="DiffContextDialog" timestamp="1638541417110">
+    <state width="468" height="466" key="DebuggerActiveHint" timestamp="1638608758215">
       <screen x="0" y="0" width="1600" height="819" />
     </state>
-    <state x="133" y="160" width="1416" height="635" key="DiffContextDialog/0.0.1600.819@0.0.1600.819" timestamp="1638541417110" />
-    <state x="573" y="161" key="FileChooserDialogImpl" timestamp="1638543065294">
+    <state width="468" height="466" key="DebuggerActiveHint/0.0.1600.819@0.0.1600.819" timestamp="1638608758215" />
+    <state x="133" y="160" width="1416" height="635" key="DiffContextDialog" timestamp="1638633002223">
       <screen x="0" y="0" width="1600" height="819" />
     </state>
-    <state x="573" y="161" key="FileChooserDialogImpl/0.0.1600.819@0.0.1600.819" timestamp="1638543065294" />
+    <state x="133" y="160" width="1416" height="635" key="DiffContextDialog/0.0.1600.819@0.0.1600.819" timestamp="1638633002223" />
+    <state x="917" y="275" key="FileChooserDialogImpl" timestamp="1638765514852">
+      <screen x="0" y="0" width="2560" height="1400" />
+    </state>
+    <state x="573" y="161" key="FileChooserDialogImpl/0.0.1600.819@0.0.1600.819" timestamp="1638677894553" />
+    <state x="917" y="275" key="FileChooserDialogImpl/0.0.2560.1400@0.0.2560.1400" timestamp="1638765514852" />
     <state x="687" y="196" key="FileChooserDialogImpl/1920.0.1920.999/0.0.1920.999@0.0.1920.999" timestamp="1637821282851" />
-    <state width="1557" height="259" key="GridCell.Tab.0.bottom" timestamp="1638542381719">
+    <state width="1557" height="167" key="GridCell.Tab.0.bottom" timestamp="1638692091091">
       <screen x="0" y="0" width="1600" height="819" />
     </state>
-    <state width="1557" height="259" key="GridCell.Tab.0.bottom/0.0.1600.819@0.0.1600.819" timestamp="1638542381719" />
-    <state width="1557" height="259" key="GridCell.Tab.0.center" timestamp="1638542381719">
+    <state width="1557" height="167" key="GridCell.Tab.0.bottom/0.0.1600.819@0.0.1600.819" timestamp="1638692091091" />
+    <state width="1557" height="167" key="GridCell.Tab.0.center" timestamp="1638692091091">
       <screen x="0" y="0" width="1600" height="819" />
     </state>
-    <state width="1557" height="259" key="GridCell.Tab.0.center/0.0.1600.819@0.0.1600.819" timestamp="1638542381719" />
-    <state width="1557" height="259" key="GridCell.Tab.0.left" timestamp="1638542381719">
+    <state width="1557" height="167" key="GridCell.Tab.0.center/0.0.1600.819@0.0.1600.819" timestamp="1638692091091" />
+    <state width="1557" height="167" key="GridCell.Tab.0.left" timestamp="1638692091090">
       <screen x="0" y="0" width="1600" height="819" />
     </state>
-    <state width="1557" height="259" key="GridCell.Tab.0.left/0.0.1600.819@0.0.1600.819" timestamp="1638542381719" />
-    <state width="1557" height="259" key="GridCell.Tab.0.right" timestamp="1638542381719">
+    <state width="1557" height="167" key="GridCell.Tab.0.left/0.0.1600.819@0.0.1600.819" timestamp="1638692091090" />
+    <state width="1557" height="167" key="GridCell.Tab.0.right" timestamp="1638692091091">
       <screen x="0" y="0" width="1600" height="819" />
     </state>
-    <state width="1557" height="259" key="GridCell.Tab.0.right/0.0.1600.819@0.0.1600.819" timestamp="1638542381719" />
+    <state width="1557" height="167" key="GridCell.Tab.0.right/0.0.1600.819@0.0.1600.819" timestamp="1638692091091" />
+    <state width="1557" height="167" key="GridCell.Tab.1.bottom" timestamp="1638608800828">
+      <screen x="0" y="0" width="1600" height="819" />
+    </state>
+    <state width="1557" height="167" key="GridCell.Tab.1.bottom/0.0.1600.819@0.0.1600.819" timestamp="1638608800828" />
+    <state width="1557" height="167" key="GridCell.Tab.1.center" timestamp="1638608800828">
+      <screen x="0" y="0" width="1600" height="819" />
+    </state>
+    <state width="1557" height="167" key="GridCell.Tab.1.center/0.0.1600.819@0.0.1600.819" timestamp="1638608800828" />
+    <state width="1557" height="167" key="GridCell.Tab.1.left" timestamp="1638608800828">
+      <screen x="0" y="0" width="1600" height="819" />
+    </state>
+    <state width="1557" height="167" key="GridCell.Tab.1.left/0.0.1600.819@0.0.1600.819" timestamp="1638608800828" />
+    <state width="1557" height="167" key="GridCell.Tab.1.right" timestamp="1638608800828">
+      <screen x="0" y="0" width="1600" height="819" />
+    </state>
+    <state width="1557" height="167" key="GridCell.Tab.1.right/0.0.1600.819@0.0.1600.819" timestamp="1638608800828" />
+    <state x="582" y="363" key="SettingsEditor" timestamp="1638765564990">
+      <screen x="0" y="0" width="2560" height="1400" />
+    </state>
+    <state x="582" y="363" key="SettingsEditor/0.0.2560.1400@0.0.2560.1400" timestamp="1638765564990" />
+    <state x="392" y="142" key="Vcs.Push.Dialog.v2" timestamp="1638630677588">
+      <screen x="0" y="0" width="1600" height="819" />
+    </state>
+    <state x="392" y="142" key="Vcs.Push.Dialog.v2/0.0.1600.819@0.0.1600.819" timestamp="1638630677588" />
+    <state x="1051" y="595" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1638767761287">
+      <screen x="0" y="0" width="2560" height="1400" />
+    </state>
+    <state x="1051" y="595" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.2560.1400@0.0.2560.1400" timestamp="1638767761287" />
+    <state x="342" y="154" width="932" height="536" key="find.popup" timestamp="1638620022879">
+      <screen x="0" y="0" width="1600" height="819" />
+    </state>
+    <state x="342" y="154" width="932" height="536" key="find.popup/0.0.1600.819@0.0.1600.819" timestamp="1638620022879" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/server/login/LoginServer.go</url>
+          <line>34</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

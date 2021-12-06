@@ -46,7 +46,7 @@ func (this *ServerMgr) Init() bool {
 	this.m_FileMonitor.Init()
 
 	NETGATECONF.Init()
-
+	CONF.ListenAddr = "localhost:8081"
 	http.HandleFunc("/login/", GetNetGateS)
 	http.ListenAndServe(CONF.ListenAddr, nil)
 	return false

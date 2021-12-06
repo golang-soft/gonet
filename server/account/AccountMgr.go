@@ -20,7 +20,7 @@ type (
 
 	IAccountMgr interface {
 		actor.IActor
-
+		//获得账号
 		GetAccount(int64) *Account
 		AddAccount(int64) *Account
 		RemoveAccount(int64, bool)

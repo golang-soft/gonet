@@ -131,7 +131,7 @@ func (this *ClientWebSocket2) Run() bool {
 		}
 	}
 
-	this.Close()
+	//this.Close()
 	return true
 }
 func (this *ClientWebSocket2) Close() {

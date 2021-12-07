@@ -62,7 +62,7 @@ func (this *ServerMgr) Init() bool {
 	//初始化log文件
 	this.m_Log.Init("account")
 	//初始配置文件
-	base.ReadConf("gonet.yaml", &CONF)
+	base.ReadConf("D:\\workspace-go\\gonet\\server\\bin\\gonet.yaml", &CONF)
 
 	ShowMessage := func() {
 		this.m_Log.Println("**********************************************************")

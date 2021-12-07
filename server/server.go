@@ -7,6 +7,7 @@ import (
 	"gonet/server/login"
 	"gonet/server/netgate"
 	"gonet/server/world"
+	"gonet/server/worlddb"
 	"os"
 	"os/signal"
 	"syscall"
@@ -22,6 +23,8 @@ func main() {
 		world.SERVER.Init()
 	} else if args[1] == "login" {
 		login.SERVER.Init()
+	} else if args[1] == "worlddb" {
+		worlddb.SERVER.Init()
 	}
 
 	base.SEVERNAME = args[1]
@@ -33,5 +36,6 @@ func main() {
 	s := <-c
 
 	ExitMgr(args[1])
+
 	fmt.Printf("server【%s】 exit ------- signal:[%v]", args[1], s)
 }

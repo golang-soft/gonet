@@ -1,17 +1,17 @@
- package worlddb
+package worlddb
 
- import (
-	 "database/sql"
-	 "gonet/base"
-	 "gonet/base/ini"
-	 "gonet/common"
-	 "gonet/db"
-	 "gonet/network"
-	 "log"
- )
+import (
+	"database/sql"
+	"gonet/base"
+	"gonet/base/ini"
+	"gonet/common"
+	"gonet/db"
+	"gonet/network"
+	"log"
+)
 
-type(
-	ServerMgr struct{
+type (
+	ServerMgr struct {
 		m_pService     *network.ServerSocket
 		m_pWorldClient *network.ClientSocket
 		m_pActorDB     *sql.DB
@@ -20,7 +20,7 @@ type(
 		m_Log          base.CLog
 	}
 
-	IServerMgr interface{
+	IServerMgr interface {
 		Init() bool
 		InitDB() bool
 		GetDB() *sql.DB
@@ -29,40 +29,40 @@ type(
 	}
 
 	Config struct {
-		common.Server	`yaml:"db"`
-		common.Db	`yaml:"dbDB"`
-		common.Etcd		`yaml:"etcd"`
-		common.Nats		`yaml:"nats"`
+		common.Server `yaml:"db"`
+		common.Db     `yaml:"worldDB"`
+		common.Etcd   `yaml:"etcd"`
+		common.Nats   `yaml:"nats"`
 	}
 )
 
-var(
-	CONF Config
+var (
+	CONF   Config
 	SERVER ServerMgr
 )
 
-func (this *ServerMgr)Init() bool{
-	if(this.m_Inited){
+func (this *ServerMgr) Init() bool {
+	if this.m_Inited {
 		return true
 	}
 
 	//初始化log文件
 	this.m_Log.Init("world")
 	//初始配置文件
-	base.ReadConf("gonet.yaml", &CONF)
+	base.ReadConf("D:\\workspace-go\\gonet\\server\\bin\\gonet.yaml", &CONF)
 
-	ShowMessage := func(){
+	ShowMessage := func() {
 		this.m_Log.Println("**********************************************************")
-		this.m_Log.Printf("\tServer Version:\t%s",base.BUILD_NO)
+		this.m_Log.Printf("\tServer Version:\t%s", base.BUILD_NO)
 		this.m_Log.Printf("\tDbServerIP(LAN):\t%s:%d", CONF.Server.Ip, CONF.Server.Port)
 		this.m_Log.Printf("\tActorDBServer(LAN):\t%s", CONF.Db.Ip)
 		this.m_Log.Printf("\tActorDBName:\t\t%s", CONF.Db.Name)
-		this.m_Log.Println("**********************************************************");
+		this.m_Log.Println("**********************************************************")
 	}
 	ShowMessage()
 
 	this.m_Log.Println("正在初始化数据库连接...")
-	if (this.InitDB()){
+	if this.InitDB() {
 		this.m_Log.Printf("[%s]数据库连接是失败...", CONF.Db.Name)
 		log.Fatalf("[%s]数据库连接是失败...", CONF.Db.Name)
 		return false
@@ -78,23 +78,23 @@ func (this *ServerMgr)Init() bool{
 	packet.Init()
 	this.m_pService.BindPacketFunc(packet.PacketFunc)
 
-	return  false
+	return false
 }
 
-func (this *ServerMgr)InitDB() bool{
+func (this *ServerMgr) InitDB() bool {
 	this.m_pActorDB = db.OpenDB(CONF.Db)
 	err := this.m_pActorDB.Ping()
-	return  err != nil
+	return err != nil
 }
 
-func (this *ServerMgr) GetDB() *sql.DB{
+func (this *ServerMgr) GetDB() *sql.DB {
 	return this.m_pActorDB
 }
 
- func (this *ServerMgr) GetServer() *network.ServerSocket{
-	 return this.m_pService
- }
+func (this *ServerMgr) GetServer() *network.ServerSocket {
+	return this.m_pService
+}
 
-func (this *ServerMgr) GetLog() *base.CLog{
+func (this *ServerMgr) GetLog() *base.CLog {
 	return &this.m_Log
 }

@@ -39,7 +39,7 @@ func (this *ServerMgr) Init() bool {
 	//初始化log文件
 	this.m_Log.Init("login")
 	//初始配置文件
-	base.ReadConf("gonet.yaml", &CONF)
+	base.ReadConf("D:\\workspace-go\\gonet\\server\\bin\\gonet.yaml", &CONF)
 
 	//动态监控文件改变
 	this.m_FileMonitor = &common.FileMonitor{}

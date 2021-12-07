@@ -84,6 +84,7 @@ type (
 		BindPacketFunc(PacketFunc)
 		SetConnectType(int)
 		SetConn(net.Conn)
+		GetConn() net.Conn
 		HandlePacket([]byte)
 	}
 )
@@ -204,6 +205,10 @@ func (this *Socket) SetConnectType(nType int) {
 
 func (this *Socket) SetConn(conn net.Conn) {
 	this.m_Conn = conn
+}
+
+func (this *Socket) GetConn() net.Conn {
+	return this.m_Conn
 }
 
 func (this *Socket) BindPacketFunc(callfunc PacketFunc) {

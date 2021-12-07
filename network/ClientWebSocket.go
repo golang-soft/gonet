@@ -2,26 +2,24 @@ package network
 
 import (
 	"fmt"
+	"github.com/gorilla/websocket"
 	"gonet/base"
 	"gonet/rpc"
 	"io"
-	"log"
-	"net"
-
-	"github.com/xtaci/kcp-go"
+	"net/url"
 )
 
-type IClientSocket interface {
+type IClientWebSocket interface {
 	ISocket
 }
 
-type ClientSocket struct {
+type ClientWebSocket struct {
 	Socket
 	m_nMaxClients int
 	m_nMinClients int
 }
 
-func (this *ClientSocket) Init(ip string, port int, params ...OpOption) bool {
+func (this *ClientWebSocket) Init(ip string, port int, params ...OpOption) bool {
 	if this.m_nPort == port || this.m_sIP == ip {
 		return false
 	}
@@ -33,7 +31,7 @@ func (this *ClientSocket) Init(ip string, port int, params ...OpOption) bool {
 	return true
 }
 
-func (this *ClientSocket) Start() bool {
+func (this *ClientWebSocket) Start() bool {
 	if this.m_sIP == "" {
 		this.m_sIP = "127.0.0.1"
 	}
@@ -46,12 +44,12 @@ func (this *ClientSocket) Start() bool {
 	return true
 }
 
-func (this *ClientSocket) SendMsg(head rpc.RpcHead, funcName string, params ...interface{}) {
+func (this *ClientWebSocket) SendMsg(head rpc.RpcHead, funcName string, params ...interface{}) {
 	buff := rpc.Marshal(head, funcName, params...)
 	this.Send(head, buff)
 }
 
-func (this *ClientSocket) Send(head rpc.RpcHead, buff []byte) int {
+func (this *ClientWebSocket) Send(head rpc.RpcHead, buff []byte) int {
 	defer func() {
 		if err := recover(); err != nil {
 			base.TraceCode(err)
@@ -71,46 +69,37 @@ func (this *ClientSocket) Send(head rpc.RpcHead, buff []byte) int {
 	return 0
 }
 
-func (this *ClientSocket) Restart() bool {
+func (this *ClientWebSocket) Restart() bool {
 	return true
 }
 
-func (this *ClientSocket) Connect() bool {
-	var strRemote = fmt.Sprintf("%s:%d", this.m_sIP, this.m_nPort)
-	connectStr := "Tcp"
-	if this.m_bKcp {
-		ln, err1 := kcp.Dial(strRemote)
-		if err1 != nil {
-			return false
-		}
-		this.SetConn(ln)
-		connectStr = "Kcp"
-	} else {
-		tcpAddr, err := net.ResolveTCPAddr("tcp4", strRemote)
-		if err != nil {
-			log.Printf("%v", err)
-		}
-		ln, err1 := net.DialTCP("tcp4", nil, tcpAddr)
-		if err1 != nil {
-			return false
-		}
-		this.SetConn(ln)
-	}
+func (this *ClientWebSocket) Connect() bool {
+	connectStr := "ws"
 
+	server := "127.0.0.1:31700"
+	u := url.URL{Scheme: connectStr, Host: server, Path: "/ws"}
+	d := websocket.DefaultDialer
+	//d.TLSClientConfig = &tls.Config{InsecureSkipVerify: true}
+	c, _, err := d.Dial(u.String(), nil)
+	if err != nil {
+		fmt.Printf("连接失败：%s \n", err)
+		return false
+	}
+	this.SetConn(c.UnderlyingConn())
 	fmt.Printf("%s 连接成功，请输入信息！\n", connectStr)
 	this.CallMsg("COMMON_RegisterRequest")
 	return true
 }
 
-func (this *ClientSocket) OnDisconnect() {
+func (this *ClientWebSocket) OnDisconnect() {
 }
 
-func (this *ClientSocket) OnNetFail(int) {
+func (this *ClientWebSocket) OnNetFail(int) {
 	this.Stop()
 	this.CallMsg("DISCONNECT", this.m_ClientId)
 }
 
-func (this *ClientSocket) Run() bool {
+func (this *ClientWebSocket) Run() bool {
 	this.SetState(SSF_RUN)
 	var buff = make([]byte, this.m_ReceiveBufferSize)
 	loop := func() bool {

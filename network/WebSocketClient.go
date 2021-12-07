@@ -1,12 +1,16 @@
 package network
 
 import (
+	"crypto/tls"
 	"fmt"
 	"gonet/base"
 	"gonet/common/timer"
 	"gonet/rpc"
 	"io"
+	"net/url"
 	"time"
+
+	"github.com/gorilla/websocket"
 )
 
 type IWebSocketClient interface {
@@ -179,5 +183,23 @@ func (this *WebSocketClient) SendLoop() bool {
 			}
 		}
 	}
+	return true
+}
+
+func (this *WebSocketClient) Connect() bool {
+	server := "127.0.0.1:31700"
+	scheme := "ws"
+	u := url.URL{Scheme: scheme, Host: server, Path: "/"}
+	d := websocket.DefaultDialer
+	d.TLSClientConfig = &tls.Config{InsecureSkipVerify: true}
+	c, _, err := d.Dial(u.String(), nil)
+	if err != nil {
+		fmt.Printf("连接失败：%s \n", err)
+		return false
+	}
+
+	this.m_Conn = c.UnderlyingConn()
+
+	fmt.Printf("连接成功：%s\n", this.m_Conn.RemoteAddr().String())
 	return true
 }

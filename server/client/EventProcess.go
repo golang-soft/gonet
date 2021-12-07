@@ -18,7 +18,8 @@ type (
 	EventProcess struct {
 		actor.Actor
 
-		Client      *network.ClientSocket
+		Client *network.ClientWebSocket2
+		//Client      *network.WebSocketClient
 		AccountId   int64
 		PlayerId    int64
 		AccountName string

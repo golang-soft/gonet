@@ -22,11 +22,11 @@ type (
 func (this *CmdProcess) Init() {
 	this.Actor.Init()
 	this.RegisterCall("msg", func(ctx context.Context, args string) {
-		packet1 := &message.C_W_ChatMessage{PacketHead:message.BuildPacketHead( PACKET.AccountId, rpc.SERVICE_GATESERVER),
-			Sender:PACKET.PlayerId,
-			Recver:0,
-			MessageType:int32(message.CHAT_MSG_TYPE_WORLD),
-			Message:(args),
+		packet1 := &message.C_W_ChatMessage{PacketHead: message.BuildPacketHead(PACKET.AccountId, rpc.SERVICE_GATESERVER),
+			Sender:      PACKET.PlayerId,
+			Recver:      0,
+			MessageType: int32(message.CHAT_MSG_TYPE_WORLD),
+			Message:     (args),
 		}
 		SendPacket(packet1)
 	})
@@ -39,13 +39,12 @@ func (this *CmdProcess) Init() {
 	this.Actor.Start()
 }
 
-var(
+var (
 	g_Cmd *CmdProcess
 )
 
-func InitCmd(){
+func InitCmd() {
 	g_Cmd = &CmdProcess{}
 	g_Cmd.Init()
 	common.StartConsole(g_Cmd)
 }
-

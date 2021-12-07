@@ -18,13 +18,14 @@ type (
 
 var (
 	CONF   Config
-	CLIENT *network.ClientSocket
+	CLIENT *network.ClientWebSocket2
+	//CLIENT *network.WebSocketClient
 )
 
 func main() {
 	message.InitClient()
-	base.ReadConf("gonet.yaml", &CONF)
-	CLIENT = new(network.ClientSocket)
+	base.ReadConf("D:\\workspace-go\\gonet\\server\\client\\gonet.yaml", &CONF)
+	CLIENT = new(network.ClientWebSocket2)
 	CLIENT.Init(CONF.Server.Ip, CONF.Server.Port)
 	PACKET = new(EventProcess)
 	PACKET.Init()

@@ -12,6 +12,8 @@ type LG_TYPE int
 
 const (
 	LG_WARN  LG_TYPE = iota
+	LG_DEBUG LG_TYPE = iota
+	LG_INFO  LG_TYPE = iota
 	LG_ERROR LG_TYPE = iota
 	LG_MAX   LG_TYPE = iota
 )
@@ -69,6 +71,17 @@ func (this *CLog) Write(nType LG_TYPE) {
 	tTime := time.Now()
 	this.m_Logger[nType].SetPrefix(fmt.Sprintf("[%04d-%02d-%02d %02d:%02d:%02d]", tTime.Year(), tTime.Month(), tTime.Day(),
 		tTime.Hour(), tTime.Minute(), tTime.Second()))
+}
+
+func (this *CLog) Debugf(v1 ...interface{}) {
+	this.Write(LG_WARN)
+	params := make([]interface{}, len(v1)+1)
+	for i, v := range v1 {
+		params[i] = v
+	}
+	params[len(v1)] =
+		this.m_Logger[LG_WARN].Output(2, "[Debug]"+fmt.Sprintln(params...))
+	log.Println(params...)
 }
 
 func (this *CLog) Println(v1 ...interface{}) {

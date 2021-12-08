@@ -16,16 +16,11 @@ worldDB:
   maxIdleConns: 500
   maxOpenConns: 1000
 
-#worlddbserver
-worlddbserver:
-  ip: 127.0.0.1
-  port: 31400
-
 # 服务器端口配置
 account:
   ip: 127.0.0.1
   port: 31200
-
+  
 world:
   ip: 127.0.0.1
   port: 31300

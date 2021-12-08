@@ -10,18 +10,18 @@ import (
 	"reflect"
 )
 
-var(
+var (
 	A_C_RegisterResponse = proto.MessageName(&message.A_C_RegisterResponse{})
-	A_C_LoginResponse 	 = proto.MessageName(&message.A_C_LoginResponse{})
+	A_C_LoginResponse    = proto.MessageName(&message.A_C_LoginResponse{})
 )
 
-func SendToClient(socketId uint32, packet proto.Message){
-	SERVER.GetServer().Send(rpc.RpcHead{SocketId:socketId}, message.Encode(packet))
+func SendToClient(socketId uint32, packet proto.Message) {
+	SERVER.GetServer().Send(rpc.RpcHead{SocketId: socketId}, message.Encode(packet))
 }
 
-func DispatchPacket(packet rpc.Packet) bool{
-	defer func(){
-		if err := recover(); err != nil{
+func DispatchPacket(packet rpc.Packet) bool {
+	defer func() {
+		if err := recover(); err != nil {
 			base.TraceCode(err)
 		}
 	}()
@@ -36,11 +36,11 @@ func DispatchPacket(packet rpc.Packet) bool{
 		packet := reflect.New(proto.MessageType(messageName).Elem()).Interface().(proto.Message)
 		dec.Decode(packet)
 		buff := message.Encode(packet)
-		if messageName== A_C_RegisterResponse || messageName == A_C_LoginResponse {
-			SERVER.GetServer().Send(rpc.RpcHead{SocketId:head.SocketId}, buff)
-		}else{
+		if messageName == A_C_RegisterResponse || messageName == A_C_LoginResponse {
+			SERVER.GetServer().Send(rpc.RpcHead{SocketId: head.SocketId}, buff)
+		} else {
 			socketId := SERVER.GetPlayerMgr().GetSocket(head.Id)
-			SERVER.GetServer().Send(rpc.RpcHead{SocketId:socketId}, buff)
+			SERVER.GetServer().Send(rpc.RpcHead{SocketId: socketId}, buff)
 		}
 	default:
 		SERVER.GetCluster().Send(head, packet.Buff)

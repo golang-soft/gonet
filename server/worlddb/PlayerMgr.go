@@ -6,6 +6,7 @@ import (
 	"gonet/actor"
 	"gonet/db"
 	"gonet/rpc"
+	"gonet/server/message"
 	"gonet/server/world"
 	"time"
 )
@@ -68,7 +69,11 @@ func (this *PlayerMgr) Init() {
 			//设置redis ttl
 		}
 	})
+	this.RegisterCall("W_C_Test", func(ctx context.Context, packet *message.W_C_Test) {
+		head := this.GetRpcHead(ctx)
+		SERVER.m_Log.Debugf("head[%v]", head)
 
+	})
 	this.Actor.Start()
 }
 

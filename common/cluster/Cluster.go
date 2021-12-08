@@ -17,7 +17,7 @@ import (
 )
 
 const (
-	MAX_CLUSTER_NUM = int(rpc.SERVICE_ZONESERVER) + 1
+	MAX_CLUSTER_NUM = int(rpc.SERVICE_WORLDDBSERVER) + 1
 	CALL_TIME_OUT   = 50 * time.Millisecond
 )
 
@@ -182,7 +182,9 @@ func (this *Cluster) BindPacketFunc(callfunc network.PacketFunc) {
 }
 
 func (this *Cluster) HandlePacket(packet rpc.Packet) {
+	log.Printf("HandlePacket .......")
 	for _, v := range this.m_PacketFuncList.Values() {
+		log.Printf("HandlePacket funcName.......[%v]", v.(network.PacketFunc))
 		if v.(network.PacketFunc)(packet) {
 			break
 		}

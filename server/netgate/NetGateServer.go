@@ -114,6 +114,7 @@ func (this *ServerMgr) Init() bool {
 	//初始玩家管理
 	this.m_PlayerMgr = new(PlayerManager)
 	this.m_PlayerMgr.Init()
+
 	return false
 }
 

@@ -31,11 +31,15 @@ func main() {
 
 	InitMgr(args[1])
 
+	startServer(args[1])
+
+	ExitMgr(args[1])
+}
+
+func startServer(args string) {
 	c := make(chan os.Signal, 1)
 	signal.Notify(c, os.Interrupt, os.Kill, syscall.SIGTERM)
 	s := <-c
 
-	ExitMgr(args[1])
-
-	fmt.Printf("server【%s】 exit ------- signal:[%v]", args[1], s)
+	fmt.Printf("server【%s】 exit ------- signal:[%v]", args, s)
 }

@@ -26,7 +26,7 @@ func Init(_env string, _data interface{}) {
 func ReadConf(path string, data interface{}) bool {
 	content, err := ioutil.ReadFile(path)
 	if err != nil {
-		//log.Fatalf("解析config.yaml读取错误: %v", err)
+		//base.CLog.Fatalf("解析gonet.yaml读取错误: %v", err)
 		return false
 	}
 
@@ -59,8 +59,6 @@ func getConfigPath(configFile string) string {
 	return system.Root + "/config/" + env + "/" + configFile
 }
 func loadConfig(data interface{}, configPath string) {
-	//fileData, _ := ioutil.ReadFile(configPath)
-	//json.Unmarshal(fileData, data)
 	base.ReadConf(configPath, data)
 }
 

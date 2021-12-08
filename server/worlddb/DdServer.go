@@ -7,15 +7,19 @@ import (
 	"gonet/base/ini"
 	"gonet/base/system"
 	"gonet/common"
+	"gonet/common/cluster"
 	"gonet/db"
 	"gonet/network"
+	"gonet/rpc"
 	"log"
 )
 
 type (
 	ServerMgr struct {
 		m_pService     *network.ServerSocket
+		m_pCluster     *cluster.Cluster
 		m_pWorldClient *network.ClientSocket
+		m_pPlayerMgr   *PlayerMgr
 		m_pActorDB     *sql.DB
 		m_Inited       bool
 		m_config       ini.Config
@@ -31,7 +35,7 @@ type (
 	}
 
 	Config struct {
-		common.Server `yaml:"db"`
+		common.Server `yaml:"worlddbserver"`
 		common.Db     `yaml:"worldDB"`
 		common.Etcd   `yaml:"etcd"`
 		common.Nats   `yaml:"nats"`
@@ -55,11 +59,12 @@ func (this *ServerMgr) Init() bool {
 	this.InitConfig(&CONF)
 
 	ShowMessage := func() {
-		this.m_Log.Println("**********************************************************")
+		this.m_Log.Debugf("**********************************************************")
 		this.m_Log.Printf("\tServer Version:\t%s", base.BUILD_NO)
 		this.m_Log.Printf("\tDbServerIP(LAN):\t%s:%d", CONF.Server.Ip, CONF.Server.Port)
 		this.m_Log.Printf("\tActorDBServer(LAN):\t%s", CONF.Db.Ip)
 		this.m_Log.Printf("\tActorDBName:\t\t%s", CONF.Db.Name)
+		this.m_Log.Printf("\tEnv:\t\t%s", system.Args.Env)
 		this.m_Log.Println("**********************************************************")
 	}
 	ShowMessage()
@@ -77,9 +82,21 @@ func (this *ServerMgr) Init() bool {
 	this.m_pService.Init(CONF.Server.Ip, CONF.Server.Port)
 	this.m_pService.Start()
 
+	//var packet EventProcess
+	//packet.Init()
+	//this.m_pService.BindPacketFunc(packet.PacketFunc)
+
+	this.m_pPlayerMgr = new(PlayerMgr)
+	this.m_pPlayerMgr.Init()
+
+	//集群管理
+	this.m_pCluster = new(cluster.Cluster)
+	this.m_pCluster.Init(&common.ClusterInfo{Type: rpc.SERVICE_WORLDDBSERVER, Ip: CONF.Server.Ip, Port: int32(CONF.Server.Port)}, CONF.Etcd.Endpoints, CONF.Nats.Endpoints)
+
 	var packet EventProcess
 	packet.Init()
-	this.m_pService.BindPacketFunc(packet.PacketFunc)
+	this.m_pCluster.BindPacketFunc(packet.PacketFunc)
+	this.m_pCluster.BindPacketFunc(this.m_pPlayerMgr.PacketFunc)
 
 	return false
 }

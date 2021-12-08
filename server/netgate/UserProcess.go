@@ -66,6 +66,16 @@ func (this *UserPrcoess) SwtichSendToWorld(socketId uint32, packetName string, h
 	}
 }
 
+func (this *UserPrcoess) SwtichSendToWorldDb(socketId uint32, packetName string, head rpc.RpcHead, buff []byte) {
+	//pAccountInfo := this.CheckClient(socketId, packetName, head)
+	//if pAccountInfo != nil {
+	//head.ClusterId = pAccountInfo.WClusterId
+	head.SendType = rpc.SEND_BALANCE
+	head.DestServerType = rpc.SERVICE_WORLDDBSERVER
+	SERVER.GetCluster().Send(head, buff)
+	//}
+}
+
 func (this *UserPrcoess) SwtichSendToAccount(socketId uint32, packetName string, head rpc.RpcHead, buff []byte) {
 	if this.CheckClientEx(socketId, packetName, head) == true {
 		head.SendType = rpc.SEND_BALANCE
@@ -96,6 +106,7 @@ func (this *UserPrcoess) PacketFunc(packet1 rpc.Packet) bool {
 			SERVER.GetPlayerMgr().SendMsg(rpc.RpcHead{}, "DEL_ACCOUNT", uint32(stream.ReadInt(32)))
 			this.SendMsg(rpc.RpcHead{}, "DISCONNECT", socketid)
 		} else if packetId == network.HEART_PACKET { //心跳netsocket做处理，这里不处理
+			SERVER.GetLog().Debugf("网关收到心跳包, %d", packetId)
 		} else {
 			SERVER.GetLog().Printf("包解析错误1  socket=%d", socketid)
 		}
@@ -181,6 +192,17 @@ func (this *UserPrcoess) Init() {
 
 	this.RegisterCall("DISCONNECT", func(ctx context.Context, socketid uint32) {
 		this.delKey(socketid)
+	})
+
+	this.RegisterCall("W_C_Test", func(ctx context.Context, packet *message.W_C_Test) {
+		head := this.GetRpcHead(ctx)
+		dh := base.Dh{}
+		dh.Init()
+		this.addKey(head.SocketId, &dh)
+		//SendToClient(head.SocketId, &message.G_C_LoginResponse{PacketHead: message.BuildPacketHead(0, 0), Key: dh.PubKey()})
+
+		this.SwtichSendToWorldDb(head.SocketId, base.ToLower("W_C_Test"), head, rpc.Marshal(head, base.ToLower("W_C_Test"), packet))
+
 	})
 
 	this.Actor.Start()

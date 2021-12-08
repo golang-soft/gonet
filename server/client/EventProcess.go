@@ -185,6 +185,17 @@ func (this *EventProcess) LoginGate() {
 	this.SendPacket(packet1)
 }
 
+func (this *EventProcess) SendTest() {
+	aa := []int32{}
+	for i := 0; i < 10; i++ {
+		aa = append(aa, int32(1))
+	}
+
+	packet1 := &message.W_C_Test{PacketHead: message.BuildPacketHead(0, rpc.SERVICE_GATESERVER),
+		Recv: aa}
+	this.SendPacket(packet1)
+}
+
 var (
 	PACKET *EventProcess
 )

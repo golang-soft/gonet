@@ -3,7 +3,9 @@ package worlddb
 import (
 	"database/sql"
 	"gonet/base"
+	"gonet/base/config"
 	"gonet/base/ini"
+	"gonet/base/system"
 	"gonet/common"
 	"gonet/db"
 	"gonet/network"
@@ -49,7 +51,8 @@ func (this *ServerMgr) Init() bool {
 	//初始化log文件
 	this.m_Log.Init("world")
 	//初始配置文件
-	base.ReadConf("D:\\workspace-go\\gonet\\server\\bin\\gonet.yaml", &CONF)
+	//base.ReadConf("D:\\workspace-go\\gonet\\server\\bin\\gonet.yaml", &CONF)
+	this.InitConfig(&CONF)
 
 	ShowMessage := func() {
 		this.m_Log.Println("**********************************************************")
@@ -85,6 +88,11 @@ func (this *ServerMgr) InitDB() bool {
 	this.m_pActorDB = db.OpenDB(CONF.Db)
 	err := this.m_pActorDB.Ping()
 	return err != nil
+}
+
+func (this *ServerMgr) InitConfig(data interface{}) bool {
+	config.Init(system.Args.Env, data)
+	return true
 }
 
 func (this *ServerMgr) GetDB() *sql.DB {

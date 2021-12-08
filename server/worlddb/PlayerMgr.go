@@ -37,7 +37,6 @@ func (this *PlayerMgr) Init() {
 	this.m_db = SERVER.GetDB()
 	this.Actor.Init()
 	this.m_PlayerMap = make(map[int64]*Player)
-	//sterTimer(1000*1000*1000, this.update)
 	this.RegisterTimer(1000*1000*1000, this.Update) //定时器
 	//load blob
 	this.RegisterCall("Load_Player", func(ctx context.Context, playerId int64, accountId int64) {

@@ -28,6 +28,7 @@ require (
 	gopkg.in/yaml.v2 v2.2.2
 	github.com/tealeg/xlsx v1.0.5
 	github.com/gorilla/websocket v1.4.2
+	github.com/jessevdk/go-flags v1.4.0
 )
 
 replace google.golang.org/grpc => google.golang.org/grpc v1.26.0

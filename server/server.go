@@ -4,10 +4,12 @@ import (
 	"fmt"
 	"gonet/base"
 	"gonet/server/account"
+	"gonet/server/center"
 	"gonet/server/login"
 	"gonet/server/netgate"
 	"gonet/server/world"
 	"gonet/server/worlddb"
+	"gonet/server/zone"
 	"os"
 	"os/signal"
 	"syscall"
@@ -25,6 +27,10 @@ func main() {
 		login.SERVER.Init()
 	} else if args[1] == "worlddb" {
 		worlddb.SERVER.Init()
+	} else if args[1] == "center" {
+		center.SERVER.Init()
+	} else if args[1] == "zone" {
+		zone.SERVER.Init()
 	}
 
 	base.SEVERNAME = args[1]

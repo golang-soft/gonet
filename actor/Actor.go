@@ -193,6 +193,7 @@ func (this *Actor) Send(head rpc.RpcHead, buff []byte) {
 func (this *Actor) PacketFunc(packet rpc.Packet) bool {
 	rpcPacket, head := rpc.UnmarshalHead(packet.Buff)
 	if this.FindCall(rpcPacket.FuncName) != nil {
+		log.Printf("PacketFunc [%s] 处理消息", rpcPacket.FuncName)
 		head.SocketId = packet.Id
 		head.Reply = packet.Reply
 		this.Send(head, packet.Buff)

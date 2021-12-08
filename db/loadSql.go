@@ -22,7 +22,7 @@ func loadSqlStr(sqlData *SqlData, op *Op) string {
 	} else {
 		key = ""
 	}
-	return "select " + sqlname + " from " + sqlData.Table + key + op.limit
+	return "select " + sqlname + " from " + sqlData.Table + key + " " + op.limit
 }
 
 //--- struct to sql

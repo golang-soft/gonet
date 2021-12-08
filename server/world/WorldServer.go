@@ -119,6 +119,7 @@ func (this *ServerMgr) Init() bool {
 
 func (this *ServerMgr) InitDB() bool {
 	this.m_pActorDB = db.OpenDB(CONF.Db)
+
 	err := this.m_pActorDB.Ping()
 	return err != nil
 }

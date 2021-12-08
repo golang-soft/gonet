@@ -40,8 +40,10 @@ func (this *TopMgrR) loadDB(nType int) {
 		return c.Do("ZCARD", ZRdKey(nType))
 	}))
 	if result == 0 {
-		fmt.Println(db.LoadSql(&model.TopRank{}, db.WithWhere(&model.TopRank{Type:int8(nType)}), db.WithLimit(TOP_RANK_MAX)))
-		rows, err := this.m_db.Query(db.LoadSql(&model.TopRank{}, db.WithWhere(&model.TopRank{Type:int8(nType)}), db.WithLimit(TOP_RANK_MAX)))
+		fmt.Println(db.LoadSql(&model.TopRank{}, db.WithWhere(&model.TopRank{Type: int8(nType)}), db.WithLimit(TOP_RANK_MAX)))
+		sql := db.LoadSql(&model.TopRank{}, db.WithWhere(&model.TopRank{Type: int8(nType)}), db.WithLimit(TOP_RANK_MAX))
+		this.m_Log.Println("sql: %s", sql)
+		rows, err := this.m_db.Query(sql)
 		if err != nil {
 			common.DBERROR("toprankr LoadDB", err)
 		}

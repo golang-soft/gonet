@@ -142,6 +142,8 @@ func (this *PlayerMgr) AddPlayer(accountId int64) actor.IActor {
 }
 
 func (this *PlayerMgr) RemovePlayer(accountId int64) {
-	this.m_Log.Printf("移除帐号数据[%d]", accountId)
-	this.DelActor(accountId)
+	if accountId > 0 {
+		this.m_Log.Printf("移除帐号数据[%d]", accountId)
+		this.DelActor(accountId)
+	}
 }

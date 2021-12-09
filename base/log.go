@@ -79,8 +79,8 @@ func (this *CLog) Debugf(v1 ...interface{}) {
 	for i, v := range v1 {
 		params[i] = v
 	}
-	params[len(v1)] =
-		this.m_Logger[LG_WARN].Output(2, "[Debug]"+fmt.Sprintln(params...))
+	params[len(v1)] = "\r"
+	this.m_Logger[LG_WARN].Output(2, "[Debug]"+fmt.Sprintln(params...))
 	log.Println(params...)
 }
 

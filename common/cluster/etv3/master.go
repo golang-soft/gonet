@@ -73,6 +73,7 @@ func (this *Master) Run() {
 				info := NodeToService(v1.Kv.Value)
 				this.addService(info)
 			} else {
+				log.Printf("Warn: delete key: %s", v1.PrevKv.Value)
 				info := NodeToService(v1.PrevKv.Value)
 				this.delService(info)
 			}

@@ -40,7 +40,7 @@ func ReadConf(path string, data interface{}) bool {
 }
 
 func load(_data interface{}) {
-	var serviceConfigPath = getConfigPath("gonet.yaml")
+	var serviceConfigPath = GetConfigPath("gonet.yaml")
 	//var redisConfigPath = getConfigPath("redis.json")
 	//var mysqlConfigPath = getConfigPath("mysql.json")
 	//var mongoConfigPath = getConfigPath("mongo.json")
@@ -55,7 +55,7 @@ func load(_data interface{}) {
 	lock.Unlock()
 }
 
-func getConfigPath(configFile string) string {
+func GetConfigPath(configFile string) string {
 	return system.Root + "/config/" + env + "/" + configFile
 }
 func loadConfig(data interface{}, configPath string) {

@@ -1,6 +1,7 @@
 package login
 
 import (
+	"fmt"
 	"gonet/base"
 	"gonet/base/ini"
 	"gonet/base/server"
@@ -47,8 +48,6 @@ func (this *ServerMgr) Init() bool {
 	//初始化log文件
 	this.m_Log.Init("login")
 	//初始配置文件
-	//base.ReadConf("D:\\workspace-go\\gonet\\server\\bin\\gonet.yaml", &CONF)
-	//初始配置文件
 	this.InitConfig(&CONF)
 
 	//动态监控文件改变
@@ -56,9 +55,9 @@ func (this *ServerMgr) Init() bool {
 	this.m_FileMonitor.Init()
 
 	NETGATECONF.Init()
-	//CONF.Server = "localhost:8081"
-	http.HandleFunc("/login/", GetNetGateS)
-	http.ListenAndServe(CONF.Server.Ip+":"+string(CONF.Server.Port), nil)
+	http.HandleFunc("/listgates", GetNetGateS)
+	addr := fmt.Sprintf("%s:%d", CONF.Server.Ip, CONF.Server.Port)
+	http.ListenAndServe(addr, nil)
 
 	//注册到集群服务器
 	//var packet1 EventProcess

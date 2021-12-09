@@ -3,6 +3,7 @@ package netgate
 import (
 	"gonet/base"
 	"gonet/base/ini"
+	"gonet/base/server"
 	"gonet/common"
 	"gonet/common/cluster"
 	"gonet/network"
@@ -12,6 +13,7 @@ import (
 
 type (
 	ServerMgr struct {
+		server.BaseServer
 		//m_pService       *network.ServerSocket
 		m_pService       *network.WebSocket
 		m_Inited         bool
@@ -23,6 +25,8 @@ type (
 	}
 
 	IServerMgr interface {
+		server.IBaseServer
+
 		Init() bool
 		GetLog() *base.CLog
 		GetServer() *network.ServerSocket
@@ -47,11 +51,12 @@ func (this *ServerMgr) GetLog() *base.CLog {
 	return &this.m_Log
 }
 
-//
+//socket
 //func (this *ServerMgr) GetServer() *network.ServerSocket{
 // 	return this.m_pService
 //}
 
+//websocket
 func (this *ServerMgr) GetServer() *network.WebSocket {
 	return this.m_pService
 }
@@ -72,7 +77,8 @@ func (this *ServerMgr) Init() bool {
 	//初始化log文件
 	this.m_Log.Init("netgate")
 	//初始配置文件
-	base.ReadConf("D:\\workspace-go\\gonet\\server\\bin\\gonet.yaml", &CONF)
+	//base.ReadConf("D:\\workspace-go\\gonet\\server\\bin\\gonet.yaml", &CONF)
+	this.InitConfig(&CONF)
 
 	ShowMessage := func() {
 		this.m_Log.Println("**********************************************************")
@@ -103,7 +109,6 @@ func (this *ServerMgr) Init() bool {
 	this.m_pService.BindPacketFunc(packet.PacketFunc)
 	this.m_pService.Start()
 	//注册到集群服务器
-
 	var packet1 EventProcess
 	packet1.Init()
 	this.m_pCluster = new(cluster.Cluster)

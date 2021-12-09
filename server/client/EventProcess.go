@@ -209,4 +209,5 @@ func (this *EventProcess) Move(yaw float32, time float32) {
 func (this *EventProcess) Update() {
 	packet1 := &message.HeardPacket{}
 	this.SendPacket(packet1)
+	m_Log.Debugf("发送心跳包.........")
 }

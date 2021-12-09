@@ -21,7 +21,7 @@ type (
 		m_KeyMap map[uint32]*base.Dh
 	}
 
-	IUserPrcoess interface {
+	IUserProcess interface {
 		actor.IActor
 
 		CheckClientEx(uint32, string, rpc.RpcHead) bool
@@ -29,7 +29,7 @@ type (
 		SwtichSendToWorld(uint32, string, rpc.RpcHead, []byte)
 		SwtichSendToAccount(uint32, string, rpc.RpcHead, []byte)
 		SwtichSendToZone(uint32, string, rpc.RpcHead, []byte)
-
+		HandleBasicMessage(socketid uint32, packetId uint32, buff []uint8) bool
 		addKey(uint32, *base.Dh)
 		delKey(uint32)
 	}
@@ -93,24 +93,36 @@ func (this *UserPrcoess) SwtichSendToZone(socketId uint32, packetName string, he
 	}
 }
 
+func (this *UserPrcoess) DisconnectClient(stream *base.BitStream, socketid uint32) {
+	SERVER.GetPlayerMgr().SendMsg(rpc.RpcHead{}, "DEL_ACCOUNT", uint32(stream.ReadInt(32)))
+	this.SendMsg(rpc.RpcHead{}, "DISCONNECT", socketid)
+}
+
+func (this *UserPrcoess) HandleBasicMessage(socketid uint32, packetId uint32, buff []uint8) bool {
+	//客户端主动断开
+	if packetId == network.DISCONNECTINT {
+		//断开客户端的链接
+		stream := base.NewBitStream(buff, len(buff))
+		stream.ReadInt(32)
+		this.DisconnectClient(stream, socketid)
+	} else if packetId == network.HEART_PACKET {
+		//心跳netsocket做处理，这里不处理
+		SERVER.GetLog().Debugf("网关收到心跳包, %d", packetId)
+	} else {
+		//未知的消息
+		SERVER.GetLog().Printf("包解析错误, 未知的消息 socket=%d", socketid)
+	}
+
+	return true
+}
+
 func (this *UserPrcoess) PacketFunc(packet1 rpc.Packet) bool {
 	buff := packet1.Buff
 	socketid := packet1.Id
 	packetId, data := message.Decode(buff)
 	packet := message.GetPakcet(packetId)
 	if packet == nil {
-		//客户端主动断开
-		if packetId == network.DISCONNECTINT {
-			stream := base.NewBitStream(buff, len(buff))
-			stream.ReadInt(32)
-			SERVER.GetPlayerMgr().SendMsg(rpc.RpcHead{}, "DEL_ACCOUNT", uint32(stream.ReadInt(32)))
-			this.SendMsg(rpc.RpcHead{}, "DISCONNECT", socketid)
-		} else if packetId == network.HEART_PACKET { //心跳netsocket做处理，这里不处理
-			SERVER.GetLog().Debugf("网关收到心跳包, %d", packetId)
-		} else {
-			SERVER.GetLog().Printf("包解析错误1  socket=%d", socketid)
-		}
-		return true
+		return this.HandleBasicMessage(socketid, packetId, buff)
 	}
 
 	//获取配置的路由地址

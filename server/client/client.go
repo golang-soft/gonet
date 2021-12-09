@@ -17,6 +17,8 @@ type (
 )
 
 var (
+	m_Log base.CLog
+
 	CONF   Config
 	CLIENT *network.ClientWebSocket2
 	//CLIENT *network.WebSocketClient
@@ -24,18 +26,35 @@ var (
 
 func main() {
 	message.InitClient()
+
+	m_Log.Init("client")
+
 	base.ReadConf("D:\\workspace-go\\gonet\\server\\client\\gonet.yaml", &CONF)
+
+	ShowMessage := func() {
+		m_Log.Println("**********************************************************")
+		m_Log.Printf("\tClient Version:\t%s", base.BUILD_NO)
+		m_Log.Printf("\tClient(LAN):\t%s:%d", CONF.Server.Ip, CONF.Server.Port)
+		m_Log.Println("**********************************************************")
+	}
+	ShowMessage()
+
 	CLIENT = new(network.ClientWebSocket2)
 	CLIENT.Init(CONF.Server.Ip, CONF.Server.Port)
 	PACKET = new(EventProcess)
 	PACKET.Init()
 	CLIENT.BindPacketFunc(PACKET.PacketFunc)
 	PACKET.Client = CLIENT
-	if CLIENT.Start() {
-		PACKET.LoginGate()
+	host := fmt.Sprintf("%s:%d", CONF.Server.Ip, CONF.Server.Port)
+	if !CLIENT.Start(host) {
+		m_Log.Debugf("链接失败")
+		return
 	}
+	m_Log.Debugf("链接成功 %s", host)
+
+	PACKET.LoginGate()
 	//PACKET.LoginGame()
-	PACKET.SendTest()
+	//PACKET.SendTest()
 
 	InitCmd()
 

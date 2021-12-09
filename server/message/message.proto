@@ -9,7 +9,8 @@ enum SERVICE{
     ACCOUNTSERVER=3;//账号
     WORLDSERVER=4;//世界
     ZONESERVER=5;//地图
-    WORLDDBSERVER=6;//db
+    CENTERSERVER=6;//中央
+    WORLDDBSERVER=7;//db
 };
 
 enum CHAT{

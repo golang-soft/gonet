@@ -32,17 +32,18 @@ func (this *ClientWebSocket2) Init(ip string, port int, params ...OpOption) bool
 	return true
 }
 
-func (this *ClientWebSocket2) Start() bool {
+func (this *ClientWebSocket2) Start(host string) bool {
 	if this.m_sIP == "" {
 		this.m_sIP = "127.0.0.1"
 	}
 
-	if this.Connect() {
+	if this.Connect(host) {
 		go this.Run()
+		return true
 	}
 	//延迟，监听关闭
 	//defer ln.Close()
-	return true
+	return false
 }
 
 func (this *ClientWebSocket2) SendMsg(head rpc.RpcHead, funcName string, params ...interface{}) {
@@ -74,15 +75,14 @@ func (this *ClientWebSocket2) Restart() bool {
 	return true
 }
 
-func (this *ClientWebSocket2) Connect() bool {
-	ws, err := websocket.Dial("ws://127.0.0.1:31700/ws", "", "http://127.0.0.1:31700/")
+func (this *ClientWebSocket2) Connect(host string) bool {
+	wshost := "ws://" + host + "/ws"
+	httphost := "http://" + host + "/"
+	ws, err := websocket.Dial(wshost, "", httphost)
 	if err != nil {
 		log.Fatal(err)
 	}
-	//defer ws.Close() //关闭连接
-
 	this.SetConn(ws)
-
 	return true
 }
 

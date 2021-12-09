@@ -11,7 +11,8 @@ enum SERVICE{
     WORLDSERVER=4;//世界
     ZONESERVER=5;//地图
     CENTERSERVER=6;
-    WORLDDBSERVER=7;//db
+    LOGINSERVER=7;//登录服
+    WORLDDBSERVER=8;//db
 };
 
 //发送标志

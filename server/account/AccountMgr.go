@@ -52,6 +52,7 @@ func (this *AccountMgr) Init() {
 			} else {
 				SERVER.GetLog().Println("没有可用的集群")
 			}
+			return
 		}
 
 		if pPlayer != nil {
@@ -121,7 +122,7 @@ func (this *AccountMgr) RemoveAccount(accountId int64, bLogin bool) {
 	if pAccount != nil {
 		delete(this.m_AccountNameMap, pAccount.AccountName)
 		delete(this.m_AccountMap, accountId)
-		SERVER.GetLog().Printf("账号[%d]断开链接", accountId)
+		SERVER.GetLog().Printf("账号[%d]被移除", accountId)
 	}
 	//假如账号服务器分布式，只要踢出world世界服务器即可
 	//这里要登录的时候就同步到踢人world

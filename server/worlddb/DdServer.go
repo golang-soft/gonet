@@ -3,8 +3,8 @@ package worlddb
 import (
 	"database/sql"
 	"gonet/base"
-	"gonet/base/config"
 	"gonet/base/ini"
+	"gonet/base/server"
 	"gonet/base/system"
 	"gonet/common"
 	"gonet/common/cluster"
@@ -16,6 +16,8 @@ import (
 
 type (
 	ServerMgr struct {
+		server.BaseServer
+
 		m_pService     *network.ServerSocket
 		m_pCluster     *cluster.Cluster
 		m_pWorldClient *network.ClientSocket
@@ -27,6 +29,8 @@ type (
 	}
 
 	IServerMgr interface {
+		server.IBaseServer
+
 		Init() bool
 		InitDB() bool
 		GetDB() *sql.DB
@@ -98,18 +102,13 @@ func (this *ServerMgr) Init() bool {
 	this.m_pCluster.BindPacketFunc(packet.PacketFunc)
 	this.m_pCluster.BindPacketFunc(this.m_pPlayerMgr.PacketFunc)
 
-	return false
+	return true
 }
 
 func (this *ServerMgr) InitDB() bool {
 	this.m_pActorDB = db.OpenDB(CONF.Db)
 	err := this.m_pActorDB.Ping()
 	return err != nil
-}
-
-func (this *ServerMgr) InitConfig(data interface{}) bool {
-	config.Init(system.Args.Env, data)
-	return true
 }
 
 func (this *ServerMgr) GetDB() *sql.DB {

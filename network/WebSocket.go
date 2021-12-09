@@ -105,9 +105,9 @@ func (this *WebSocket) DelClinet(pClient *WebSocketClient) bool {
 }
 
 func (this *WebSocket) StopClient(id uint32) {
-	pClinet := this.GetClientById(id)
-	if pClinet != nil {
-		pClinet.Stop()
+	pClient := this.GetClientById(id)
+	if pClient != nil {
+		pClient.Stop()
 	}
 }
 

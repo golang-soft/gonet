@@ -25,9 +25,8 @@ func (this *EventProcess) Init() {
 
 	})
 
-	this.RegisterCall("LoginCenter", func(ctx context.Context, packet *message.PlayerData) {
+	this.RegisterCall("PlayerData", func(ctx context.Context, packet *message.PlayerData) {
 		SERVER.m_Log.Debugf("head[%v]", packet)
-
 	})
 
 	this.Actor.Start()

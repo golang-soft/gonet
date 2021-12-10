@@ -144,9 +144,14 @@ func (this *ServerMgr) Init() bool {
 
 	var packet EventProcess
 	packet.Init()
-	this.m_pCluster.BindPacketFunc(packet.PacketFunc)
 
-	this.SendToCenter(1, 0, "LoginCenter")
+	var centerProcess CenterProcess
+	centerProcess.Init()
+
+	this.m_pCluster.BindPacketFunc(packet.PacketFunc)
+	this.m_pCluster.BindPacketFunc(centerProcess.PacketFunc)
+
+	//this.SendToCenter(1, 0, "LoginCenter")
 	return false
 }
 

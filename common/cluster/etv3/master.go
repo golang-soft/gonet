@@ -71,14 +71,14 @@ func (this *Master) Run() {
 		for _, v1 := range v.Events {
 			log.Printf("Run------type:%v kv:%v  prevKey:%v \n ", v1.Type, string(v1.Kv.Key), v1.PrevKv)
 
-			//if v1.Type.String() == "PUT" {
-			//	info := NodeToService(v1.Kv.Value)
-			//	this.addService(info)
-			//} else {
-			//	log.Printf("Warn: delete key: %s", v1.PrevKv.Value)
-			//	info := NodeToService(v1.PrevKv.Value)
-			//	this.delService(info)
-			//}
+			if v1.Type.String() == "PUT" {
+				info := NodeToService(v1.Kv.Value)
+				this.addService(info)
+			} else {
+				log.Printf("Warn: delete key: %s", v1.PrevKv.Value)
+				info := NodeToService(v1.PrevKv.Value)
+				this.delService(info)
+			}
 		}
 	}
 }

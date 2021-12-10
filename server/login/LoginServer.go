@@ -66,6 +66,7 @@ func (this *ServerMgr) Init() bool {
 
 	http.HandleFunc("/listgates", GetNetGateS)
 	http.HandleFunc("/test", Test)
+	http.HandleFunc("/testworld", TestWorld)
 	addr := fmt.Sprintf("%s:%d", CONF.Server.Ip, CONF.Server.Port)
 	http.ListenAndServe(addr, nil)
 

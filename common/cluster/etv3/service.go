@@ -39,6 +39,7 @@ type (
 
 func (this *Service) Run() {
 	if this.isRun {
+		this.Grant()
 		this.Put()
 		//for {
 		this.KeepAlive()
@@ -148,7 +149,6 @@ func (this *Service) Init(info *common.ClusterInfo, endpoints []string) bool {
 }
 
 func (this *Service) Start() bool {
-	this.Grant()
 	key := this.GetKey()
 	if this.GetValue(key) != nil {
 		log.Println("Error: Service.Start error， Exist key :", key)

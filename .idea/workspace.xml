@@ -28,7 +28,14 @@
   <component name="ChangeListManager">
     <list default="true" id="48577825-a92d-4c0c-b73f-4177e3909d59" name="Default Changelist" comment="代码修改">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/world/player/Player.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/world/player/Player.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/actor/Actor.go" beforeDir="false" afterPath="$PROJECT_DIR$/actor/Actor.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/cluster/etv3/master.go" beforeDir="false" afterPath="$PROJECT_DIR$/common/cluster/etv3/master.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/cluster/etv3/service.go" beforeDir="false" afterPath="$PROJECT_DIR$/common/cluster/etv3/service.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/center/EventProcess.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/center/EventProcess.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/login/LoginServer.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/login/LoginServer.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/login/NetGateConf.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/login/NetGateConf.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/world/CenterClient.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/world/CenterClient.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/world/WorldServer.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/world/WorldServer.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -334,11 +341,11 @@
       <screen x="0" y="0" width="1920" height="999" />
     </state>
     <state x="655" y="133" key="#xdebugger.evaluate/0.0.1920.999@0.0.1920.999" timestamp="1639113416021" />
-    <state width="1126" height="569" key="DebuggerActiveHint" timestamp="1639119537572">
+    <state width="1126" height="569" key="DebuggerActiveHint" timestamp="1639124604019">
       <screen x="0" y="0" width="1920" height="999" />
     </state>
     <state width="468" height="466" key="DebuggerActiveHint/0.0.1600.819@0.0.1600.819" timestamp="1638608758215" />
-    <state width="1126" height="569" key="DebuggerActiveHint/0.0.1920.999@0.0.1920.999" timestamp="1639119537572" />
+    <state width="1126" height="569" key="DebuggerActiveHint/0.0.1920.999@0.0.1920.999" timestamp="1639124604019" />
     <state x="160" y="195" width="1700" height="775" key="DiffContextDialog" timestamp="1639119494922">
       <screen x="0" y="0" width="1920" height="999" />
     </state>
@@ -351,67 +358,67 @@
     <state x="688" y="196" key="FileChooserDialogImpl/0.0.1920.999@0.0.1920.999" timestamp="1638848884217" />
     <state x="917" y="275" key="FileChooserDialogImpl/0.0.2560.1400@0.0.2560.1400" timestamp="1638765514852" />
     <state x="687" y="196" key="FileChooserDialogImpl/1920.0.1920.999/0.0.1920.999@0.0.1920.999" timestamp="1637821282851" />
-    <state width="1867" height="229" key="GridCell.Tab.0.bottom" timestamp="1639119705684">
+    <state width="1867" height="356" key="GridCell.Tab.0.bottom" timestamp="1639125116604">
       <screen x="0" y="0" width="1920" height="999" />
     </state>
     <state width="1557" height="167" key="GridCell.Tab.0.bottom/0.0.1600.819@0.0.1600.819" timestamp="1638692091091" />
-    <state width="1867" height="229" key="GridCell.Tab.0.bottom/0.0.1920.999@0.0.1920.999" timestamp="1639119705684" />
-    <state width="1867" height="229" key="GridCell.Tab.0.center" timestamp="1639119705684">
+    <state width="1867" height="356" key="GridCell.Tab.0.bottom/0.0.1920.999@0.0.1920.999" timestamp="1639125116604" />
+    <state width="1867" height="356" key="GridCell.Tab.0.center" timestamp="1639125116604">
       <screen x="0" y="0" width="1920" height="999" />
     </state>
     <state width="1557" height="167" key="GridCell.Tab.0.center/0.0.1600.819@0.0.1600.819" timestamp="1638692091091" />
-    <state width="1867" height="229" key="GridCell.Tab.0.center/0.0.1920.999@0.0.1920.999" timestamp="1639119705684" />
-    <state width="1867" height="229" key="GridCell.Tab.0.left" timestamp="1639119705683">
+    <state width="1867" height="356" key="GridCell.Tab.0.center/0.0.1920.999@0.0.1920.999" timestamp="1639125116604" />
+    <state width="1867" height="356" key="GridCell.Tab.0.left" timestamp="1639125116604">
       <screen x="0" y="0" width="1920" height="999" />
     </state>
     <state width="1557" height="167" key="GridCell.Tab.0.left/0.0.1600.819@0.0.1600.819" timestamp="1638692091090" />
-    <state width="1867" height="229" key="GridCell.Tab.0.left/0.0.1920.999@0.0.1920.999" timestamp="1639119705683" />
-    <state width="1867" height="229" key="GridCell.Tab.0.right" timestamp="1639119705684">
+    <state width="1867" height="356" key="GridCell.Tab.0.left/0.0.1920.999@0.0.1920.999" timestamp="1639125116604" />
+    <state width="1867" height="356" key="GridCell.Tab.0.right" timestamp="1639125116604">
       <screen x="0" y="0" width="1920" height="999" />
     </state>
     <state width="1557" height="167" key="GridCell.Tab.0.right/0.0.1600.819@0.0.1600.819" timestamp="1638692091091" />
-    <state width="1867" height="229" key="GridCell.Tab.0.right/0.0.1920.999@0.0.1920.999" timestamp="1639119705684" />
-    <state width="1867" height="229" key="GridCell.Tab.1.bottom" timestamp="1639119705684">
+    <state width="1867" height="356" key="GridCell.Tab.0.right/0.0.1920.999@0.0.1920.999" timestamp="1639125116604" />
+    <state width="1867" height="356" key="GridCell.Tab.1.bottom" timestamp="1639125116604">
       <screen x="0" y="0" width="1920" height="999" />
     </state>
     <state width="1557" height="167" key="GridCell.Tab.1.bottom/0.0.1600.819@0.0.1600.819" timestamp="1638608800828" />
-    <state width="1867" height="229" key="GridCell.Tab.1.bottom/0.0.1920.999@0.0.1920.999" timestamp="1639119705684" />
-    <state width="1867" height="229" key="GridCell.Tab.1.center" timestamp="1639119705684">
+    <state width="1867" height="356" key="GridCell.Tab.1.bottom/0.0.1920.999@0.0.1920.999" timestamp="1639125116604" />
+    <state width="1867" height="356" key="GridCell.Tab.1.center" timestamp="1639125116604">
       <screen x="0" y="0" width="1920" height="999" />
     </state>
     <state width="1557" height="167" key="GridCell.Tab.1.center/0.0.1600.819@0.0.1600.819" timestamp="1638608800828" />
-    <state width="1867" height="229" key="GridCell.Tab.1.center/0.0.1920.999@0.0.1920.999" timestamp="1639119705684" />
-    <state width="1867" height="229" key="GridCell.Tab.1.left" timestamp="1639119705684">
+    <state width="1867" height="356" key="GridCell.Tab.1.center/0.0.1920.999@0.0.1920.999" timestamp="1639125116604" />
+    <state width="1867" height="356" key="GridCell.Tab.1.left" timestamp="1639125116604">
       <screen x="0" y="0" width="1920" height="999" />
     </state>
     <state width="1557" height="167" key="GridCell.Tab.1.left/0.0.1600.819@0.0.1600.819" timestamp="1638608800828" />
-    <state width="1867" height="229" key="GridCell.Tab.1.left/0.0.1920.999@0.0.1920.999" timestamp="1639119705684" />
-    <state width="1867" height="229" key="GridCell.Tab.1.right" timestamp="1639119705684">
+    <state width="1867" height="356" key="GridCell.Tab.1.left/0.0.1920.999@0.0.1920.999" timestamp="1639125116604" />
+    <state width="1867" height="356" key="GridCell.Tab.1.right" timestamp="1639125116604">
       <screen x="0" y="0" width="1920" height="999" />
     </state>
     <state width="1557" height="167" key="GridCell.Tab.1.right/0.0.1600.819@0.0.1600.819" timestamp="1638608800828" />
-    <state width="1867" height="229" key="GridCell.Tab.1.right/0.0.1920.999@0.0.1920.999" timestamp="1639119705684" />
+    <state width="1867" height="356" key="GridCell.Tab.1.right/0.0.1920.999@0.0.1920.999" timestamp="1639125116604" />
     <state x="437" y="116" key="SettingsEditor" timestamp="1638958565068">
       <screen x="0" y="0" width="1920" height="999" />
     </state>
     <state x="437" y="116" key="SettingsEditor/0.0.1920.999@0.0.1920.999" timestamp="1638958565068" />
     <state x="582" y="363" key="SettingsEditor/0.0.2560.1400@0.0.2560.1400" timestamp="1638765564990" />
-    <state x="470" y="173" key="Vcs.Push.Dialog.v2" timestamp="1639119618770">
+    <state x="470" y="173" key="Vcs.Push.Dialog.v2" timestamp="1639121457961">
       <screen x="0" y="0" width="1920" height="999" />
     </state>
     <state x="392" y="142" key="Vcs.Push.Dialog.v2/0.0.1600.819@0.0.1600.819" timestamp="1638630677588" />
-    <state x="470" y="173" key="Vcs.Push.Dialog.v2/0.0.1920.999@0.0.1920.999" timestamp="1639119618770" />
+    <state x="470" y="173" key="Vcs.Push.Dialog.v2/0.0.1920.999@0.0.1920.999" timestamp="1639121457961" />
     <state x="627" y="236" key="Vcs.Push.Dialog.v2/0.0.2560.1359@0.0.2560.1359" timestamp="1638772609197" />
     <state x="627" y="243" key="Vcs.Push.Dialog.v2/0.0.2560.1400@0.0.2560.1400" timestamp="1638769982908" />
     <state x="1051" y="595" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1638767761287">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state x="1051" y="595" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.2560.1400@0.0.2560.1400" timestamp="1638767761287" />
-    <state x="410" y="24" width="1119" height="975" key="find.popup" timestamp="1639121337004">
+    <state x="410" y="24" width="1119" height="975" key="find.popup" timestamp="1639124689320">
       <screen x="0" y="0" width="1920" height="999" />
     </state>
     <state x="342" y="154" width="932" height="536" key="find.popup/0.0.1600.819@0.0.1600.819" timestamp="1638620022879" />
-    <state x="410" y="24" width="1119" height="975" key="find.popup/0.0.1920.999@0.0.1920.999" timestamp="1639121337004" />
+    <state x="410" y="24" width="1119" height="975" key="find.popup/0.0.1920.999@0.0.1920.999" timestamp="1639124689320" />
     <state x="547" y="256" width="1492" height="890" key="find.popup/0.0.2560.1359@0.0.2560.1359" timestamp="1638771803616" />
     <state x="764" y="221" key="refactoring.ChangeSignatureDialog" timestamp="1639103498019">
       <screen x="0" y="0" width="1920" height="999" />
@@ -677,13 +684,8 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DlvLineBreakpoint">
           <url>file://$PROJECT_DIR$/server/world/WorldServer.go</url>
-          <line>211</line>
+          <line>217</line>
           <option name="timeStamp" value="151" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
-          <url>file://$PROJECT_DIR$/common/cluster/Cluster.go</url>
-          <line>205</line>
-          <option name="timeStamp" value="152" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DlvLineBreakpoint">
           <url>file://$PROJECT_DIR$/server/world/player/Player.go</url>
@@ -702,7 +704,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DlvLineBreakpoint">
           <url>file://$PROJECT_DIR$/server/login/LoginServer.go</url>
-          <line>71</line>
+          <line>72</line>
           <option name="timeStamp" value="157" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DlvLineBreakpoint">
@@ -742,18 +744,38 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DlvLineBreakpoint">
           <url>file://$PROJECT_DIR$/server/login/NetGateConf.go</url>
-          <line>95</line>
+          <line>100</line>
           <option name="timeStamp" value="191" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/server/login/NetGateConf.go</url>
+          <line>67</line>
+          <option name="timeStamp" value="195" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/server/world/CenterClient.go</url>
+          <line>25</line>
+          <option name="timeStamp" value="196" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/server/login/NetGateConf.go</url>
+          <line>107</line>
+          <option name="timeStamp" value="197" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/common/cluster/Cluster.go</url>
+          <line>190</line>
+          <option name="timeStamp" value="198" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DlvLineBreakpoint">
           <url>file://$PROJECT_DIR$/actor/Actor.go</url>
           <line>195</line>
-          <option name="timeStamp" value="192" />
+          <option name="timeStamp" value="205" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DlvLineBreakpoint">
-          <url>file://$PROJECT_DIR$/common/cluster/Cluster.go</url>
-          <line>201</line>
-          <option name="timeStamp" value="194" />
+          <url>file://$PROJECT_DIR$/common/cluster/etv3/service.go</url>
+          <line>102</line>
+          <option name="timeStamp" value="206" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

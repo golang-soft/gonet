@@ -61,7 +61,11 @@ func GetNetGateS(w http.ResponseWriter, r *http.Request) {
 func Test(w http.ResponseWriter, r *http.Request) {
 	//SendToClient(1, &message.W_C_Test{PacketHead: message.BuildPacketHead(1, 0),})
 	//SendToCenter(1, 0, "LoginCenter","")
-	SendToCenter2(1, "LoginCenter", &message.PlayerData{PlayerID: 1111, PlayerName: "顶顶顶顶"})
+	SendToCenter2(1, "PlayerData", &message.PlayerData{PlayerID: 1111, PlayerName: "顶顶顶顶"})
+}
+
+func TestWorld(w http.ResponseWriter, r *http.Request) {
+	SendToWorld(1, "W_C_Test", &message.W_C_Test{PacketHead: message.BuildPacketHead(1, 0), PlayerId: 111222})
 }
 
 //发送account
@@ -93,6 +97,13 @@ func SendToCenter(Id int64, ClusterId uint32, funcName string, params ...interfa
 func SendToCenter2(clusterId uint32, funcName string, packet proto.Message) {
 	//pakcetHead := packet.(message.Packet).GetPacketHead()
 	//if pakcetHead != nil {
-	SERVER.GetCluster().SendMsg(rpc.RpcHead{DestServerType: rpc.SERVICE_CENTERSERVER, ClusterId: clusterId, SendType: rpc.SEND_BOARD_CAST}, funcName, proto.MessageName(packet), packet)
+	SERVER.GetCluster().SendMsg(rpc.RpcHead{DestServerType: rpc.SERVICE_CENTERSERVER, ClusterId: clusterId, SendType: rpc.SEND_BOARD_CAST}, funcName, packet)
+	//}
+}
+
+func SendToWorld(clusterId uint32, funcName string, packet proto.Message) {
+	//pakcetHead := packet.(message.Packet).GetPacketHead()
+	//if pakcetHead != nil {
+	SERVER.GetCluster().SendMsg(rpc.RpcHead{DestServerType: rpc.SERVICE_WORLDSERVER, ClusterId: clusterId, SendType: rpc.SEND_BOARD_CAST}, funcName, packet)
 	//}
 }

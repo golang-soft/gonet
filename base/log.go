@@ -69,8 +69,8 @@ func (this *CLog) GetSuffix(nType LG_TYPE) string {
 func (this *CLog) Write(nType LG_TYPE) {
 	this.WriteFile(nType)
 	tTime := time.Now()
-	this.m_Logger[nType].SetPrefix(fmt.Sprintf("[%04d-%02d-%02d %02d:%02d:%02d]", tTime.Year(), tTime.Month(), tTime.Day(),
-		tTime.Hour(), tTime.Minute(), tTime.Second()))
+	this.m_Logger[nType].SetPrefix(fmt.Sprintf("[%04d-%02d-%02d %02d:%02d:%02d] [%s]", tTime.Year(), tTime.Month(), tTime.Day(),
+		tTime.Hour(), tTime.Minute(), tTime.Second(), this.m_FileName))
 }
 
 func (this *CLog) Debugf(v1 ...interface{}) {

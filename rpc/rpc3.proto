@@ -12,7 +12,8 @@ enum SERVICE{
     ZONESERVER=5;//地图
     CENTERSERVER=6;
     LOGINSERVER=7;//登录服
-    WORLDDBSERVER=8;//db
+    GRPCSERVER=8;//grpc服务器
+    WORLDDBSERVER=9;//db
 };
 
 //发送标志

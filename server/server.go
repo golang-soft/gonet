@@ -5,6 +5,7 @@ import (
 	"gonet/base"
 	"gonet/server/account"
 	"gonet/server/center"
+	"gonet/server/grpcserver"
 	"gonet/server/login"
 	"gonet/server/netgate"
 	"gonet/server/world"
@@ -31,6 +32,8 @@ func main() {
 		center.SERVER.Init()
 	} else if args[1] == "zone" {
 		zone.SERVER.Init()
+	} else if args[1] == "grpcserver" {
+		grpcserver.SERVER.Init()
 	}
 
 	base.SEVERNAME = args[1]

@@ -86,16 +86,6 @@ func (this *ServerMgr) Init() bool {
 	//base.ReadConf("D:\\workspace-go\\gonet\\server\\bin\\gonet.yaml", &CONF)
 	this.InitConfig(&CONF)
 
-	ShowMessage := func() {
-		this.m_Log.Println("**********************************************************")
-		this.m_Log.Printf("\tWorldServer Version:\t%s", base.BUILD_NO)
-		//this.m_Log.Printf("\tWorldServerIP(LAN):\t%s:%d", CONF.Server.Ip, CONF.Server.Port)
-		this.m_Log.Printf("\tActorDBServer(LAN):\t%s", CONF.Db.Ip)
-		this.m_Log.Printf("\tActorDBName:\t\t%s", CONF.Db.Name)
-		this.m_Log.Println("**********************************************************")
-	}
-	ShowMessage()
-
 	this.m_Log.Println("正在初始化数据库连接...")
 	if this.InitDB() {
 		this.m_Log.Printf("[%s]数据库连接是失败...", CONF.Db.Name)
@@ -113,6 +103,7 @@ func (this *ServerMgr) Init() bool {
 
 	//playerraft
 	this.m_PlayerRaft = cluster.NewPlayerRaft(CONF.Raft.Endpoints)
+
 	//etcd 的处理
 	service := &etv3.Service{}
 	thisip := "127.0.0.1"
@@ -136,7 +127,6 @@ func (this *ServerMgr) Init() bool {
 	this.m_pService = new(network.ServerSocket)
 	this.m_pService.Init(thisip, thisport)
 	this.m_pService.Start()
-	this.m_Log.Printf("\tWorldServerIP(LAN):\t%s:%d", thisip, thisport)
 
 	//本身world集群管理
 	this.m_pCluster = new(cluster.Cluster)
@@ -150,6 +140,16 @@ func (this *ServerMgr) Init() bool {
 
 	this.m_pCluster.BindPacketFunc(packet.PacketFunc)
 	this.m_pCluster.BindPacketFunc(centerProcess.PacketFunc)
+
+	ShowMessage := func() {
+		this.m_Log.Println("**********************************************************")
+		this.m_Log.Printf("\tWorldServer Version:\t%s", base.BUILD_NO)
+		this.m_Log.Printf("\tWorldServerIP(LAN):\t%s:%d", thisip, thisport)
+		this.m_Log.Printf("\tActorDBServer(LAN):\t%s", CONF.Db.Ip)
+		this.m_Log.Printf("\tActorDBName:\t\t%s", CONF.Db.Name)
+		this.m_Log.Println("**********************************************************")
+	}
+	ShowMessage()
 
 	//this.SendToCenter(1, 0, "LoginCenter")
 	return false

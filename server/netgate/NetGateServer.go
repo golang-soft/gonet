@@ -6,8 +6,11 @@ import (
 	"gonet/base/server"
 	"gonet/common"
 	"gonet/common/cluster"
+	"gonet/common/cluster/etv3"
 	"gonet/network"
 	"gonet/rpc"
+	"strconv"
+	"strings"
 	"time"
 )
 
@@ -37,9 +40,10 @@ type (
 	}
 
 	Config struct {
-		common.Server `yaml:"netgate"`
-		common.Etcd   `yaml:"etcd"`
-		common.Nats   `yaml:"nats"`
+		//common.Server `yaml:"netgate"`
+		common.MServer `yaml:"mnetgate"`
+		common.Etcd    `yaml:"etcd"`
+		common.Nats    `yaml:"nats"`
 	}
 )
 
@@ -81,14 +85,6 @@ func (this *ServerMgr) Init() bool {
 	//base.ReadConf("D:\\workspace-go\\gonet\\server\\bin\\gonet.yaml", &CONF)
 	this.InitConfig(&CONF)
 
-	ShowMessage := func() {
-		this.m_Log.Println("**********************************************************")
-		this.m_Log.Printf("\tNetGateServer Version:\t%s", base.BUILD_NO)
-		this.m_Log.Printf("\tNetGateServerIP(LAN):\t%s:%d", CONF.Server.Ip, CONF.Server.Port)
-		this.m_Log.Println("**********************************************************")
-	}
-	ShowMessage()
-
 	//初始化socket
 	//this.m_pService = new(network.ServerSocket)
 	//this.m_pService.Init(CONF.Server.Ip, CONF.Server.Port)
@@ -100,9 +96,29 @@ func (this *ServerMgr) Init() bool {
 	//this.m_pService.BindPacketFunc(packet.PacketFunc)
 	//this.m_pService.Start()
 
+	//etcd 的处理
+	service := &etv3.Service{}
+	thisip := "127.0.0.1"
+	thisport := 31300
+
+	for i := 0; i < len(CONF.MServer.Endpoints); i++ {
+		sport := strings.Split(CONF.MServer.Endpoints[i], ":")[1]
+		port, _ := strconv.Atoi(sport)
+		ip := strings.Split(CONF.MServer.Endpoints[i], ":")[0]
+		thisip = ip
+		thisport = port
+		//index := this.GetIndex(this.m_pCluster.GetService().IpString())
+		res := service.CheckExist(&common.ClusterInfo{Type: rpc.SERVICE_GATESERVER, Ip: ip, Port: int32(port)}, CONF.Etcd.Endpoints)
+		if !res {
+			continue
+		} else {
+			break
+		}
+	}
+
 	//websocket
 	this.m_pService = new(network.WebSocket)
-	this.m_pService.Init(CONF.Server.Ip, CONF.Server.Port)
+	this.m_pService.Init(thisip, thisport)
 	this.m_pService.SetConnectType(network.CLIENT_CONNECT)
 	//this.m_pService.Start()
 	packet := new(UserPrcoess)
@@ -115,7 +131,7 @@ func (this *ServerMgr) Init() bool {
 	this.m_pEventProcess = &packet1
 
 	this.m_pCluster = new(cluster.Cluster)
-	this.m_pCluster.Init(&common.ClusterInfo{Type: rpc.SERVICE_GATESERVER, Ip: CONF.Server.Ip, Port: int32(CONF.Server.Port)}, CONF.Etcd.Endpoints, CONF.Nats.Endpoints)
+	this.m_pCluster.Init(&common.ClusterInfo{Type: rpc.SERVICE_GATESERVER, Ip: thisip, Port: int32(thisport)}, CONF.Etcd.Endpoints, CONF.Nats.Endpoints)
 	this.m_pCluster.BindPacketFunc(packet1.PacketFunc)
 	this.m_pCluster.BindPacketFunc(DispatchPacket)
 
@@ -123,6 +139,13 @@ func (this *ServerMgr) Init() bool {
 	this.m_PlayerMgr = new(PlayerManager)
 	this.m_PlayerMgr.Init()
 
+	ShowMessage := func() {
+		this.m_Log.Println("**********************************************************")
+		this.m_Log.Printf("\tNetGateServer Version:\t%s", base.BUILD_NO)
+		this.m_Log.Printf("\tNetGateServerIP(LAN):\t%s:%d", thisip, thisport)
+		this.m_Log.Println("**********************************************************")
+	}
+	ShowMessage()
 	return false
 }
 

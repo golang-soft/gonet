@@ -68,6 +68,15 @@ func (this *ServerMgr) Init() bool {
 	http.HandleFunc("/test", Test)
 	http.HandleFunc("/testworld", TestWorld)
 	addr := fmt.Sprintf("%s:%d", CONF.Server.Ip, CONF.Server.Port)
+
+	ShowMessage := func() {
+		this.m_Log.Println("**********************************************************")
+		this.m_Log.Printf("\tNetGateServer Version:\t%s", base.BUILD_NO)
+		this.m_Log.Printf("\tNetGateServerIP(LAN):\t%s", addr)
+		this.m_Log.Println("**********************************************************")
+	}
+	ShowMessage()
+
 	http.ListenAndServe(addr, nil)
 
 	return false

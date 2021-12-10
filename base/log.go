@@ -73,15 +73,23 @@ func (this *CLog) Write(nType LG_TYPE) {
 		tTime.Hour(), tTime.Minute(), tTime.Second(), this.m_FileName))
 }
 
-func (this *CLog) Debugf(v1 ...interface{}) {
+func (this *CLog) Debug(v1 ...interface{}) {
 	this.Write(LG_WARN)
-	params := make([]interface{}, len(v1)+1)
+	params := make([]interface{}, len(v1)+2)
+	params[0] = "[" + this.m_FileName + "][Debug]"
 	for i, v := range v1 {
-		params[i] = v
+		params[i+1] = v
 	}
-	params[len(v1)] = "\r"
-	this.m_Logger[LG_WARN].Output(2, "[Debug]"+fmt.Sprintln(params...))
+	params[len(v1)+1] = "\r"
+	this.m_Logger[LG_WARN].Output(2, "["+this.m_FileName+"][Debug]"+fmt.Sprintln(params...))
 	log.Println(params...)
+}
+
+func (this *CLog) Debugf(format string, params ...interface{}) {
+	this.Write(LG_WARN)
+	format += "\r\n"
+	this.m_Logger[LG_WARN].Output(2, fmt.Sprintf("["+this.m_FileName+"][Debug]"+format, params...))
+	log.Printf("["+this.m_FileName+"][Debug]"+format, params...)
 }
 
 func (this *CLog) Println(v1 ...interface{}) {

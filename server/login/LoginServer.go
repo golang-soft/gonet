@@ -67,6 +67,7 @@ func (this *ServerMgr) Init() bool {
 	http.HandleFunc("/listgates", GetNetGateS)
 	http.HandleFunc("/test", Test)
 	http.HandleFunc("/testworld", TestWorld)
+	http.HandleFunc("/testgrpc", TestGrpc)
 	addr := fmt.Sprintf("%s:%d", CONF.Server.Ip, CONF.Server.Port)
 
 	ShowMessage := func() {

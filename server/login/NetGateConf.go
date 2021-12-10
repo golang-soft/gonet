@@ -68,6 +68,10 @@ func TestWorld(w http.ResponseWriter, r *http.Request) {
 	SendToWorld(1, "W_C_Test", &message.W_C_Test{PacketHead: message.BuildPacketHead(1, 0), PlayerId: 111222})
 }
 
+func TestGrpc(w http.ResponseWriter, r *http.Request) {
+	SendToGrpcServer(1, "W_C_Test", &message.W_C_Test{PacketHead: message.BuildPacketHead(1, 0), PlayerId: 111222})
+}
+
 //发送account
 func SendToAccount(funcName string, params ...interface{}) {
 	head := rpc.RpcHead{DestServerType: rpc.SERVICE_ACCOUNTSERVER, SendType: rpc.SEND_BALANCE, SrcClusterId: SERVER.GetCluster().Id()}
@@ -94,6 +98,7 @@ func SendToCenter(Id int64, ClusterId uint32, funcName string, params ...interfa
 	SERVER.GetCluster().SendMsg(head, funcName, params...)
 }
 
+//--------------发送给中央服----------------------//
 func SendToCenter2(clusterId uint32, funcName string, packet proto.Message) {
 	//pakcetHead := packet.(message.Packet).GetPacketHead()
 	//if pakcetHead != nil {
@@ -101,9 +106,18 @@ func SendToCenter2(clusterId uint32, funcName string, packet proto.Message) {
 	//}
 }
 
+//--------------发送给游戏服----------------------//
 func SendToWorld(clusterId uint32, funcName string, packet proto.Message) {
 	//pakcetHead := packet.(message.Packet).GetPacketHead()
 	//if pakcetHead != nil {
 	SERVER.GetCluster().SendMsg(rpc.RpcHead{DestServerType: rpc.SERVICE_WORLDSERVER, ClusterId: clusterId, SendType: rpc.SEND_BOARD_CAST}, funcName, packet)
+	//}
+}
+
+//--------------发送给grpc服----------------------//
+func SendToGrpcServer(clusterId uint32, funcName string, packet proto.Message) {
+	//pakcetHead := packet.(message.Packet).GetPacketHead()
+	//if pakcetHead != nil {
+	SERVER.GetCluster().SendMsg(rpc.RpcHead{DestServerType: rpc.SERVICE_GRPCSERVER, ClusterId: clusterId, SendType: rpc.SEND_BOARD_CAST}, funcName, packet)
 	//}
 }

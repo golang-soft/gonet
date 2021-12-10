@@ -55,9 +55,6 @@ func (this *ServerMgr) Init() bool {
 	this.m_FileMonitor.Init()
 
 	NETGATECONF.Init()
-	http.HandleFunc("/listgates", GetNetGateS)
-	addr := fmt.Sprintf("%s:%d", CONF.Server.Ip, CONF.Server.Port)
-	http.ListenAndServe(addr, nil)
 
 	//注册到集群服务器
 	//var packet1 EventProcess
@@ -66,6 +63,11 @@ func (this *ServerMgr) Init() bool {
 	this.m_pCluster.Init(&common.ClusterInfo{Type: rpc.SERVICE_LOGINSERVER, Ip: CONF.Server.Ip, Port: int32(CONF.Server.Port)}, CONF.Etcd.Endpoints, "")
 	//this.m_pCluster.BindPacketFunc(packet1.PacketFunc)
 	//this.m_pCluster.BindPacketFunc(DispatchPacket)
+
+	http.HandleFunc("/listgates", GetNetGateS)
+	http.HandleFunc("/test", Test)
+	addr := fmt.Sprintf("%s:%d", CONF.Server.Ip, CONF.Server.Port)
+	http.ListenAndServe(addr, nil)
 
 	return false
 }
@@ -76,4 +78,8 @@ func (this *ServerMgr) GetLog() *base.CLog {
 
 func (this *ServerMgr) GetFileMonitor() common.IFileMonitor {
 	return this.m_FileMonitor
+}
+
+func (this *ServerMgr) GetCluster() *cluster.Cluster {
+	return this.m_pCluster
 }

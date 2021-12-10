@@ -22,6 +22,7 @@ type (
 		m_TimeTraceTimer *time.Ticker
 		m_PlayerMgr      *PlayerManager
 		m_pCluster       *cluster.Cluster
+		m_pEventProcess  *EventProcess
 	}
 
 	IServerMgr interface {
@@ -111,6 +112,8 @@ func (this *ServerMgr) Init() bool {
 	//注册到集群服务器
 	var packet1 EventProcess
 	packet1.Init()
+	this.m_pEventProcess = &packet1
+
 	this.m_pCluster = new(cluster.Cluster)
 	this.m_pCluster.Init(&common.ClusterInfo{Type: rpc.SERVICE_GATESERVER, Ip: CONF.Server.Ip, Port: int32(CONF.Server.Port)}, CONF.Etcd.Endpoints, CONF.Nats.Endpoints)
 	this.m_pCluster.BindPacketFunc(packet1.PacketFunc)
@@ -125,4 +128,8 @@ func (this *ServerMgr) Init() bool {
 
 func (this *ServerMgr) OnServerStart() {
 	this.m_pService.Start()
+}
+
+func (this *ServerMgr) GetEventProcess() *EventProcess {
+	return this.m_pEventProcess
 }

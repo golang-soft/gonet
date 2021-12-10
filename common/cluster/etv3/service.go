@@ -2,32 +2,50 @@ package etv3
 
 import (
 	"encoding/json"
+	mvccpb "github.com/coreos/etcd/mvcc/mvccpb"
 	"go.etcd.io/etcd/clientv3"
+	"golang.org/x/net/context"
 	"gonet/common"
 	"log"
 	"time"
-
-	"golang.org/x/net/context"
 )
 
 const (
 	ETCD_DIR = "server/"
 )
 
-//注册服务器
-type Service struct {
-	*common.ClusterInfo
-	m_Client  *clientv3.Client
-	m_Lease   clientv3.Lease
-	m_LeaseId clientv3.LeaseID
-}
+type (
+	//注册服务器
+	Service struct {
+		*common.ClusterInfo
+		m_Client  *clientv3.Client
+		m_Lease   clientv3.Lease
+		m_LeaseId clientv3.LeaseID
+		isRun     bool
+	}
+
+	IService interface {
+		Run()
+		Grant()
+		Put()
+		KeepAlive()
+		Revoke()
+		Init(info *common.ClusterInfo, endpoints []string) bool
+		Start() bool
+		GetKey()
+		GetValue(key string) []*mvccpb.KeyValue
+	}
+)
 
 func (this *Service) Run() {
-	//this.Grant()
-	this.Put()
-	for {
+	if this.isRun {
+		this.Put()
+		//for {
 		this.KeepAlive()
 		time.Sleep(time.Second * 3)
+		//}
+	} else {
+		log.Printf("is not run !!!!!")
 	}
 }
 
@@ -39,7 +57,7 @@ func (this *Service) Grant() {
 
 //通过租约put
 func (this *Service) Put() {
-	key := ETCD_DIR + this.String() + "/" + this.IpString()
+	key := this.GetKey()
 	data, _ := json.Marshal(this.ClusterInfo)
 	this.m_Client.Put(context.Background(), key, string(data), clientv3.WithLease(this.m_LeaseId))
 }
@@ -88,8 +106,8 @@ func (this *Service) Revoke() {
 	log.Println("撤销租约成功")
 }
 
-//注册服务器
-func (this *Service) Init(info *common.ClusterInfo, endpoints []string) {
+//检查是否被注册过
+func (this *Service) CheckExist(info *common.ClusterInfo, endpoints []string) bool {
 	cfg := clientv3.Config{
 		Endpoints: endpoints,
 	}
@@ -97,15 +115,60 @@ func (this *Service) Init(info *common.ClusterInfo, endpoints []string) {
 	etcdClient, err := clientv3.New(cfg)
 	if err != nil {
 		log.Fatal("Error: cannot connec to etcd:", err)
+		return false
+	}
+	this.m_Client = etcdClient
+	this.ClusterInfo = info
+	//lease := clientv3.NewLease(etcdClient)
+	key := this.GetKey()
+	if this.GetValue(key) != nil {
+		log.Println("Error: Service.Start error， Exist key :", key)
+		return false
+	}
+	return true
+}
+
+//注册服务器
+func (this *Service) Init(info *common.ClusterInfo, endpoints []string) bool {
+	cfg := clientv3.Config{
+		Endpoints: endpoints,
+	}
+
+	etcdClient, err := clientv3.New(cfg)
+	if err != nil {
+		log.Fatal("Error: cannot connec to etcd:", err)
+		return false
 	}
 	lease := clientv3.NewLease(etcdClient)
 	this.m_Client = etcdClient
 	this.m_Lease = lease
 	this.ClusterInfo = info
-	this.Start()
+	this.isRun = false
+	return this.Start()
 }
 
-func (this *Service) Start() {
+func (this *Service) Start() bool {
 	this.Grant()
+	key := this.GetKey()
+	if this.GetValue(key) != nil {
+		log.Println("Error: Service.Start error， Exist key :", key)
+		return false
+	}
+	this.isRun = true
 	go this.Run()
+	return true
+}
+
+func (this *Service) GetKey() string {
+	key := ETCD_DIR + this.String() + "/" + this.IpString()
+	return key
+}
+
+func (this *Service) GetValue(key string) []*mvccpb.KeyValue {
+	getResp, err := this.m_Client.Get(context.TODO(), key)
+	if err != nil {
+		log.Fatalf("get 失败：%s", err.Error())
+	}
+	log.Printf("%v", getResp.Kvs)
+	return getResp.Kvs
 }

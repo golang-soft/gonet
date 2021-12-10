@@ -13,13 +13,13 @@ import (
 	"gonet/server/world/toprank"
 )
 
-
-func InitMgr(serverName string){
+func InitMgr(serverName string) {
 	//一些共有数据量初始化
 	common.Init()
-	if serverName == "account"{
-	}else if serverName == "netgate"{
-	}else if serverName == "world"{
+	if serverName == "account" {
+	} else if serverName == "netgate" {
+		actor.MGR.InitActorHandle(world.SERVER.GetCluster())
+	} else if serverName == "world" {
 		cmd.Init()
 		data.InitRepository()
 		player.MGR.Init()
@@ -33,9 +33,9 @@ func InitMgr(serverName string){
 }
 
 //程序退出后执行
-func ExitMgr(serverName string){
-	if serverName == "account"{
-	}else if serverName == "netgate"{
-	}else if serverName == "world"{
+func ExitMgr(serverName string) {
+	if serverName == "account" {
+	} else if serverName == "netgate" {
+	} else if serverName == "world" {
 	}
 }

@@ -53,6 +53,8 @@ type (
 		CallMsg(interface{}, rpc.RpcHead, string, ...interface{}) error //同步给集群特定服务器
 
 		RandomCluster(head rpc.RpcHead) rpc.RpcHead //随机分配
+
+		GetService() *Service
 	}
 
 	EmptyClusterInfo struct {
@@ -86,6 +88,9 @@ func (this *Cluster) Init(info *common.ClusterInfo, Endpoints []string, natsUrl 
 		base.GLOG.Fatalln("nats connect error!!!!")
 	}
 	this.m_Conn = conn
+	base.GLOG.Printf(">>>>>>>>>>>>>>>>>>>>>>>>>>>> 订阅 : %s", getCallChannel(*info))
+	base.GLOG.Printf(">>>>>>>>>>>>>>>>>>>>>>>>>>>> 订阅 : %s", getTopicChannel(*info))
+	base.GLOG.Printf(">>>>>>>>>>>>>>>>>>>>>>>>>>>> 订阅 : %s", getCallChannel(*info))
 
 	this.m_Conn.Subscribe(getChannel(*info), func(msg *nats.Msg) {
 		this.HandlePacket(rpc.Packet{Buff: msg.Data})
@@ -264,4 +269,8 @@ func (this *Cluster) RandomCluster(head rpc.RpcHead) rpc.RpcHead {
 		head.SocketId = pCluster.SocketId
 	}
 	return head
+}
+
+func (this *Cluster) GetService() *Service {
+	return this.Service
 }

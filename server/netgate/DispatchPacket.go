@@ -13,6 +13,7 @@ import (
 var (
 	A_C_RegisterResponse = proto.MessageName(&message.A_C_RegisterResponse{})
 	A_C_LoginResponse    = proto.MessageName(&message.A_C_LoginResponse{})
+	W_C_Test             = proto.MessageName(&message.W_C_Test{})
 )
 
 func SendToClient(socketId uint32, packet proto.Message) {
@@ -38,6 +39,8 @@ func DispatchPacket(packet rpc.Packet) bool {
 		buff := message.Encode(packet)
 		if messageName == A_C_RegisterResponse || messageName == A_C_LoginResponse {
 			SERVER.GetServer().Send(rpc.RpcHead{SocketId: head.SocketId}, buff)
+		} else if messageName == W_C_Test {
+			SERVER.GetEventProcess().SendMsg(rpc.RpcHead{SocketId: head.SocketId}, "W_C_Test")
 		} else {
 			socketId := SERVER.GetPlayerMgr().GetSocket(head.Id)
 			SERVER.GetServer().Send(rpc.RpcHead{SocketId: socketId}, buff)

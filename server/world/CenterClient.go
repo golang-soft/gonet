@@ -1,32 +1,30 @@
-package center
+package world
 
 import (
 	"context"
 	"gonet/actor"
+	"gonet/network"
 	"gonet/server/message"
 )
 
 type (
-	EventProcess struct {
+	CenterProcess struct {
 		actor.Actor
+
+		Client *network.ClientSocket
 	}
 
-	IEventProcess interface {
+	ICenterProcess interface {
 		actor.IActor
 	}
 )
 
-func (this *EventProcess) Init() {
+func (this *CenterProcess) Init() {
 	this.Actor.Init()
 
 	this.RegisterCall("W_C_Test", func(ctx context.Context, packet *message.W_C_Test) {
 		head := this.GetRpcHead(ctx)
 		SERVER.m_Log.Debugf("head[%v]", head)
-
-	})
-
-	this.RegisterCall("LoginCenter", func(ctx context.Context, packet *message.PlayerData) {
-		SERVER.m_Log.Debugf("head[%v]", packet)
 
 	})
 

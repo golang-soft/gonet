@@ -1,6 +1,10 @@
 package common
 
 type (
+	MServer struct {
+		Endpoints []string `yaml:"endpoints"`
+	}
+
 	Server struct {
 		Ip   string `yaml:"ip"`
 		Port int    `yaml:"port"`
@@ -35,5 +39,10 @@ type (
 
 	Raft struct {
 		Endpoints []string `yaml:"endpoints"`
+	}
+
+	Center struct {
+		Ip   string `yaml:"ip"`
+		Port int    `yaml:"port"`
 	}
 )

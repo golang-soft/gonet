@@ -1,1 +1,1 @@
-protoc.exe  --go_out=../message --proto_path=../message  ../message/message.proto ../message/client.proto ../message/game.proto
+protoc.exe  --go_out=../message --proto_path=../message  ../message/message.proto ../message/client.proto ../message/game.proto ../message/center.proto

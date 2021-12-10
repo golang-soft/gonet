@@ -212,6 +212,7 @@ func (this *Actor) call(io CallIO) {
 	head := io.RpcHead
 	funcName := rpcPacket.FuncName
 	pFunc := this.FindCall(funcName)
+	log.Printf("处理事件[%s]", funcName)
 	if pFunc != nil {
 		f := pFunc.FuncVal
 		k := pFunc.FuncType

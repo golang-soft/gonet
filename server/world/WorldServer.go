@@ -2,21 +2,26 @@ package world
 
 import (
 	"database/sql"
+	"github.com/golang/protobuf/proto"
 	"gonet/base"
+	"gonet/base/server"
 	"gonet/common"
 	"gonet/common/cluster"
+	"gonet/common/cluster/etv3"
 	"gonet/db"
 	"gonet/network"
 	"gonet/rd"
 	"gonet/rpc"
 	"gonet/server/message"
 	"log"
-
-	"github.com/golang/protobuf/proto"
+	"strconv"
+	"strings"
 )
 
 type (
 	ServerMgr struct {
+		server.BaseServer
+
 		m_pService   *network.ServerSocket
 		m_pCluster   *cluster.Cluster
 		m_pActorDB   *sql.DB
@@ -27,6 +32,8 @@ type (
 	}
 
 	IServerMgr interface {
+		server.IBaseServer
+
 		Init() bool
 		InitDB() bool
 		GetDB() *sql.DB
@@ -34,23 +41,27 @@ type (
 		GetServer() *network.ServerSocket
 		GetCluster() *cluster.Cluster
 		GetPlayerRaft() *cluster.PlayerRaft
+		SendToCenter(Id int64, ClusterId uint32, funcName string, params ...interface{})
 	}
 
 	Config struct {
-		common.Server    `yaml:"world"`
+		common.MServer `yaml:"mworld"`
+		//common.Server    `yaml:"world"`
 		common.Db        `yaml:"worldDB"`
 		common.Redis     `yaml:"redis"`
 		common.Etcd      `yaml:"etcd"`
 		common.SnowFlake `yaml:"snowflake"`
 		common.Raft      `yaml:"raft"`
 		common.Nats      `yaml:"nats"`
+		common.Center    `yaml:"center"`
 	}
 )
 
 var (
 	CONF   Config
 	SERVER ServerMgr
-	RdID   int
+
+	RdID int
 )
 
 type A struct {
@@ -72,12 +83,13 @@ func (this *ServerMgr) Init() bool {
 	//初始化log文件
 	this.m_Log.Init("world")
 	//初始配置文件
-	base.ReadConf("D:\\workspace-go\\gonet\\server\\bin\\gonet.yaml", &CONF)
+	//base.ReadConf("D:\\workspace-go\\gonet\\server\\bin\\gonet.yaml", &CONF)
+	this.InitConfig(&CONF)
 
 	ShowMessage := func() {
 		this.m_Log.Println("**********************************************************")
 		this.m_Log.Printf("\tWorldServer Version:\t%s", base.BUILD_NO)
-		this.m_Log.Printf("\tWorldServerIP(LAN):\t%s:%d", CONF.Server.Ip, CONF.Server.Port)
+		//this.m_Log.Printf("\tWorldServerIP(LAN):\t%s:%d", CONF.Server.Ip, CONF.Server.Port)
 		this.m_Log.Printf("\tActorDBServer(LAN):\t%s", CONF.Db.Ip)
 		this.m_Log.Printf("\tActorDBName:\t\t%s", CONF.Db.Name)
 		this.m_Log.Println("**********************************************************")
@@ -96,25 +108,55 @@ func (this *ServerMgr) Init() bool {
 		rd.OpenRedisPool(CONF.Redis.Ip, CONF.Redis.Password)
 	}
 
-	//初始化socket
-	this.m_pService = new(network.ServerSocket)
-	this.m_pService.Init(CONF.Server.Ip, CONF.Server.Port)
-	this.m_pService.Start()
-
 	//snowflake
 	this.m_SnowFlake = cluster.NewSnowflake(CONF.SnowFlake.Endpoints)
 
 	//playerraft
 	this.m_PlayerRaft = cluster.NewPlayerRaft(CONF.Raft.Endpoints)
+	//etcd 的处理
+	service := &etv3.Service{}
+	thisip := "127.0.0.1"
+	thisport := 31300
+
+	for i := 0; i < len(CONF.MServer.Endpoints); i++ {
+		sport := strings.Split(CONF.MServer.Endpoints[i], ":")[1]
+		port, _ := strconv.Atoi(sport)
+		ip := strings.Split(CONF.MServer.Endpoints[i], ":")[0]
+		thisip = ip
+		thisport = port
+		//index := this.GetIndex(this.m_pCluster.GetService().IpString())
+		res := service.CheckExist(&common.ClusterInfo{Type: rpc.SERVICE_WORLDSERVER, Ip: ip, Port: int32(port)}, CONF.Etcd.Endpoints)
+		if !res {
+			continue
+		} else {
+			break
+		}
+	}
+
+	this.m_pService = new(network.ServerSocket)
+	this.m_pService.Init(thisip, thisport)
+	this.m_pService.Start()
+	this.m_Log.Printf("\tWorldServerIP(LAN):\t%s:%d", thisip, thisport)
 
 	//本身world集群管理
 	this.m_pCluster = new(cluster.Cluster)
-	this.m_pCluster.Init(&common.ClusterInfo{Type: rpc.SERVICE_WORLDSERVER, Ip: CONF.Server.Ip, Port: int32(CONF.Server.Port)}, CONF.Etcd.Endpoints, CONF.Nats.Endpoints)
+	this.m_pCluster.Init(&common.ClusterInfo{Type: rpc.SERVICE_WORLDSERVER, Ip: thisip, Port: int32(thisport)}, CONF.Etcd.Endpoints, CONF.Nats.Endpoints)
 
 	var packet EventProcess
 	packet.Init()
 	this.m_pCluster.BindPacketFunc(packet.PacketFunc)
+
+	this.SendToCenter(1, 0, "LoginCenter")
 	return false
+}
+
+func (this *ServerMgr) GetIndex(ipstring string) int {
+	for index, value := range CONF.MServer.Endpoints {
+		if value == ipstring {
+			return index
+		}
+	}
+	return 0
 }
 
 func (this *ServerMgr) InitDB() bool {
@@ -161,5 +203,11 @@ func SendToClient(clusterId uint32, packet proto.Message) {
 //--------------发送给地图----------------------//
 func SendToZone(Id int64, ClusterId uint32, funcName string, params ...interface{}) {
 	head := rpc.RpcHead{Id: Id, ClusterId: ClusterId, DestServerType: rpc.SERVICE_ZONESERVER, SrcClusterId: SERVER.GetCluster().Id()}
+	SERVER.GetCluster().SendMsg(head, funcName, params...)
+}
+
+//--------------发送给中央服----------------------//
+func (this *ServerMgr) SendToCenter(Id int64, ClusterId uint32, funcName string, params ...interface{}) {
+	head := rpc.RpcHead{Id: Id, ClusterId: ClusterId, DestServerType: rpc.SERVICE_CENTERSERVER, SrcClusterId: SERVER.GetCluster().Id(), SendType: rpc.SEND_BALANCE}
 	SERVER.GetCluster().SendMsg(head, funcName, params...)
 }

@@ -16,15 +16,17 @@ worldDB:
   maxIdleConns: 500
   maxOpenConns: 1000
 
+#center
+center:
+  ip: 127.0.0.1
+  port: 31500
+
 #worlddbserver
 worlddbserver:
   ip: 127.0.0.1
   port: 31400
 
-#centerserver
-center:
-  ip: 127.0.0.1
-  port: 31500
+
 
 # 服务器端口配置
 account:
@@ -70,3 +72,8 @@ redis:
 login:
   ip: 127.0.0.1
   port: 8081
+
+mworld:
+  endpoints:
+    - 127.0.0.1:31300
+    - 127.0.0.1:31301

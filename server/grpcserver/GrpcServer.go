@@ -1,7 +1,6 @@
 package grpcserver
 
 import (
-	"database/sql"
 	"gonet/base"
 	"gonet/base/config"
 	"gonet/base/ini"
@@ -17,7 +16,6 @@ type (
 		m_pService     *network.ServerSocket
 		m_pCluster     *cluster.Cluster
 		m_pWorldClient *network.ClientSocket
-		m_pActorDB     *sql.DB
 		m_Inited       bool
 		m_config       ini.Config
 		m_Log          base.CLog
@@ -26,7 +24,6 @@ type (
 	IServerMgr interface {
 		Init() bool
 		InitDB() bool
-		GetDB() *sql.DB
 		GetLog() *base.CLog
 		GetServer() *network.ServerSocket
 	}
@@ -81,10 +78,6 @@ func (this *ServerMgr) Init() bool {
 func (this *ServerMgr) InitConfig(data interface{}) bool {
 	config.Init(system.Args.Env, data)
 	return true
-}
-
-func (this *ServerMgr) GetDB() *sql.DB {
-	return this.m_pActorDB
 }
 
 func (this *ServerMgr) GetServer() *network.ServerSocket {

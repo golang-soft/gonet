@@ -1,0 +1,120 @@
+syntax = "proto3";
+
+package proto;
+option go_package = "./;rpc";
+/*
+*英雄
+*/
+message Hero{
+  string uuid=1;
+  int32 heroType=2;
+  repeated string equips=3;
+}
+
+/*
+*道具
+*/
+message Item{
+  int32 id=1;
+  int32 count=2;
+  int32 type=3;
+}
+
+/*
+*装备
+*/
+message Equip{
+  string uuid=1;
+  int32 itemId=2;
+  string heroId=3;
+}
+
+//============================请求参数=========================//
+
+message AddHeroData{
+  string uuid=1;
+  repeated int32 heroType=2;
+}
+
+message AddItemData {
+  string uuid=1;
+  repeated Item itemList=2;
+}
+
+message AddEquipData {
+  string uuid=1;
+  repeated int32 itemIdx=2;
+}
+
+message OptionData{
+  int32 part=1;
+  string original=2;
+}
+
+message OptionHeroEquip {
+  string uuid=1;
+  string heroId=2;
+  map<string,OptionData> list=3;
+}
+
+//============================返回参数=========================//
+
+//英雄
+message resHero{
+  map<string,Hero> hero=1;
+}
+
+message HeroReply{
+  string httpuuid=1;
+  string uuid=2;
+  int32 code=3;
+  resHero data=4;
+}
+
+//道具
+message resItem{
+  repeated Item items=1;
+}
+
+message ItemReply{
+  string httpuuid=1;
+  string uuid=2;
+  int32 code=3;
+  resItem data=4;
+}
+
+//装备
+message resEquip{
+  map<string,Equip> equips=1;
+}
+
+message EquipReply{
+  string httpuuid=1;
+  string uuid=2;
+  int32 code=3;
+  resEquip data=4;
+}
+
+// 打开宝箱
+message resBox{
+repeated Item box=1;
+repeated Item items=2;
+}
+
+message OpenBoxReply{
+  string httpuuid=1;
+  string uuid=2;
+  int32 code=3;
+  resBox data=4;
+}
+
+
+service Greeter {
+  rpc AddHero (AddHeroData) returns (HeroReply) {}
+  rpc AddItem (AddItemData) returns (ItemReply) {}
+  rpc AddEquip (AddEquipData) returns (EquipReply) {}
+  rpc BindHeroEquip(OptionHeroEquip) returns (HeroReply) {}
+  rpc TdownHeroEquip(OptionHeroEquip) returns (HeroReply) {}
+  rpc GetGoodsByReduce(AddItemData) returns(ItemReply){}
+  rpc OpenBox(AddItemData)returns(OpenBoxReply){}
+}

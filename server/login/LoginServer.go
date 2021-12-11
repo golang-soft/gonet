@@ -68,6 +68,9 @@ func (this *ServerMgr) Init() bool {
 	http.HandleFunc("/test", Test)
 	http.HandleFunc("/testworld", TestWorld)
 	http.HandleFunc("/testgrpc", TestGrpc)
+
+	http.HandleFunc("/addEquip", addEquip)
+
 	addr := fmt.Sprintf("%s:%d", CONF.Server.Ip, CONF.Server.Port)
 
 	ShowMessage := func() {

@@ -29,6 +29,7 @@ type (
 		Grant()
 		Put()
 		KeepAlive()
+		Lease()
 		Revoke()
 		Init(info *common.ClusterInfo, endpoints []string) bool
 		Start() bool
@@ -41,10 +42,10 @@ func (this *Service) Run() {
 	if this.isRun {
 		this.Grant()
 		this.Put()
-		//for {
-		this.KeepAlive()
-		time.Sleep(time.Second * 3)
-		//}
+		for {
+			this.Lease()
+			time.Sleep(time.Second * 1)
+		}
 	} else {
 		log.Printf("is not run !!!!!")
 	}
@@ -52,33 +53,36 @@ func (this *Service) Run() {
 
 //设置租约时间
 func (this *Service) Grant() {
-	leaseResp, _ := this.m_Lease.Grant(context.Background(), 10)
+	leaseResp, _ := this.m_Lease.Grant(context.Background(), 2)
 	this.m_LeaseId = leaseResp.ID
 }
 
 //通过租约put
 func (this *Service) Put() {
 	key := this.GetKey()
-	data, _ := json.Marshal(this.ClusterInfo)
-	this.m_Client.Put(context.Background(), key, string(data), clientv3.WithLease(this.m_LeaseId))
+	if this.GetValue(key) == nil {
+		data, _ := json.Marshal(this.ClusterInfo)
+		this.m_Client.Put(context.Background(), key, string(data), clientv3.WithLease(this.m_LeaseId))
+	}
 }
 
-//续租
-func (this *Service) KeepAlive() {
+func (this *Service) Lease() {
 	if this.m_LeaseId > 0 {
-		ctx, _ := context.WithCancel(context.Background())
-		leaseRespChan, err := this.m_Lease.KeepAlive(ctx, this.m_LeaseId)
-		if err != nil {
-			log.Fatal("Error: Service KeepAlive error :", err.Error())
-		}
 
 		//监听租约
 		go func() {
+
 			for {
+				ctx, _ := context.WithCancel(context.Background())
+				leaseRespChan, err := this.m_Lease.KeepAlive(ctx, this.m_LeaseId)
+				if err != nil {
+					log.Fatal("Error: Service KeepAlive error :", err.Error())
+				}
+
 				select {
 				case resp := <-leaseRespChan:
 					if resp == nil {
-						log.Println("租约已经到期关闭")
+						//log.Println("租约已经到期关闭")
 						goto LEASE_OVER
 					} else {
 						//log.Println("续租成功")
@@ -86,15 +90,26 @@ func (this *Service) KeepAlive() {
 					}
 				}
 			LEASE_OVER:
-				log.Println("lease 监听结束")
+				//log.Println("lease 监听结束")
 				this.Grant()
+				this.KeepAlive()
 				this.Put()
 				break
 			END:
 				time.Sleep(500 * time.Millisecond)
 			}
 		}()
+	}
+}
 
+//续租
+func (this *Service) KeepAlive() {
+	if this.m_LeaseId > 0 {
+		ctx, _ := context.WithCancel(context.Background())
+		_, err := this.m_Lease.KeepAlive(ctx, this.m_LeaseId)
+		if err != nil {
+			log.Fatal("Error: Service KeepAlive error :", err.Error())
+		}
 	}
 }
 

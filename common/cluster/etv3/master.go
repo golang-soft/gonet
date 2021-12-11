@@ -69,7 +69,7 @@ func (this *Master) Run() {
 	wch := this.m_Client.Watch(context.Background(), ETCD_DIR+this.String(), clientv3.WithPrefix(), clientv3.WithPrevKV())
 	for v := range wch {
 		for _, v1 := range v.Events {
-			log.Printf("Run------type:%v kv:%v  prevKey:%v \n ", v1.Type, string(v1.Kv.Key), v1.PrevKv)
+			//log.Printf("Run------type:%v kv:%v  prevKey:%v \n ", v1.Type, string(v1.Kv.Key), v1.PrevKv)
 
 			if v1.Type.String() == "PUT" {
 				info := NodeToService(v1.Kv.Value)

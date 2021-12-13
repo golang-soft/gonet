@@ -1,20 +1,11 @@
 package login
 
 import (
-	"context"
-	"encoding/json"
-	"fmt"
-	"github.com/golang/protobuf/proto"
 	"gonet/base"
 	"gonet/base/config"
 	"gonet/base/ini"
-	"gonet/rpc"
-	"gonet/server/message"
-	"google.golang.org/grpc"
-	"log"
 	"net/http"
 	"sync"
-	"time"
 )
 
 type (
@@ -62,99 +53,4 @@ func GetNetGateS(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.Write([]byte(""))
-}
-
-func addEquip(w http.ResponseWriter, r *http.Request) {
-	conn, err := grpc.Dial("localhost:50051", grpc.WithInsecure())
-	if err != nil {
-		log.Fatalf("did not connect: %v", err)
-	}
-	defer conn.Close()
-	c := rpc.NewGreeterClient(conn)
-	if c == nil {
-		log.Fatalf("链接失败")
-	}
-
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-	defer cancel()
-
-	ss, err := c.AddEquip(ctx, &rpc.AddEquipData{Uuid: "lzy111", ItemIdx: []int32{2001, 2002, 2003}})
-	if err != nil {
-		log.Printf("could not greet: %v", err)
-	}
-
-	log.Printf("####### get server Greeting response: %s", ss.Data)
-
-	data, err := json.Marshal(ss.Data)
-	if err != nil {
-		fmt.Println(err)
-	}
-	log.Printf("%v", data)
-	// 返回json字符串给客户端
-	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(ss.Data)
-}
-
-func Test(w http.ResponseWriter, r *http.Request) {
-	//SendToClient(1, &message.W_C_Test{PacketHead: message.BuildPacketHead(1, 0),})
-	//SendToCenter(1, 0, "LoginCenter","")
-	SendToCenter2(1, "PlayerData", &message.PlayerData{PlayerID: 1111, PlayerName: "顶顶顶顶"})
-}
-
-func TestWorld(w http.ResponseWriter, r *http.Request) {
-	SendToWorld(1, "W_C_Test", &message.W_C_Test{PacketHead: message.BuildPacketHead(1, 0), PlayerId: 111222})
-}
-
-func TestGrpc(w http.ResponseWriter, r *http.Request) {
-	SendToGrpcServer(1, "W_C_Test", &message.W_C_Test{PacketHead: message.BuildPacketHead(1, 0), PlayerId: 111222})
-}
-
-//发送account
-func SendToAccount(funcName string, params ...interface{}) {
-	head := rpc.RpcHead{DestServerType: rpc.SERVICE_ACCOUNTSERVER, SendType: rpc.SEND_BALANCE, SrcClusterId: SERVER.GetCluster().Id()}
-	SERVER.GetCluster().SendMsg(head, funcName, params...)
-}
-
-//发送给客户端
-func SendToClient(clusterId uint32, packet proto.Message) {
-	pakcetHead := packet.(message.Packet).GetPacketHead()
-	if pakcetHead != nil {
-		SERVER.GetCluster().SendMsg(rpc.RpcHead{DestServerType: rpc.SERVICE_GATESERVER, ClusterId: clusterId, Id: pakcetHead.Id, SendType: rpc.SEND_BOARD_CAST}, "", proto.MessageName(packet), packet)
-	}
-}
-
-//--------------发送给地图----------------------//
-func SendToZone(Id int64, ClusterId uint32, funcName string, params ...interface{}) {
-	head := rpc.RpcHead{Id: Id, ClusterId: ClusterId, DestServerType: rpc.SERVICE_ZONESERVER, SrcClusterId: SERVER.GetCluster().Id()}
-	SERVER.GetCluster().SendMsg(head, funcName, params...)
-}
-
-//--------------发送给中央服----------------------//
-func SendToCenter(Id int64, ClusterId uint32, funcName string, params ...interface{}) {
-	head := rpc.RpcHead{Id: Id, ClusterId: ClusterId, DestServerType: rpc.SERVICE_CENTERSERVER, SrcClusterId: SERVER.GetCluster().Id(), SendType: rpc.SEND_BOARD_CAST}
-	SERVER.GetCluster().SendMsg(head, funcName, params...)
-}
-
-//--------------发送给中央服----------------------//
-func SendToCenter2(clusterId uint32, funcName string, packet proto.Message) {
-	//pakcetHead := packet.(message.Packet).GetPacketHead()
-	//if pakcetHead != nil {
-	SERVER.GetCluster().SendMsg(rpc.RpcHead{DestServerType: rpc.SERVICE_CENTERSERVER, ClusterId: clusterId, SendType: rpc.SEND_BOARD_CAST}, funcName, packet)
-	//}
-}
-
-//--------------发送给游戏服----------------------//
-func SendToWorld(clusterId uint32, funcName string, packet proto.Message) {
-	//pakcetHead := packet.(message.Packet).GetPacketHead()
-	//if pakcetHead != nil {
-	SERVER.GetCluster().SendMsg(rpc.RpcHead{DestServerType: rpc.SERVICE_WORLDSERVER, ClusterId: clusterId, SendType: rpc.SEND_BOARD_CAST}, funcName, packet)
-	//}
-}
-
-//--------------发送给grpc服----------------------//
-func SendToGrpcServer(clusterId uint32, funcName string, packet proto.Message) {
-	//pakcetHead := packet.(message.Packet).GetPacketHead()
-	//if pakcetHead != nil {
-	SERVER.GetCluster().SendMsg(rpc.RpcHead{DestServerType: rpc.SERVICE_GRPCSERVER, ClusterId: clusterId, SendType: rpc.SEND_BOARD_CAST}, funcName, packet)
-	//}
 }

@@ -32,6 +32,7 @@ type (
 	Config struct {
 		common.Server `yaml:"login"`
 		common.Etcd   `yaml:"etcd"`
+		common.PvpWeb `yaml:pvpweb`
 	}
 )
 
@@ -69,7 +70,26 @@ func (this *ServerMgr) Init() bool {
 	http.HandleFunc("/testworld", TestWorld)
 	http.HandleFunc("/testgrpc", TestGrpc)
 
+	//grpc接口
+	http.HandleFunc("/grpcaddEquip", GrpcAddEquip)
+	http.HandleFunc("/grpcaddHero", GrpcAddHero)
+	http.HandleFunc("/grpcaddItem", GrpcAddItem)
+
+	//http接口
+	http.HandleFunc("/createPlayer", createPlayer)
+	http.HandleFunc("/login", Login)
+	http.HandleFunc("/addHero", addHero)
+	http.HandleFunc("/bindHeroEquip", bindHeroEquip)
+	http.HandleFunc("/tdownHeroEquip", tdownHeroEquip)
+	http.HandleFunc("/addItem", addItem)
 	http.HandleFunc("/addEquip", addEquip)
+	http.HandleFunc("/getGoodsByReduce", getGoodsByReduce)
+	http.HandleFunc("/openBox", openBox)
+	http.HandleFunc("/getToken", getToken)
+	http.HandleFunc("/getNonce", getNonce)
+	http.HandleFunc("/singVerify", singVerify)
+	http.HandleFunc("/getLeaderboard", getLeaderboard)
+	http.HandleFunc("/refreshUserLeaderboard", refreshUserLeaderboard)
 
 	addr := fmt.Sprintf("%s:%d", CONF.Server.Ip, CONF.Server.Port)
 

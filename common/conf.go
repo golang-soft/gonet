@@ -45,4 +45,8 @@ type (
 		Ip   string `yaml:"ip"`
 		Port int    `yaml:"port"`
 	}
+
+	PvpWeb struct {
+		Endpoints []string `yaml:"endpoints"`
+	}
 )

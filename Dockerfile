@@ -3,10 +3,11 @@ FROM golang:latest
 ADD . /go/
 
 WORKDIR /go/bin
-RUN ["/bin/sh", "./build.sh"]
-RUN chmod +x server
-EXPOSE 8081 31200 31300 31700
-#ENTRYPOINT  ["./server", "netgate"]
+#RUN ["/bin/sh", "/server/bin/build.sh"]
+#RUN chmod +x server
+CMD ["./server/bin/build.sh"]
+EXPOSE 3001 31200 31300 31700
+ENTRYPOINT  ["./server", "netgate"]
 CMD ["./server", "account"]
 CMD ["./server", "world"]
 CMD ["./server", "netgate"]

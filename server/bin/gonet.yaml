@@ -41,6 +41,11 @@ zone:
   ip: 127.0.0.1
   port: 31600
 
+#grpcserver
+grpcserver:
+  ip: 127.0.0.1
+  port: 31800
+
 netgate:
   ip: 0.0.0.0
   port: 31700
@@ -71,17 +76,23 @@ redis:
 #login
 login:
   ip: 127.0.0.1
-  port: 8081
-
+  port: 3001
+#多个游戏服
 mworld:
   endpoints:
     - 127.0.0.1:31300
     - 127.0.0.1:31301
+#多网关服务器地址
 mnetgate:
   endpoints:
-    - 127.0.0.1:31700
-    - 127.0.0.1:31701
+    - 127.0.0.1:3000
+    - 127.0.0.1:3001
+#多服务的账号服务器地址
 maccount:
   endpoints:
     - 127.0.0.1:31200
     - 127.0.0.1:31201
+# pvpweb
+pvpweb:
+  endpoints:
+    - http://127.0.0.1:3002

@@ -5,16 +5,18 @@ go 1.12
 require (
 	github.com/coreos/etcd v3.3.17+incompatible // indirect
 	github.com/coreos/pkg v0.0.0-20180928190104-399ea9e2e55f // indirect
+	github.com/gin-gonic/gin v1.7.7
 	github.com/go-sql-driver/mysql v1.4.1
 	github.com/gogo/protobuf v1.3.1
 	github.com/golang/protobuf v1.5.0
 	github.com/gomodule/redigo v2.0.0+incompatible
 	github.com/google/uuid v1.3.0 // indirect
+	github.com/googollee/go-socket.io v1.6.1
 	github.com/gorilla/websocket v1.4.2
+	github.com/graarh/golang-socketio v0.0.0-20170510162725-2c44953b9b5f // indirect
 	github.com/hashicorp/raft v1.2.0
 	github.com/hashicorp/raft-boltdb v0.0.0-20191021154308-4207f1bf0617
 	github.com/jessevdk/go-flags v1.4.0
-	github.com/json-iterator/go v1.1.7
 	github.com/klauspost/reedsolomon v1.9.13 // indirect
 	github.com/modern-go/reflect2 v1.0.1 // indirect
 	github.com/nats-io/nats.go v1.10.0
@@ -29,7 +31,7 @@ require (
 	golang.org/x/net v0.0.0-20201010224723-4f7140c49acb
 	google.golang.org/grpc v1.31.0 // indirect
 	google.golang.org/protobuf v1.27.1 // indirect
-	gopkg.in/yaml.v2 v2.2.2
+	gopkg.in/yaml.v2 v2.2.8
 )
 
 replace google.golang.org/grpc => google.golang.org/grpc v1.26.0

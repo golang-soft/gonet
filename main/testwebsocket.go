@@ -6,7 +6,7 @@ import (
 )
 
 var (
-	upgrader = websocket.Upgrader{
+	upgrader0 = websocket.Upgrader{
 		//允许跨域访问
 		CheckOrigin: func(r *http.Request) bool {
 			return true
@@ -14,7 +14,7 @@ var (
 	}
 )
 
-func wsHandler(w http.ResponseWriter, r *http.Request) {
+func wsHandler0(w http.ResponseWriter, r *http.Request) {
 	//w.Write([]byte("hello"))
 	//收到http请求(upgrade),完成websocket协议转换
 	//在应答的header中放上upgrade:websoket
@@ -24,7 +24,7 @@ func wsHandler(w http.ResponseWriter, r *http.Request) {
 		//msgType int
 		data []byte
 	)
-	if conn, err = upgrader.Upgrade(w, r, nil); err != nil {
+	if conn, err = upgrader0.Upgrade(w, r, nil); err != nil {
 		//报错了，直接返回底层的websocket链接就会终断掉
 		return
 	}
@@ -48,15 +48,15 @@ ERR:
 }
 
 func helloHandler(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("Hello World!"))
+	w.Write([]byte("connect"))
 }
 
-func main() {
-	//http://localhost:7777/ws
-	http.HandleFunc("/ws", wsHandler)
-	http.HandleFunc("/socket.io/", helloHandler)
-	//http.HandleFunc("/", helloHandler)
-	//http.HandleFunc("/websocket", helloHandler)
-	//服务端启动
-	http.ListenAndServe("192.168.1.233:3000", nil)
-}
+//func main() {
+//	//http://localhost:7777/ws
+//	http.HandleFunc("/ws", wsHandler0)
+//	http.HandleFunc("/", helloHandler)
+//	//http.HandleFunc("/", helloHandler)
+//	//http.HandleFunc("/websocket", helloHandler)
+//	//服务端启动
+//	http.ListenAndServe("192.168.1.233:3000", nil)
+//}

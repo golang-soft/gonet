@@ -1,0 +1,10 @@
+{
+  "ValueTestA":{
+    "StringValue": "127.1.1.1",
+    "NumericalValue":1233,
+    "BoolValue":false
+  },
+  "ValueTestB":{
+    "FloatValue":123.456
+  }
+}

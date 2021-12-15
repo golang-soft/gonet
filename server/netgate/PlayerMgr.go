@@ -1,7 +1,6 @@
 package netgate
 
 import (
-	"context"
 	"gonet/actor"
 	"gonet/base"
 	"gonet/rpc"
@@ -111,16 +110,16 @@ func (this *PlayerManager) Init() {
 	this.m_SocketMap = make(map[uint32]int64)
 	this.m_AccountMap = make(map[int64]*AccountInfo)
 	this.m_Locker = &sync.RWMutex{}
-	this.RegisterCall("ADD_ACCOUNT", func(ctx context.Context, socketId uint32, clusterInfo rpc.PlayerClusterInfo) {
-		SERVER.GetLog().Printf("login incoming  Socket:%d Account:%d WClusterId:%d ", socketId, clusterInfo.Id, clusterInfo.WClusterId)
-		this.AddAccountMap(socketId, clusterInfo)
-	})
-
-	this.RegisterCall("DEL_ACCOUNT", func(ctx context.Context, socketid uint32) {
-		accountId := this.GetAccount(socketid)
-		this.ReleaseSocketMap(socketid, true)
-		SERVER.GetCluster().SendMsg(rpc.RpcHead{SendType: rpc.SEND_BOARD_CAST, DestServerType: rpc.SERVICE_WORLDSERVER}, "G_ClientLost", accountId)
-	})
+	//this.RegisterCall("ADD_ACCOUNT", func(ctx context.Context, socketId uint32, clusterInfo rpc.PlayerClusterInfo) {
+	//	SERVER.GetLog().Printf("login incoming  Socket:%d Account:%d WClusterId:%d ", socketId, clusterInfo.Id, clusterInfo.WClusterId)
+	//	this.AddAccountMap(socketId, clusterInfo)
+	//})
+	//
+	//this.RegisterCall("DEL_ACCOUNT", func(ctx context.Context, socketid uint32) {
+	//	accountId := this.GetAccount(socketid)
+	//	this.ReleaseSocketMap(socketid, true)
+	//	SERVER.GetCluster().SendMsg(rpc.RpcHead{SendType: rpc.SEND_BOARD_CAST, DestServerType: rpc.SERVICE_WORLDSERVER}, "G_ClientLost", accountId)
+	//})
 
 	//重连世界服务器，账号重新登录
 	/*this.RegisterCall("World_Relogin", func(ctx context.Context) {

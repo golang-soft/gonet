@@ -44,7 +44,7 @@ func (this *Service) Run() {
 		this.Put()
 		for {
 			this.Lease()
-			time.Sleep(time.Second * 3)
+			time.Sleep(time.Second * 1)
 		}
 	} else {
 		log.Printf("is not run !!!!!")
@@ -53,7 +53,7 @@ func (this *Service) Run() {
 
 //设置租约时间
 func (this *Service) Grant() {
-	leaseResp, _ := this.m_Lease.Grant(context.Background(), 10)
+	leaseResp, _ := this.m_Lease.Grant(context.Background(), 2)
 	this.m_LeaseId = leaseResp.ID
 }
 
@@ -95,7 +95,7 @@ func (this *Service) Lease() {
 		this.Put()
 		//break
 	END:
-		time.Sleep(500 * time.Millisecond)
+		time.Sleep(1000 * time.Millisecond)
 		//}
 		//}()
 	}

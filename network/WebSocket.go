@@ -196,6 +196,11 @@ func (this *WebSocket) wserverRoutine2(w http.ResponseWriter, r *http.Request) {
 		//报错了，直接返回底层的websocket链接就会终断掉
 		return
 	}
+	type SS struct {
+		user string
+	}
+	//var s SS
+	//websocket.ReadJSON(conn,&s )
 	//得到了websocket.Conn长连接的对象，实现数据的收发
 	//for {
 	//	//Text(json), Binary

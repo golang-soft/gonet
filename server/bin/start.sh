@@ -1,22 +1,22 @@
-start server.exe "center" &
+./server "center" &
 sleep 1
-start server.exe "grpcserver" &
+ ./server "grpc./server" &
 sleep 1
-start server.exe "world" &
+ ./server "world" &
 sleep 1
-start server.exe "world" &
+ ./server "world" &
 sleep 1
-start server.exe "worlddb"  &
+ ./server "worlddb"  &
 sleep 1
-start server.exe "zone" &
+ ./server "zone" &
 sleep 1
-start server.exe "account" &
+ ./server "account" &
 sleep 1
-start server.exe "account" &
+ ./server "account" &
 sleep 1
-start server.exe "netgate" &
+ ./server "netgate" &
 sleep 1
-start server.exe "netgate" &
+ ./server "netgate" &
 sleep 1
-start server.exe "login" &
-sleep 1
+ ./server "login" &
+/sleep 1

@@ -119,7 +119,7 @@ func (this *ServerMgr) Init() bool {
 	this.m_pCluster.BindPacketFunc(this.m_AccountMgr.PacketFunc)
 
 	//snowflake
-	this.m_SnowFlake = cluster.NewSnowflake(CONF.SnowFlake.Endpoints)
+	//this.m_SnowFlake = cluster.NewSnowflake(CONF.SnowFlake.Endpoints)
 
 	//playerraft
 	this.m_PlayerRaft = cluster.NewPlayerRaft(CONF.Raft.Endpoints)

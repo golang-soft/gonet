@@ -2,22 +2,22 @@ package network
 
 import (
 	"fmt"
-	"github.com/gorilla/websocket"
+	//"github.com/gorilla/websocket"
+	"golang.org/x/net/websocket"
 	"gonet/rpc"
 	"log"
 	"net/http"
 	"sync"
 	"sync/atomic"
-	//"golang.org/x/net/websocket"
 )
 
 var (
-	upgrader = websocket.Upgrader{
-		//允许跨域访问
-		CheckOrigin: func(r *http.Request) bool {
-			return true
-		},
-	}
+//upgrader = websocket.Upgrader{
+//	//允许跨域访问
+//	CheckOrigin: func(r *http.Request) bool {
+//		return true
+//	},
+//}
 )
 
 type IWebSocket interface {
@@ -59,9 +59,9 @@ func (this *WebSocket) Start() bool {
 	go func() {
 		var strRemote = fmt.Sprintf("%s:%d", this.m_sIP, this.m_nPort)
 		//var strRemote1 = fmt.Sprintf("%d", this.m_sIP, this.m_nPort)
-		//http.Handle("/ws", websocket.Handler(this.wserverRoutine))
+		http.Handle("/ws", websocket.Handler(this.wserverRoutine))
 		//http.Handle("/socket.io/", websocket.Handler(this.wserverRoutine))
-		http.HandleFunc("/socket.io/", this.wserverRoutine2)
+		//http.HandleFunc("/socket.io/", this.wserverRoutine2)
 		//http.HandleFunc("/socket.io/", helloHandler)
 
 		err := http.ListenAndServe(strRemote, nil)
@@ -98,7 +98,7 @@ func (this *WebSocket) AddClinet(tcpConn *websocket.Conn, addr string, connectTy
 		pClient.SetMaxPacketLen(this.GetMaxPacketLen())
 		pClient.m_ClientId = this.AssignClientId()
 		pClient.m_sIP = addr
-		pClient.SetConn(tcpConn.UnderlyingConn())
+		pClient.SetConn(tcpConn)
 		pClient.SetConnectType(connectType)
 		this.m_ClientLocker.Lock()
 		this.m_ClientList[pClient.m_ClientId] = pClient
@@ -188,17 +188,17 @@ func (this *WebSocket) wserverRoutine2(w http.ResponseWriter, r *http.Request) {
 	//在应答的header中放上upgrade:websoket
 	var (
 		conn *websocket.Conn
-		err  error
+		//err  error
 		//msgType int
 		//data []byte
 	)
-	if conn, err = upgrader.Upgrade(w, r, nil); err != nil {
-		//报错了，直接返回底层的websocket链接就会终断掉
-		return
-	}
-	type SS struct {
-		user string
-	}
+	//if conn, err = upgrader.Upgrade(w, r, nil); err != nil {
+	//	//报错了，直接返回底层的websocket链接就会终断掉
+	//	return
+	//}
+	//type SS struct {
+	//	user string
+	//}
 	//var s SS
 	//websocket.ReadJSON(conn,&s )
 	//得到了websocket.Conn长连接的对象，实现数据的收发

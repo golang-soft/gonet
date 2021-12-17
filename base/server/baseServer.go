@@ -20,6 +20,11 @@ func (this *BaseServer) InitConfig(data interface{}) bool {
 	return true
 }
 
+func (this *BaseServer) ReadTableData(data interface{}) bool {
+	config.Init(system.Args.Env, data)
+	return true
+}
+
 func (this *BaseServer) ConnectCenter(addr string) bool {
 
 	return true

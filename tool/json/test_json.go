@@ -4,8 +4,6 @@ import (
 	io "io/ioutil"
 
 	json "encoding/json"
-
-	"fmt"
 )
 
 type JsonStruct struct {
@@ -45,22 +43,26 @@ type ValueTestAtmp struct {
 	NumericalValue int
 
 	BoolValue bool
+
+	FloatValue float32
 }
 
 type testdata struct {
 	ValueTestA ValueTestAtmp
+	ValueTestB ValueTestAtmp
 }
 
-func main() {
-
-	JsonParse := NewJsonStruct()
-
-	v := testdata{}
-
-	JsonParse.Load("D:\\workspace-go\\gonet\\tool\\json\\testdata.json", &v)
-
-	fmt.Println(v)
-
-	fmt.Println(v.ValueTestA.StringValue)
-
-}
+//
+//func main() {
+//
+//	JsonParse := NewJsonStruct()
+//
+//	v := testdata{}
+//
+//	JsonParse.Load("D:\\workspace-go\\gonet\\tool\\json\\testdata.json", &v)
+//
+//	fmt.Println(v)
+//
+//	fmt.Println(v.ValueTestA.StringValue)
+//
+//}

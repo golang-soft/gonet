@@ -1,17 +1,45 @@
 FROM golang:latest
+#RUN apk update && apk add gcc git
+WORKDIR /xxx
+RUN ls
+COPY . .
+RUN pwd
+RUN ls
+WORKDIR /xxx/server
+#RUN go get github.com/coreos/go-systemd/journal
+RUN go build ./...
+#RUN ["/bin/sh", "./bin/build_docker.sh"]
 
-ADD . /go/
-
-WORKDIR /go/bin
-RUN ["/bin/sh", "./build.sh"]
-RUN chmod +x server
-EXPOSE 8081 31200 31300 31700
-#ENTRYPOINT  ["./server", "netgate"]
-CMD ["./server", "account"]
-CMD ["./server", "world"]
-CMD ["./server", "netgate"]
+#FROM golang:latest
+#ADD . /go/
+#RUN ls
+##COPY . /go/
+#WORKDIR $GOPATH/server
+#RUN ls
+#WORKDIR /go/
+#RUN pwd
+##RUN ls server
+#RUN ["/bin/sh", "./server/bin/build_docker.sh"]
+##RUN ./build.bat
+##RUN chmod +x server
+##RUN pwd
+#WORKDIR /go/server
+#RUN rm $GOPATH/go.mod
+#RUN /usr/local/go/bin/go build .
+#
+#EXPOSE 8081 31200 31300 31700
+##ENTRYPOINT  ["./server", "netgate"]
+#WORKDIR /go/server/bin
+#RUN pwd
+#RUN ls
+#CMD ["./server.exe", "account"]
+#CMD ["./server.exe", "world"]
+#CMD ["./server.exe", "netgate"]
 
 #USER root
+
+
+
 #FROM centos:latest
 #COPY ./bin /usr/local/bin
 #ENV GATEWAY_LOG_LEVEL=info

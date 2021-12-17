@@ -23,6 +23,10 @@ func Init(_env string, _data interface{}) {
 	load(_data)
 }
 
+func InitEnv(_env string) {
+	env = _env
+}
+
 func ReadConf(path string, data interface{}) bool {
 	content, err := ioutil.ReadFile(path)
 	if err != nil {
@@ -58,6 +62,14 @@ func load(_data interface{}) {
 func GetConfigPath(configFile string) string {
 	return system.Root + "/config/" + env + "/" + configFile
 }
+
+/**
+  返回表格数据文件地址
+*/
+func GetConfigTablePath(configDataFile string) string {
+	return system.Root + "/config/" + env + "/" + "static/" + configDataFile
+}
+
 func loadConfig(data interface{}, configPath string) {
 	base.ReadConf(configPath, data)
 }

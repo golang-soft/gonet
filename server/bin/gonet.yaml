@@ -1,6 +1,6 @@
 ﻿# accountdb
 accountDB:
-  ip: 127.0.0.1
+  ip: 192.168.1.29
   name: md_account
   user: root
   password: 123456
@@ -9,7 +9,7 @@ accountDB:
 
 # worldDB
 worldDB:
-  ip: 127.0.0.1
+  ip: 192.168.1.29
   name: md_actor
   user: root
   password: 123456
@@ -18,28 +18,33 @@ worldDB:
 
 #center
 center:
-  ip: 127.0.0.1
+  ip: 192.168.1.29
   port: 31500
 
 #worlddbserver
 worlddbserver:
-  ip: 127.0.0.1
+  ip: 192.168.1.29
   port: 31400
 
 
 
 # 服务器端口配置
 account:
-  ip: 127.0.0.1
+  ip: 192.168.1.29
   port: 31200
 
 world:
-  ip: 127.0.0.1
+  ip: 192.168.1.29
   port: 31300
 #zoneserver
 zone:
-  ip: 127.0.0.1
+  ip: 192.168.1.29
   port: 31600
+
+#grpcserver
+grpcserver:
+  ip: 192.168.1.29
+  port: 31800
 
 netgate:
   ip: 0.0.0.0
@@ -48,40 +53,46 @@ netgate:
 # 服发现
 etcd:
   endpoints:
-    - http://127.0.0.1:2379
+    - http://192.168.1.29:2379
 
 # uuid
 snowflake:
   endpoints:
-    - http://127.0.0.1:2379
+    - http://192.168.1.29:2379
 
 raft:
   endpoints:
-    - http://127.0.0.1:2379
+    - http://192.168.1.29:2379
 # nats
 nats:
-  endpoints: 127.0.0.1:4222
+  endpoints: 192.168.1.29:4222
 
 # redis配置
 redis:
   open: true
-  ip: 127.0.0.1
+  ip: 192.168.1.29
   password: 123456
 
 #login
 login:
-  ip: 127.0.0.1
+  ip: 192.168.1.29
   port: 8081
-
+#多个游戏服
 mworld:
   endpoints:
-    - 127.0.0.1:31300
-    - 127.0.0.1:31301
+    - 192.168.1.29:31300
+    - 192.168.1.29:31301
+#多网关服务器地址
 mnetgate:
   endpoints:
-    - 127.0.0.1:31700
-    - 127.0.0.1:31701
+    - 192.168.1.29:3000
+    - 192.168.1.29:3001
+#多服务的账号服务器地址
 maccount:
   endpoints:
-    - 127.0.0.1:31200
-    - 127.0.0.1:31201
+    - 192.168.1.29:31200
+    - 192.168.1.29:31201
+# pvpweb服的接口地址
+pvpweb:
+  endpoints:
+    - http://192.168.1.29:3002

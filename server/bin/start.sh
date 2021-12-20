@@ -1,6 +1,6 @@
-nohup ./server "world" &
-sleep 1
-nohup ./server "account" &
-sleep 1
-nohup ./server "netgate" &
-sleep 1
+./server "world" &
+#sleep 1
+./server "account" &
+#sleep 1
+./server "netgate" &
+#sleep 1

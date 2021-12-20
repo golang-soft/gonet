@@ -1,14 +1,30 @@
 FROM golang:latest
-#RUN apk update && apk add gcc git
+ENV GO111MODULE=on \
+    CGO_ENABLED=0 \
+    GOOS=linux \
+    GOARCH=amd64 \
+	GOPROXY="https://goproxy.cn,direct"
+
 WORKDIR /xxx
 RUN ls
 COPY . .
 RUN pwd
 RUN ls
 WORKDIR /xxx/server
-#RUN go get github.com/coreos/go-systemd/journal
-RUN go build ./...
-#RUN ["/bin/sh", "./bin/build_docker.sh"]
+RUN go get github.com/coreos/go-systemd/journal
+RUN ls
+RUN go build -o server .
+RUN chmod +x server
+RUN cp /xxx/server/server ./bin/
+WORKDIR /xxx/server/bin
+RUN pwd
+RUN ls -al
+EXPOSE 3000 31200 31300 31700
+ENTRYPOINT  ["./server", "netgate"]
+#ENTRYPOINT  ["/bin/sh", "./start.sh"]
+#CMD ["./server", "account"]
+#CMD ["./server", "world"]
+#CMD ["./server", "netgate"]
 
 #FROM golang:latest
 #ADD . /go/
@@ -55,5 +71,5 @@ RUN go build ./...
 #删除空的镜像
 #docker rmi -f $(docker images | grep "none" | awk '{print $3}')
 #后台运行容器
-#docker run -d -t -p31700:31700 -p31100:31100 -p31700:31700 dockerfile
+#docker run -d -t -p3000:3000 dockerfile
 #docker run -i -t dockerfile

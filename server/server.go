@@ -34,6 +34,8 @@ func main() {
 		zone.SERVER.Init()
 	} else if args[1] == "grpcserver" {
 		grpcserver.SERVER.Init()
+	} else {
+		netgate.SERVER.Init()
 	}
 
 	base.SEVERNAME = args[1]

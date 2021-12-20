@@ -25,58 +25,33 @@
     </select>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="48577825-a92d-4c0c-b73f-4177e3909d59" name="Default Changelist" comment="代码提交">
-      <change afterPath="$PROJECT_DIR$/base/jsontabledata.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/config/local/static/BoxTable.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/config/local/static/HelpTable.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/config/local/static/HeroAttrTable.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/config/local/static/ItemTable.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/config/local/static/Map.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/config/local/static/RandNameTable.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/config/local/static/RankRewardTable.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/config/local/static/SkillTable.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/config/local/static/StrTable.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/config/local/static/StrengthenTable.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/config/local/static/WorldParamTable.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/bin/build_docker.sh" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/bin/config/dev/GONET_SERVER.CFG" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/bin/config/dev/NETGATES.CFG" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/bin/config/dev/gonet.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/bin/config/local/GONET_SERVER.CFG" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/bin/config/local/NETGATES.CFG" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/bin/config/local/gonet.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/bin/config/local/static/BoxTable.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/bin/config/local/static/HelpTable.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/bin/config/local/static/HeroAttrTable.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/bin/config/local/static/ItemTable.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/bin/config/local/static/Map.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/bin/config/local/static/RandNameTable.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/bin/config/local/static/RankRewardTable.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/bin/config/local/static/SkillTable.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/bin/config/local/static/StrTable.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/bin/config/local/static/StrengthenTable.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/bin/config/local/static/WorldParamTable.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/table/BoxTable.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/table/HelpTable.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/table/HeroAttrTable.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/table/ItemTable.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/table/Map.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/table/RandNameTable.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/table/RankRewardTable.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/table/SkillTable.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/table/StrTable.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/table/StrengthenTable.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/table/WorldParamTable.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tool/json/testdata.go" afterDir="false" />
+    <list default="true" id="48577825-a92d-4c0c-b73f-4177e3909d59" name="Default Changelist" comment="配置文件">
+      <change afterPath="$PROJECT_DIR$/server/config/dev/GONET_SERVER.CFG" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/config/dev/NETGATES.CFG" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/config/dev/gonet.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/config/local/GONET_SERVER.CFG" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/config/local/NETGATES.CFG" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/config/local/gonet.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/config/local/static/BoxTable.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/config/local/static/HelpTable.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/config/local/static/HeroAttrTable.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/config/local/static/ItemTable.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/config/local/static/Map.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/config/local/static/RandNameTable.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/config/local/static/RankRewardTable.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/config/local/static/SkillTable.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/config/local/static/StrTable.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/config/local/static/StrengthenTable.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/config/local/static/WorldParamTable.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/world/table/LoadConfigTable.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/base/config.go" beforeDir="false" afterPath="$PROJECT_DIR$/base/config.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/base/config/config.go" beforeDir="false" afterPath="$PROJECT_DIR$/base/config/config.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/base/server/baseServer.go" beforeDir="false" afterPath="$PROJECT_DIR$/base/server/baseServer.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/bin/config/local/gonet.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/server/bin/config/local/gonet.yaml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/bin/server.bat" beforeDir="false" afterPath="$PROJECT_DIR$/server/bin/server.bat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/bin/server.exe" beforeDir="false" afterPath="$PROJECT_DIR$/server/bin/server.exe" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/world/toprank/toprank.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/world/toprank/toprank.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tool/json/test_json.go" beforeDir="false" afterPath="$PROJECT_DIR$/tool/json/test_json.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/bin/start.sh" beforeDir="false" afterPath="$PROJECT_DIR$/server/bin/start.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/server.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/server.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/world/WorldServer.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/world/WorldServer.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tool/json/testdata.go" beforeDir="false" afterPath="$PROJECT_DIR$/tool/json/testdata.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -131,7 +106,7 @@
     <property name="go.gopath.indexing.explicitly.defined" value="true" />
     <property name="go.import.settings.migrated" value="true" />
     <property name="go.sdk.automatically.set" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/config/local/static" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/Dockerfile" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -143,22 +118,22 @@
     <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
   </component>
   <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\workspace-go\gonet\server\world\table" />
+      <recent name="D:\workspace-go\gonet\server\world" />
+      <recent name="D:\workspace-go\gonet\server\bin\config\local" />
+      <recent name="D:\workspace-go\gonet\server\bin\config" />
+      <recent name="D:\workspace-go\gonet\server\bin" />
+    </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\workspace-go\gonet\server" />
       <recent name="D:\workspace-go\gonet\config\local\static" />
       <recent name="D:\workspace-go\gonet\config\local" />
       <recent name="D:\workspace-go\gonet\server\bin\config\local\static" />
       <recent name="D:\workspace-go\gonet\server\bin" />
-      <recent name="D:\workspace-go\gonet\server\login" />
-    </key>
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="D:\workspace-go\gonet\server\bin\config\local" />
-      <recent name="D:\workspace-go\gonet\server\bin\config" />
-      <recent name="D:\workspace-go\gonet\server\bin" />
-      <recent name="D:\workspace-go\gonet\config\local" />
-      <recent name="D:\workspace-go\gonet\tool\Excel" />
     </key>
   </component>
-  <component name="RunManager" selected="Go Build.world (1)">
+  <component name="RunManager" selected="Docker.Docker">
     <configuration name="account (1)" type="GoApplicationRunConfiguration" factoryName="Go Application">
       <module name="gonet" />
       <working_directory value="$PROJECT_DIR$" />
@@ -323,6 +298,7 @@
       <method v="2" />
     </configuration>
     <list>
+      <item itemvalue="Docker.Docker" />
       <item itemvalue="Go Build.account (1)" />
       <item itemvalue="Go Build.account" />
       <item itemvalue="Go Build.center" />
@@ -337,9 +313,8 @@
       <item itemvalue="Go Build.netgate" />
       <item itemvalue="Go Build.go build gonet/tool/json" />
       <item itemvalue="Go Build.go build test_json.go" />
-      <item itemvalue="Docker.Docker" />
-      <item itemvalue="Shell Script.build.sh" />
       <item itemvalue="Go Build.go build testdata.go" />
+      <item itemvalue="Shell Script.build.sh" />
     </list>
     <recent_temporary>
       <list>
@@ -420,7 +395,8 @@
     <MESSAGE value="新的接口" />
     <MESSAGE value="调整websocket接口" />
     <MESSAGE value="代码提交" />
-    <option name="LAST_COMMIT_MESSAGE" value="代码提交" />
+    <MESSAGE value="配置文件" />
+    <option name="LAST_COMMIT_MESSAGE" value="配置文件" />
   </component>
   <component name="VgoProject">
     <integration-enabled>true</integration-enabled>
@@ -464,69 +440,69 @@
     </state>
     <state x="133" y="160" width="1416" height="635" key="DiffContextDialog/0.0.1600.819@0.0.1600.819" timestamp="1638633002223" />
     <state x="160" y="195" width="1700" height="775" key="DiffContextDialog/0.0.1920.999@0.0.1920.999" timestamp="1639203450926" />
-    <state x="688" y="196" key="FileChooserDialogImpl" timestamp="1639723314944">
+    <state x="688" y="196" key="FileChooserDialogImpl" timestamp="1639971158869">
       <screen x="0" y="0" width="1920" height="999" />
     </state>
     <state x="573" y="161" key="FileChooserDialogImpl/0.0.1600.819@0.0.1600.819" timestamp="1638677894553" />
-    <state x="688" y="196" key="FileChooserDialogImpl/0.0.1920.999/1920.0.1920.1040@0.0.1920.999" timestamp="1639723314944" />
+    <state x="688" y="196" key="FileChooserDialogImpl/0.0.1920.999/1920.0.1920.1040@0.0.1920.999" timestamp="1639971158869" />
     <state x="2608" y="204" key="FileChooserDialogImpl/0.0.1920.999/1920.0.1920.1040@1920.0.1920.1040" timestamp="1639468116972" />
     <state x="688" y="196" key="FileChooserDialogImpl/0.0.1920.999@0.0.1920.999" timestamp="1639207959052" />
     <state x="917" y="275" key="FileChooserDialogImpl/0.0.2560.1400@0.0.2560.1400" timestamp="1638765514852" />
     <state x="687" y="196" key="FileChooserDialogImpl/1920.0.1920.999/0.0.1920.999@0.0.1920.999" timestamp="1637821282851" />
-    <state width="1867" height="275" key="GridCell.Tab.0.bottom" timestamp="1639735966883">
+    <state width="1867" height="368" key="GridCell.Tab.0.bottom" timestamp="1639744003487">
       <screen x="0" y="0" width="1920" height="999" />
     </state>
     <state width="1557" height="167" key="GridCell.Tab.0.bottom/0.0.1600.819@0.0.1600.819" timestamp="1638692091091" />
-    <state width="1867" height="275" key="GridCell.Tab.0.bottom/0.0.1920.999/1920.0.1920.1040@0.0.1920.999" timestamp="1639735966883" />
+    <state width="1867" height="368" key="GridCell.Tab.0.bottom/0.0.1920.999/1920.0.1920.1040@0.0.1920.999" timestamp="1639744003487" />
     <state width="1867" height="317" key="GridCell.Tab.0.bottom/0.0.1920.999/1920.0.1920.1040@1920.0.1920.1040" timestamp="1639538558092" />
     <state width="1867" height="174" key="GridCell.Tab.0.bottom/0.0.1920.999@0.0.1920.999" timestamp="1639370727786" />
-    <state width="1867" height="275" key="GridCell.Tab.0.center" timestamp="1639735966883">
+    <state width="1867" height="368" key="GridCell.Tab.0.center" timestamp="1639744003487">
       <screen x="0" y="0" width="1920" height="999" />
     </state>
     <state width="1557" height="167" key="GridCell.Tab.0.center/0.0.1600.819@0.0.1600.819" timestamp="1638692091091" />
-    <state width="1867" height="275" key="GridCell.Tab.0.center/0.0.1920.999/1920.0.1920.1040@0.0.1920.999" timestamp="1639735966883" />
+    <state width="1867" height="368" key="GridCell.Tab.0.center/0.0.1920.999/1920.0.1920.1040@0.0.1920.999" timestamp="1639744003487" />
     <state width="1867" height="317" key="GridCell.Tab.0.center/0.0.1920.999/1920.0.1920.1040@1920.0.1920.1040" timestamp="1639538558092" />
     <state width="1867" height="174" key="GridCell.Tab.0.center/0.0.1920.999@0.0.1920.999" timestamp="1639370727786" />
-    <state width="1867" height="275" key="GridCell.Tab.0.left" timestamp="1639735966883">
+    <state width="1867" height="368" key="GridCell.Tab.0.left" timestamp="1639744003487">
       <screen x="0" y="0" width="1920" height="999" />
     </state>
     <state width="1557" height="167" key="GridCell.Tab.0.left/0.0.1600.819@0.0.1600.819" timestamp="1638692091090" />
-    <state width="1867" height="275" key="GridCell.Tab.0.left/0.0.1920.999/1920.0.1920.1040@0.0.1920.999" timestamp="1639735966883" />
+    <state width="1867" height="368" key="GridCell.Tab.0.left/0.0.1920.999/1920.0.1920.1040@0.0.1920.999" timestamp="1639744003487" />
     <state width="1867" height="317" key="GridCell.Tab.0.left/0.0.1920.999/1920.0.1920.1040@1920.0.1920.1040" timestamp="1639538558092" />
     <state width="1867" height="174" key="GridCell.Tab.0.left/0.0.1920.999@0.0.1920.999" timestamp="1639370727786" />
-    <state width="1867" height="275" key="GridCell.Tab.0.right" timestamp="1639735966883">
+    <state width="1867" height="368" key="GridCell.Tab.0.right" timestamp="1639744003487">
       <screen x="0" y="0" width="1920" height="999" />
     </state>
     <state width="1557" height="167" key="GridCell.Tab.0.right/0.0.1600.819@0.0.1600.819" timestamp="1638692091091" />
-    <state width="1867" height="275" key="GridCell.Tab.0.right/0.0.1920.999/1920.0.1920.1040@0.0.1920.999" timestamp="1639735966883" />
+    <state width="1867" height="368" key="GridCell.Tab.0.right/0.0.1920.999/1920.0.1920.1040@0.0.1920.999" timestamp="1639744003487" />
     <state width="1867" height="317" key="GridCell.Tab.0.right/0.0.1920.999/1920.0.1920.1040@1920.0.1920.1040" timestamp="1639538558092" />
     <state width="1867" height="174" key="GridCell.Tab.0.right/0.0.1920.999@0.0.1920.999" timestamp="1639370727786" />
-    <state width="1867" height="275" key="GridCell.Tab.1.bottom" timestamp="1639735966885">
+    <state width="1867" height="368" key="GridCell.Tab.1.bottom" timestamp="1639744003389">
       <screen x="0" y="0" width="1920" height="999" />
     </state>
     <state width="1557" height="167" key="GridCell.Tab.1.bottom/0.0.1600.819@0.0.1600.819" timestamp="1638608800828" />
-    <state width="1867" height="275" key="GridCell.Tab.1.bottom/0.0.1920.999/1920.0.1920.1040@0.0.1920.999" timestamp="1639735966885" />
+    <state width="1867" height="368" key="GridCell.Tab.1.bottom/0.0.1920.999/1920.0.1920.1040@0.0.1920.999" timestamp="1639744003389" />
     <state width="1867" height="317" key="GridCell.Tab.1.bottom/0.0.1920.999/1920.0.1920.1040@1920.0.1920.1040" timestamp="1639538558092" />
     <state width="1867" height="174" key="GridCell.Tab.1.bottom/0.0.1920.999@0.0.1920.999" timestamp="1639370727786" />
-    <state width="1867" height="275" key="GridCell.Tab.1.center" timestamp="1639735966884">
+    <state width="1867" height="368" key="GridCell.Tab.1.center" timestamp="1639744003389">
       <screen x="0" y="0" width="1920" height="999" />
     </state>
     <state width="1557" height="167" key="GridCell.Tab.1.center/0.0.1600.819@0.0.1600.819" timestamp="1638608800828" />
-    <state width="1867" height="275" key="GridCell.Tab.1.center/0.0.1920.999/1920.0.1920.1040@0.0.1920.999" timestamp="1639735966884" />
+    <state width="1867" height="368" key="GridCell.Tab.1.center/0.0.1920.999/1920.0.1920.1040@0.0.1920.999" timestamp="1639744003389" />
     <state width="1867" height="317" key="GridCell.Tab.1.center/0.0.1920.999/1920.0.1920.1040@1920.0.1920.1040" timestamp="1639538558092" />
     <state width="1867" height="174" key="GridCell.Tab.1.center/0.0.1920.999@0.0.1920.999" timestamp="1639370727786" />
-    <state width="1867" height="275" key="GridCell.Tab.1.left" timestamp="1639735966884">
+    <state width="1867" height="368" key="GridCell.Tab.1.left" timestamp="1639744003389">
       <screen x="0" y="0" width="1920" height="999" />
     </state>
     <state width="1557" height="167" key="GridCell.Tab.1.left/0.0.1600.819@0.0.1600.819" timestamp="1638608800828" />
-    <state width="1867" height="275" key="GridCell.Tab.1.left/0.0.1920.999/1920.0.1920.1040@0.0.1920.999" timestamp="1639735966884" />
+    <state width="1867" height="368" key="GridCell.Tab.1.left/0.0.1920.999/1920.0.1920.1040@0.0.1920.999" timestamp="1639744003389" />
     <state width="1867" height="317" key="GridCell.Tab.1.left/0.0.1920.999/1920.0.1920.1040@1920.0.1920.1040" timestamp="1639538558092" />
     <state width="1867" height="174" key="GridCell.Tab.1.left/0.0.1920.999@0.0.1920.999" timestamp="1639370727786" />
-    <state width="1867" height="275" key="GridCell.Tab.1.right" timestamp="1639735966885">
+    <state width="1867" height="368" key="GridCell.Tab.1.right" timestamp="1639744003389">
       <screen x="0" y="0" width="1920" height="999" />
     </state>
     <state width="1557" height="167" key="GridCell.Tab.1.right/0.0.1600.819@0.0.1600.819" timestamp="1638608800828" />
-    <state width="1867" height="275" key="GridCell.Tab.1.right/0.0.1920.999/1920.0.1920.1040@0.0.1920.999" timestamp="1639735966885" />
+    <state width="1867" height="368" key="GridCell.Tab.1.right/0.0.1920.999/1920.0.1920.1040@0.0.1920.999" timestamp="1639744003389" />
     <state width="1867" height="317" key="GridCell.Tab.1.right/0.0.1920.999/1920.0.1920.1040@1920.0.1920.1040" timestamp="1639538558092" />
     <state width="1867" height="174" key="GridCell.Tab.1.right/0.0.1920.999@0.0.1920.999" timestamp="1639370727786" />
     <state x="437" y="171" key="IDE.errors.dialog" timestamp="1639206840766">
@@ -538,11 +514,11 @@
     </state>
     <state x="437" y="116" key="SettingsEditor/0.0.1920.999@0.0.1920.999" timestamp="1639205731993" />
     <state x="582" y="363" key="SettingsEditor/0.0.2560.1400@0.0.2560.1400" timestamp="1638765564990" />
-    <state x="470" y="173" key="Vcs.Push.Dialog.v2" timestamp="1639652090797">
+    <state x="470" y="173" key="Vcs.Push.Dialog.v2" timestamp="1639736041556">
       <screen x="0" y="0" width="1920" height="999" />
     </state>
     <state x="392" y="142" key="Vcs.Push.Dialog.v2/0.0.1600.819@0.0.1600.819" timestamp="1638630677588" />
-    <state x="470" y="173" key="Vcs.Push.Dialog.v2/0.0.1920.999/1920.0.1920.1040@0.0.1920.999" timestamp="1639652090797" />
+    <state x="470" y="173" key="Vcs.Push.Dialog.v2/0.0.1920.999/1920.0.1920.1040@0.0.1920.999" timestamp="1639736041556" />
     <state x="470" y="173" key="Vcs.Push.Dialog.v2/0.0.1920.999@0.0.1920.999" timestamp="1639208729271" />
     <state x="627" y="236" key="Vcs.Push.Dialog.v2/0.0.2560.1359@0.0.2560.1359" timestamp="1638772609197" />
     <state x="627" y="243" key="Vcs.Push.Dialog.v2/0.0.2560.1400@0.0.2560.1400" timestamp="1638769982908" />
@@ -826,7 +802,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DlvLineBreakpoint">
           <url>file://$PROJECT_DIR$/server/world/WorldServer.go</url>
-          <line>216</line>
+          <line>220</line>
           <option name="timeStamp" value="151" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DlvLineBreakpoint">
@@ -1131,17 +1107,12 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DlvLineBreakpoint">
           <url>file://$PROJECT_DIR$/tool/json/test_json.go</url>
-          <line>60</line>
+          <line>61</line>
           <option name="timeStamp" value="307" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DlvLineBreakpoint">
-          <url>file://$PROJECT_DIR$/base/config/config.go</url>
-          <line>52</line>
-          <option name="timeStamp" value="308" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
           <url>file://$PROJECT_DIR$/tool/json/testdata.go</url>
-          <line>15</line>
+          <line>14</line>
           <option name="timeStamp" value="309" />
         </line-breakpoint>
       </breakpoints>

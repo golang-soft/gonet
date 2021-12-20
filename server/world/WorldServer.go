@@ -13,6 +13,7 @@ import (
 	"gonet/rd"
 	"gonet/rpc"
 	"gonet/server/message"
+	"gonet/server/world/table"
 	"log"
 	"strconv"
 	"strings"
@@ -85,6 +86,9 @@ func (this *ServerMgr) Init() bool {
 	//初始配置文件
 	//base.ReadConf("D:\\workspace-go\\gonet\\server\\bin\\gonet.yaml", &CONF)
 	this.InitConfig(&CONF)
+
+	table.Init()
+	this.m_Log.Printf("初始化配置表数据成功!")
 
 	this.m_Log.Println("正在初始化数据库连接...")
 	if this.InitDB() {

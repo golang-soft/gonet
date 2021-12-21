@@ -11,6 +11,7 @@ import (
 	"gonet/db"
 	"gonet/network"
 	"gonet/rpc"
+	"gonet/server/game"
 	"gonet/server/message"
 	"log"
 	"strconv"
@@ -53,6 +54,7 @@ type (
 		common.SnowFlake `yaml:"snowflake"`
 		common.Raft      `yaml:"raft"`
 		common.Nats      `yaml:"nats"`
+		common.Center    `yaml:"center"`
 	}
 )
 
@@ -60,6 +62,31 @@ var (
 	CONF   Config
 	SERVER ServerMgr
 )
+
+func (this *ServerMgr) InitCenterClient() bool {
+	//初始化grpc连接
+	this.M_pGrpcClient = game.NewGrpcClient()
+	this.M_pGrpcClient.ConnectToServer(CONF.Center.GrpcPort)
+	this.SetId(this.M_pGrpcClient.ReqServerId())
+	return true
+}
+
+func (this *ServerMgr) VerifyServer(thisip string, thisport int) {
+	msg := &message.ReqServerVerify{}
+	msg.Info = &message.ServerInfo{
+		Id:   uint32(this.GetId()),
+		Type: uint32(rpc.SERVICE_ACCOUNTSERVER),
+		Ip:   thisip,
+		Port: uint32(thisport),
+	}
+	this.SendToCenter(1, 0, "ReqServerVerify", msg)
+}
+
+//--------------发送给中央服----------------------//
+func (this *ServerMgr) SendToCenter(Id int64, ClusterId uint32, funcName string, params ...interface{}) {
+	head := rpc.RpcHead{Id: Id, ClusterId: ClusterId, DestServerType: rpc.SERVICE_CENTERSERVER, SrcClusterId: SERVER.GetCluster().Id(), SendType: rpc.SEND_BOARD_CAST}
+	SERVER.GetCluster().SendMsg(head, funcName, params...)
+}
 
 func (this *ServerMgr) Init() bool {
 	if this.m_Inited {
@@ -99,6 +126,7 @@ func (this *ServerMgr) Init() bool {
 		return false
 	}
 	this.m_Log.Printf("[%s]数据库初始化成功!", CONF.Db.Name)
+	this.InitCenterClient()
 
 	//初始化socket
 	this.m_pService = new(network.ServerSocket)
@@ -133,6 +161,7 @@ func (this *ServerMgr) Init() bool {
 		this.m_Log.Println("**********************************************************")
 	}
 	ShowMessage()
+	this.VerifyServer(thisip, thisport)
 	return false
 }
 

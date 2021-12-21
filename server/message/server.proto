@@ -1,0 +1,39 @@
+syntax = "proto3";
+package message;
+option go_package = "./;message";
+
+
+message ServerInfo {
+    uint32 Id = 1;
+    uint32 Type = 2;
+    string Ip = 3;
+    uint32 Port = 4;
+}
+
+// 请求服务器连接验证
+message ReqServerVerify {
+    ServerInfo Info = 1;
+}
+
+// 返回服务器验证信息
+message RetServerVerify {
+
+}
+
+service Greeter {
+    rpc ReqOnlineUserCount (OnlineUserRequest) returns (OnlineUserResponse) {}
+    rpc ReqServerId (ServerIdRequest) returns (ServerIdResponse) {}
+}
+
+
+message OnlineUserRequest {
+}
+message OnlineUserResponse {
+    int64 count = 1;
+}
+
+message ServerIdRequest {
+}
+message ServerIdResponse {
+    int64 id = 1;
+}

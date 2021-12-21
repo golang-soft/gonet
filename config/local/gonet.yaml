@@ -20,6 +20,7 @@ worldDB:
 center:
   ip: 127.0.0.1
   port: 31500
+  grpcport: 31599
 
 #worlddbserver
 worlddbserver:

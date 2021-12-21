@@ -98,9 +98,9 @@ func init() {
 //统计crc对应string
 func initCrcNames() {
 	protoFiles := []protoreflect.MessageDescriptors{}
-	protoFiles = append(protoFiles, File_message_proto.Messages())
-	protoFiles = append(protoFiles, File_client_proto.Messages())
-	protoFiles = append(protoFiles, File_game_proto.Messages())
+	//protoFiles = append(protoFiles, File_message_proto.Messages())
+	//protoFiles = append(protoFiles, File_client_proto.Messages())
+	//protoFiles = append(protoFiles, File_game_proto.Messages())
 	for _, v := range protoFiles {
 		for i := 0; i < v.Len(); i++ {
 			packetName := strings.ToLower(string(v.Get(i).Name()))

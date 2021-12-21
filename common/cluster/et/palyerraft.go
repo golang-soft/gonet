@@ -8,8 +8,6 @@ import (
 	"time"
 
 	"go.etcd.io/etcd/client"
-	"google.golang.org/protobuf/proto"
-
 	"golang.org/x/net/context"
 )
 
@@ -51,13 +49,14 @@ func (this *PlayerRaft) Start() {
 }
 
 func (this *PlayerRaft) Publish(info *rpc.PlayerClusterInfo) bool {
-	info.LeaseId = int64(info.Id)
-	key := PLAYER_DIR + fmt.Sprintf("%d", info.Id)
-	data, _ := proto.Marshal(info)
-	_, err := this.m_KeysAPI.Set(context.Background(), key, string(data), &client.SetOptions{
-		TTL: ttl_time, PrevExist: client.PrevNoExist, NoValueOnSuccess: true,
-	})
-	return err == nil
+	//info.LeaseId = int64(info.Id)
+	//key := PLAYER_DIR + fmt.Sprintf("%d", info.Id)
+	//data, _ := proto.Marshal(info)
+	//_, err := this.m_KeysAPI.Set(context.Background(), key, string(data), &client.SetOptions{
+	//	TTL: ttl_time, PrevExist: client.PrevNoExist, NoValueOnSuccess: true,
+	//})
+	//return err == nil
+	return false
 }
 
 func (this *PlayerRaft) Lease(Id int64) error {
@@ -131,10 +130,11 @@ func (this *PlayerRaft) InitPlayers() {
 }
 
 func NodeToPlayer(val []byte) *rpc.PlayerClusterInfo {
-	info := &rpc.PlayerClusterInfo{}
-	err := proto.Unmarshal([]byte(val), info)
-	if err != nil {
-		log.Print(err)
-	}
-	return info
+	//info := &rpc.PlayerClusterInfo{}
+	//err := proto.Unmarshal([]byte(val), info)
+	//if err != nil {
+	//	log.Print(err)
+	//}
+	//return info
+	return nil
 }

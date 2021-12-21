@@ -6,8 +6,9 @@ type (
 	}
 
 	Server struct {
-		Ip   string `yaml:"ip"`
-		Port int    `yaml:"port"`
+		Ip       string `yaml:"ip"`
+		Port     int    `yaml:"port"`
+		GrpcPort int64  `yaml:"grpcport"`
 	}
 
 	Db struct {
@@ -42,8 +43,9 @@ type (
 	}
 
 	Center struct {
-		Ip   string `yaml:"ip"`
-		Port int    `yaml:"port"`
+		Ip       string `yaml:"ip"`
+		Port     int    `yaml:"port"`
+		GrpcPort int    `yaml:"grpcport"`
 	}
 
 	PvpWeb struct {

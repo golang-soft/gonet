@@ -12,6 +12,7 @@ import (
 	"gonet/network"
 	"gonet/rd"
 	"gonet/rpc"
+	"gonet/server/game"
 	"gonet/server/message"
 	"gonet/server/world/table"
 	"log"
@@ -69,6 +70,25 @@ type A struct {
 	k int
 }
 
+func (this *ServerMgr) InitCenterClient() bool {
+	//初始化grpc连接
+	this.M_pGrpcClient = game.NewGrpcClient()
+	this.M_pGrpcClient.ConnectToServer(CONF.Center.GrpcPort)
+	this.SetId(this.M_pGrpcClient.ReqServerId())
+	return true
+}
+
+func (this *ServerMgr) VerifyServer(thisip string, thisport int) {
+	msg := &message.ReqServerVerify{}
+	msg.Info = &message.ServerInfo{
+		Id:   uint32(this.GetId()),
+		Type: uint32(rpc.SERVICE_WORLDSERVER),
+		Ip:   thisip,
+		Port: uint32(thisport),
+	}
+	this.SendToCenter(1, 0, "ReqServerVerify", msg)
+}
+
 func (this *ServerMgr) Init() bool {
 	if this.m_Inited {
 		return true
@@ -101,6 +121,7 @@ func (this *ServerMgr) Init() bool {
 	if CONF.Redis.OpenFlag {
 		rd.OpenRedisPool(CONF.Redis.Ip, CONF.Redis.Password)
 	}
+	this.InitCenterClient()
 
 	//snowflake
 	this.m_SnowFlake = cluster.NewSnowflake(CONF.SnowFlake.Endpoints)
@@ -155,7 +176,8 @@ func (this *ServerMgr) Init() bool {
 	}
 	ShowMessage()
 
-	//this.SendToCenter(1, 0, "LoginCenter")
+	this.VerifyServer(thisip, thisport)
+
 	return false
 }
 
@@ -217,6 +239,6 @@ func SendToZone(Id int64, ClusterId uint32, funcName string, params ...interface
 
 //--------------发送给中央服----------------------//
 func (this *ServerMgr) SendToCenter(Id int64, ClusterId uint32, funcName string, params ...interface{}) {
-	head := rpc.RpcHead{Id: Id, ClusterId: ClusterId, DestServerType: rpc.SERVICE_CENTERSERVER, SrcClusterId: SERVER.GetCluster().Id(), SendType: rpc.SEND_BALANCE}
+	head := rpc.RpcHead{Id: Id, ClusterId: ClusterId, DestServerType: rpc.SERVICE_CENTERSERVER, SrcClusterId: SERVER.GetCluster().Id(), SendType: rpc.SEND_BOARD_CAST}
 	SERVER.GetCluster().SendMsg(head, funcName, params...)
 }

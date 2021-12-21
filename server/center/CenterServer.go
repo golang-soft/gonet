@@ -15,13 +15,14 @@ import (
 
 type (
 	ServerMgr struct {
-		m_pService     *network.ServerSocket
-		m_pCluster     *cluster.Cluster
-		m_pWorldClient *network.ClientSocket
-		m_pActorDB     *sql.DB
-		m_Inited       bool
-		m_config       ini.Config
-		m_Log          base.CLog
+		m_pService       *network.ServerSocket
+		m_pCluster       *cluster.Cluster
+		m_pWorldClient   *network.ClientSocket
+		m_pActorDB       *sql.DB
+		m_Inited         bool
+		m_config         ini.Config
+		m_Log            base.CLog
+		m_pServerManager *ServerManager
 	}
 
 	IServerMgr interface {
@@ -62,6 +63,7 @@ func (this *ServerMgr) Init() bool {
 		this.m_Log.Printf("\tActorDBServer(LAN):\t%s", CONF.Db.Ip)
 		this.m_Log.Printf("\tActorDBName:\t\t%s", CONF.Db.Name)
 		this.m_Log.Printf("\tEnv:\t\t%s", system.Args.Env)
+		this.m_Log.Printf("\tGrpcPort:\t\t%d", CONF.Server.GrpcPort)
 		this.m_Log.Println("**********************************************************")
 	}
 	ShowMessage()
@@ -78,6 +80,10 @@ func (this *ServerMgr) Init() bool {
 	var packet EventProcess
 	packet.Init()
 	this.m_pCluster.BindPacketFunc(packet.PacketFunc)
+
+	this.m_pServerManager = NewServerManager()
+
+	go StartGrpcServer(CONF.Server.GrpcPort)
 
 	return false
 }

@@ -3,9 +3,9 @@ package message;
 import "message.proto";
 
 option go_package = "./;message";
-
-message ServerData {
-    int64 ServerId = 1;
-    SERVICE ServerType = 2;
-    string ServerAddr = 3;
-}
+//
+//message ServerData {
+//    int64 ServerId = 1;
+//    SERVICE ServerType = 2;
+//    string ServerAddr = 3;
+//}

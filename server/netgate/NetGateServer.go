@@ -9,6 +9,8 @@ import (
 	"gonet/common/cluster/etv3"
 	"gonet/network"
 	"gonet/rpc"
+	"gonet/server/game"
+	"gonet/server/message"
 	"strconv"
 	"strings"
 	"time"
@@ -44,6 +46,7 @@ type (
 		common.MServer `yaml:"mnetgate"`
 		common.Etcd    `yaml:"etcd"`
 		common.Nats    `yaml:"nats"`
+		common.Center  `yaml:"center"`
 	}
 )
 
@@ -72,6 +75,31 @@ func (this *ServerMgr) GetCluster() *cluster.Cluster {
 
 func (this *ServerMgr) GetPlayerMgr() *PlayerManager {
 	return this.m_PlayerMgr
+}
+
+func (this *ServerMgr) InitCenterClient() bool {
+	//初始化grpc连接
+	this.M_pGrpcClient = game.NewGrpcClient()
+	this.M_pGrpcClient.ConnectToServer(CONF.Center.GrpcPort)
+	this.SetId(this.M_pGrpcClient.ReqServerId())
+	return true
+}
+
+func (this *ServerMgr) VerifyServer(thisip string, thisport int) {
+	msg := &message.ReqServerVerify{}
+	msg.Info = &message.ServerInfo{
+		Id:   uint32(this.GetId()),
+		Type: uint32(rpc.SERVICE_GATESERVER),
+		Ip:   thisip,
+		Port: uint32(thisport),
+	}
+	this.SendToCenter(1, 0, "ReqServerVerify", msg)
+}
+
+//--------------发送给中央服----------------------//
+func (this *ServerMgr) SendToCenter(Id int64, ClusterId uint32, funcName string, params ...interface{}) {
+	head := rpc.RpcHead{Id: Id, ClusterId: ClusterId, DestServerType: rpc.SERVICE_CENTERSERVER, SrcClusterId: SERVER.GetCluster().Id(), SendType: rpc.SEND_BOARD_CAST}
+	SERVER.GetCluster().SendMsg(head, funcName, params...)
 }
 
 func (this *ServerMgr) Init() bool {
@@ -116,6 +144,8 @@ func (this *ServerMgr) Init() bool {
 		}
 	}
 
+	this.InitCenterClient()
+
 	//websocket
 	this.m_pService = new(network.WebSocket)
 	this.m_pService.Init(thisip, thisport)
@@ -146,6 +176,7 @@ func (this *ServerMgr) Init() bool {
 		this.m_Log.Println("**********************************************************")
 	}
 	ShowMessage()
+	this.VerifyServer(thisip, thisport)
 	return false
 }
 

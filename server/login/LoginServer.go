@@ -8,6 +8,8 @@ import (
 	"gonet/common"
 	"gonet/common/cluster"
 	"gonet/rpc"
+	"gonet/server/game"
+	"gonet/server/message"
 	"net/http"
 )
 
@@ -33,6 +35,7 @@ type (
 		common.Server `yaml:"login"`
 		common.Etcd   `yaml:"etcd"`
 		common.PvpWeb `yaml:pvpweb`
+		common.Center `yaml:"center"`
 	}
 )
 
@@ -40,6 +43,31 @@ var (
 	CONF   Config
 	SERVER ServerMgr
 )
+
+func (this *ServerMgr) InitCenterClient() bool {
+	//初始化grpc连接
+	this.M_pGrpcClient = game.NewGrpcClient()
+	this.M_pGrpcClient.ConnectToServer(CONF.Center.GrpcPort)
+	this.SetId(this.M_pGrpcClient.ReqServerId())
+	return true
+}
+
+func (this *ServerMgr) VerifyServer(thisip string, thisport int) {
+	msg := &message.ReqServerVerify{}
+	msg.Info = &message.ServerInfo{
+		Id:   uint32(this.GetId()),
+		Type: uint32(rpc.SERVICE_LOGINSERVER),
+		Ip:   thisip,
+		Port: uint32(thisport),
+	}
+	this.SendToCenter(1, 0, "ReqServerVerify", msg)
+}
+
+//--------------发送给中央服----------------------//
+func (this *ServerMgr) SendToCenter(Id int64, ClusterId uint32, funcName string, params ...interface{}) {
+	head := rpc.RpcHead{Id: Id, ClusterId: ClusterId, DestServerType: rpc.SERVICE_CENTERSERVER, SrcClusterId: SERVER.GetCluster().Id(), SendType: rpc.SEND_BOARD_CAST}
+	SERVER.GetCluster().SendMsg(head, funcName, params...)
+}
 
 func (this *ServerMgr) Init() bool {
 	if this.m_Inited {
@@ -56,6 +84,7 @@ func (this *ServerMgr) Init() bool {
 	this.m_FileMonitor.Init()
 
 	NETGATECONF.Init()
+	this.InitCenterClient()
 
 	//注册到集群服务器
 	//var packet1 EventProcess
@@ -91,6 +120,7 @@ func (this *ServerMgr) Init() bool {
 	http.HandleFunc("/getLeaderboard", getLeaderboard)
 	http.HandleFunc("/refreshUserLeaderboard", refreshUserLeaderboard)
 
+	this.VerifyServer(CONF.Server.Ip, CONF.Server.Port)
 	addr := fmt.Sprintf("%s:%d", CONF.Server.Ip, CONF.Server.Port)
 
 	ShowMessage := func() {

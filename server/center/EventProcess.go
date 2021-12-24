@@ -22,7 +22,9 @@ func (this *EventProcess) Init() {
 	this.RegisterCall("ReqServerVerify", func(ctx context.Context, packet *message.ReqServerVerify) {
 		head := this.GetRpcHead(ctx)
 		SERVER.m_Log.Debugf("head[%v]", head)
-		SERVER.m_pServerManager.UniqueAdd(packet.Info)
+		if SERVER.m_pServerManager.UniqueAdd(packet.Info) {
+			SERVER.m_Log.Debugf("添加失败，请检查是否重复 ")
+		}
 		SERVER.m_pServerManager.DebugServerList()
 	})
 

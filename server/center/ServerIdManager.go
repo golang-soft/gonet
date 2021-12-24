@@ -1,11 +1,14 @@
 package center
 
-import "sync"
+import (
+	"sync"
+)
 
 var sonce sync.Once
 
 type ServerIdManager struct {
 	curId int64
+	mutex sync.Mutex
 }
 
 var serverIdManagerInstance *ServerIdManager
@@ -22,6 +25,9 @@ func (this *ServerIdManager) getCurServerId() int64 {
 }
 
 func (this *ServerIdManager) getNextServerId() int64 {
+	this.mutex.Lock()
+	defer this.mutex.Unlock()
+
 	this.curId++
 
 	return this.curId

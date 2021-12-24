@@ -29,9 +29,9 @@ var maxConnId int64
 
 // 客户端读写消息
 type wsMessage struct {
-	// websocket.TextMessage 消息类型
-	//messageType int
-	data []byte
+	//websocket.TextMessage //消息类型
+	messageType int
+	data        []byte
 }
 
 // ws 的所有连接
@@ -100,11 +100,11 @@ func (wsConn *wsConnection) processLoop() {
 		}
 		log.Println("接收到消息", string(msg.data))
 		// 修改以下内容把客户端传递的消息传递给处理程序
-		//err = wsConn.wsWrite(msg.messageType, msg.data)
-		//if err != nil {
-		//	log.Println("发送消息给客户端出现错误", err.Error())
-		//	break
-		//}
+		err = wsConn.wsWrite(msg.messageType, msg.data)
+		if err != nil {
+			log.Println("发送消息给客户端出现错误", err.Error())
+			break
+		}
 	}
 }
 
@@ -115,7 +115,7 @@ func (wsConn *wsConnection) wsReadLoop() {
 	wsConn.wsSocket.SetReadDeadline(time.Now().Add(pongWait))
 	for {
 		// 读一个message
-		_, data, err := wsConn.wsSocket.ReadMessage()
+		msgType, data, err := wsConn.wsSocket.ReadMessage()
 		if err != nil {
 			websocket.IsUnexpectedCloseError(err, websocket.CloseGoingAway, websocket.CloseAbnormalClosure)
 			log.Println("消息读取出现错误", err.Error())
@@ -123,9 +123,10 @@ func (wsConn *wsConnection) wsReadLoop() {
 			return
 		}
 		req := &wsMessage{
-			//msgType,
+			msgType,
 			data,
 		}
+
 		// 放入请求队列,消息入栈
 		select {
 		case wsConn.inChan <- req:
@@ -144,14 +145,14 @@ func (wsConn *wsConnection) wsWriteLoop() {
 	for {
 		select {
 		// 取一个应答
-		//case msg := <-wsConn.outChan:
-		// 写给websocket
-		//if err := wsConn.wsSocket.WriteMessage(msg.messageType, msg.data); err != nil {
-		//	log.Println("发送消息给客户端发生错误", err.Error())
-		//	// 切断服务
-		//	wsConn.close()
-		//	return
-		//}
+		case msg := <-wsConn.outChan:
+			//写给websocket
+			if err := wsConn.wsSocket.WriteMessage(msg.messageType, msg.data); err != nil {
+				log.Println("发送消息给客户端发生错误", err.Error())
+				// 切断服务
+				wsConn.close()
+				return
+			}
 		case <-wsConn.closeChan:
 			// 获取到关闭通知
 			return
@@ -168,7 +169,7 @@ func (wsConn *wsConnection) wsWriteLoop() {
 // 写入消息到队列中
 func (wsConn *wsConnection) wsWrite(messageType int, data []byte) error {
 	select {
-	case wsConn.outChan <- &wsMessage{ /*messageType,*/ data}:
+	case wsConn.outChan <- &wsMessage{messageType, data}:
 	case <-wsConn.closeChan:
 		return errors.New("连接已经关闭")
 	}
@@ -208,8 +209,7 @@ func StartWebsocket(addrPort string) {
 	http.ListenAndServe(addrPort, nil)
 }
 
-//func main() {
-//	StartWebsocket("192.168.1.233:3000")
-//
-//
-//}
+func main() {
+	StartWebsocket("192.168.1.29:3000")
+
+}

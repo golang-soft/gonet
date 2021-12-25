@@ -109,6 +109,47 @@ message OpenBoxReply{
 }
 
 
+//room+++++++++++++++++++++++++++++++++++++++++
+//获取房间
+message reqGetRooms {
+  int32 start =1;
+  int32 len =2;
+}
+
+message respGetRooms{
+  string httpuuid=1;
+  string uuid=2;
+  int32 code=3;
+  resBox data=4;
+}
+
+//创建房间
+message reqCreateRoom {
+  string name =1;
+  string pwd =2;
+}
+
+message respCreateRoom{
+  string httpuuid=1;
+  string uuid=2;
+  int32 code=3;
+  resBox data=4;
+}
+//加入房间
+message reqJoinRoom {
+  string name =1;
+  string pwd =2;
+}
+
+message respJoinRoom{
+  string httpuuid=1;
+  string uuid=2;
+  int32 code=3;
+  resBox data=4;
+}
+
+
+
 service Greeter {
   rpc AddHero (AddHeroData) returns (HeroReply) {}
   rpc AddItem (AddItemData) returns (ItemReply) {}
@@ -117,4 +158,8 @@ service Greeter {
   rpc TdownHeroEquip(OptionHeroEquip) returns (HeroReply) {}
   rpc GetGoodsByReduce(AddItemData) returns(ItemReply){}
   rpc OpenBox(AddItemData)returns(OpenBoxReply){}
+
+  rpc GetRooms(reqGetRooms)returns(respGetRooms){}
+  rpc CreateRoom(reqCreateRoom)returns(respCreateRoom){}
+  rpc JoinRoom(reqJoinRoom)returns(respJoinRoom){}
 }

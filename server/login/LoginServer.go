@@ -104,6 +104,9 @@ func (this *ServerMgr) Init() bool {
 	http.HandleFunc("/grpcaddHero", GrpcAddHero)
 	http.HandleFunc("/grpcaddItem", GrpcAddItem)
 
+	//grpc 测试接口
+	http.HandleFunc("/grpcGetRooms", GrpcGetRooms)
+
 	//http接口
 	http.HandleFunc("/createPlayer", createPlayer)
 	http.HandleFunc("/login", Login)

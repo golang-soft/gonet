@@ -1,6 +1,7 @@
 package message
 
 import (
+	"github.com/golang/glog"
 	"github.com/golang/protobuf/proto"
 	"gonet/base"
 	"gonet/rpc"
@@ -67,7 +68,7 @@ func RegisterPacket(packet proto.Message) {
 		//packet.Elem().Set(val)
 		return packet.Interface().(proto.Message)
 	}
-
+	glog.Infof("注册协议 %s", packetName)
 	Packet_CreateFactorStringMap[packetName] = packetFunc
 	Packet_CreateFactorMap[base.GetMessageCode1(packetName)] = packetFunc
 }

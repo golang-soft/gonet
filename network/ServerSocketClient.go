@@ -8,6 +8,7 @@ import (
 	"hash/crc32"
 	"io"
 	"log"
+	"strconv"
 	"time"
 )
 
@@ -54,7 +55,7 @@ func (this *ServerSocketClient) Start() bool {
 		this.m_SendChan = make(chan []byte, MAX_SEND_CHAN)
 		this.m_TimerId = new(int64)
 		*this.m_TimerId = int64(this.m_ClientId)
-		timer.RegisterTimer(this.m_TimerId, (HEART_TIME_OUT/3)*time.Second, func() {
+		timer.RegisterTimer(this.m_TimerId, (HEART_TIME_OUT)*time.Second, func() {
 			this.Update()
 		})
 	}
@@ -163,7 +164,10 @@ func (this *ServerSocketClient) Run() bool {
 				return false
 			}
 		}
+
 		this.m_HeartTime = int(time.Now().Unix()) + HEART_TIME_OUT
+		base.GLOG.Printf("调整心跳时间: %s", strconv.Itoa(this.m_HeartTime))
+
 		return true
 	}
 
@@ -182,7 +186,7 @@ func (this *ServerSocketClient) Run() bool {
 func (this *ServerSocketClient) Update() {
 	now := int(time.Now().Unix())
 	// timeout
-	if this.m_HeartTime < now {
+	if this.m_HeartTime > 0 && this.m_HeartTime < now {
 		this.OnNetFail(2)
 		return
 	}

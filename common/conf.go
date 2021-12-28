@@ -21,9 +21,12 @@ type (
 	}
 
 	Redis struct {
+		Prefix   string `yaml:"prefix"`
 		OpenFlag bool   `yaml:"open"`
 		Ip       string `yaml:"ip"`
 		Password string `yaml:"password"`
+		Port     string `yaml:"port"`
+		Db       int    `yaml:"db"`
 	}
 
 	Etcd struct {

@@ -110,7 +110,7 @@ func (this *UserPrcoess) HandleBasicMessage(socketid uint32, packetId uint32, bu
 		SERVER.GetLog().Debugf("网关收到心跳包, %d", packetId)
 	} else {
 		//未知的消息
-		SERVER.GetLog().Printf("包解析错误, 未知的消息 socket=%d", socketid)
+		SERVER.GetLog().Printf("包解析错误, 未知的消息 socket=%d, packetId = %d", socketid, packetId)
 	}
 
 	return true
@@ -126,12 +126,13 @@ func (this *UserPrcoess) PacketFunc(packet1 rpc.Packet) bool {
 	}
 
 	//获取配置的路由地址
-	destServerType := packet.(message.Packet).GetPacketHead().DestServerType
+
 	err := message.UnmarshalText(packet, data)
 	if err != nil {
 		SERVER.GetLog().Printf("包解析错误2  socket=%d", socketid)
 		return true
 	}
+	destServerType := packet.(message.Packet).GetPacketHead().DestServerType
 
 	packetHead := packet.(message.Packet).GetPacketHead()
 	packetHead.DestServerType = destServerType

@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"github.com/golang/protobuf/proto"
 	"gonet/base"
+	"gonet/base/redis"
 	"gonet/base/server"
 	"gonet/common"
 	"gonet/common/cluster"
@@ -24,13 +25,14 @@ type (
 	ServerMgr struct {
 		server.BaseServer
 
-		m_pService   *network.ServerSocket
-		m_pCluster   *cluster.Cluster
-		m_pActorDB   *sql.DB
-		m_Inited     bool
-		m_Log        base.CLog
-		m_SnowFlake  *cluster.Snowflake
-		m_PlayerRaft *cluster.PlayerRaft
+		m_pService     *network.ServerSocket
+		m_pCluster     *cluster.Cluster
+		m_pActorDB     *sql.DB
+		m_Inited       bool
+		M_Log          base.CLog
+		m_SnowFlake    *cluster.Snowflake
+		m_PlayerRaft   *cluster.PlayerRaft
+		M_pRedisClient *redis.Client
 	}
 
 	IServerMgr interface {
@@ -102,26 +104,46 @@ func (this *ServerMgr) Init() bool {
 	})*/
 
 	//初始化log文件
-	this.m_Log.Init("world")
+	this.M_Log.Init("world")
 	//初始配置文件
 	//base.ReadConf("D:\\workspace-go\\gonet\\server\\bin\\gonet.yaml", &CONF)
 	this.InitConfig(&CONF)
 
 	table.Init()
-	this.m_Log.Printf("初始化配置表数据成功!")
+	this.M_Log.Printf("初始化配置表数据成功!")
 
-	this.m_Log.Println("正在初始化数据库连接...")
+	this.M_Log.Println("正在初始化数据库连接...")
 	if this.InitDB() {
-		this.m_Log.Printf("[%s]数据库连接是失败...", CONF.Db.Name)
+		this.M_Log.Printf("[%s]数据库连接是失败...", CONF.Db.Name)
 		log.Fatalf("[%s]数据库连接是失败...", CONF.Db.Name)
 		return false
 	}
-	this.m_Log.Printf("[%s]数据库初始化成功!", CONF.Db.Name)
+	this.M_Log.Printf("[%s]数据库初始化成功!", CONF.Db.Name)
 
 	if CONF.Redis.OpenFlag {
 		rd.OpenRedisPool(CONF.Redis.Ip, CONF.Redis.Password)
+		var err error
+		this.M_pRedisClient, err = redis.NewClient(&redis.RedisConfig{
+			Prefix: CONF.Redis.Prefix,
+			Host:   CONF.Redis.Ip,
+			Port:   CONF.Redis.Port,
+			Pass:   CONF.Redis.Password,
+			Db:     CONF.Redis.Db,
+		})
+		if err != nil {
+			this.M_Log.Debug("初始化redis失败")
+		}
 	}
 	this.InitCenterClient()
+
+	{
+		value := this.M_pRedisClient.HGetAll("user:round:basic:10001:999")
+		mapdata, _ := value.Result()
+		this.M_Log.Debugf(">>>> %s", mapdata["user"])
+
+		value1 := this.M_pRedisClient.HGet("user:round:basic:10001:999", "user")
+		this.M_Log.Debugf(">>>>《《《《 %s", value1.Val())
+	}
 
 	//snowflake
 	this.m_SnowFlake = cluster.NewSnowflake(CONF.SnowFlake.Endpoints)
@@ -167,12 +189,12 @@ func (this *ServerMgr) Init() bool {
 	this.m_pCluster.BindPacketFunc(centerProcess.PacketFunc)
 
 	ShowMessage := func() {
-		this.m_Log.Println("**********************************************************")
-		this.m_Log.Printf("\tWorldServer Version:\t%s", base.BUILD_NO)
-		this.m_Log.Printf("\tWorldServerIP(LAN):\t%s:%d", thisip, thisport)
-		this.m_Log.Printf("\tActorDBServer(LAN):\t%s", CONF.Db.Ip)
-		this.m_Log.Printf("\tActorDBName:\t\t%s", CONF.Db.Name)
-		this.m_Log.Println("**********************************************************")
+		this.M_Log.Println("**********************************************************")
+		this.M_Log.Printf("\tWorldServer Version:\t%s", base.BUILD_NO)
+		this.M_Log.Printf("\tWorldServerIP(LAN):\t%s:%d", thisip, thisport)
+		this.M_Log.Printf("\tActorDBServer(LAN):\t%s", CONF.Db.Ip)
+		this.M_Log.Printf("\tActorDBName:\t\t%s", CONF.Db.Name)
+		this.M_Log.Println("**********************************************************")
 	}
 	ShowMessage()
 
@@ -202,7 +224,7 @@ func (this *ServerMgr) GetDB() *sql.DB {
 }
 
 func (this *ServerMgr) GetLog() *base.CLog {
-	return &this.m_Log
+	return &this.M_Log
 }
 
 func (this *ServerMgr) GetServer() *network.ServerSocket {

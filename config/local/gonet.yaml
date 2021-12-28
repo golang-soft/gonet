@@ -70,9 +70,12 @@ nats:
 
 # redis配置
 redis:
+  prefix: hero
   open: true
   ip: 127.0.0.1
   password: 123456
+  port: 6379
+  db: 0
 
 #login
 login:
@@ -86,8 +89,8 @@ mworld:
 #多网关服务器地址
 mnetgate:
   endpoints:
-    - 192.168.1.233:3000
-    - 192.168.1.233:3001
+    - 192.168.1.29:3000
+    - 192.168.1.29:3001
 #多服务的账号服务器地址
 maccount:
   endpoints:

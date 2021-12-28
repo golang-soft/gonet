@@ -17,7 +17,9 @@ func insertSqlStr(sqlData *SqlData) string {
 	if index != -1 {
 		sqlvalue = sqlvalue[:index]
 	}
-	return "insert into " + sqlData.Table + " (" + sqlname + ") VALUES (" + sqlvalue + ")"
+	sql := "insert into " + sqlData.Table + " (" + sqlname + ") VALUES (" + sqlvalue + ")"
+	base.GLOG.Debugf(sql)
+	return sql
 }
 
 //--- struct to sql

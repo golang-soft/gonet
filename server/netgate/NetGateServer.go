@@ -19,8 +19,8 @@ import (
 type (
 	ServerMgr struct {
 		server.BaseServer
-		//m_pService       *network.ServerSocket
-		m_pService       *network.WebSocket
+		m_pTcpService *network.ServerSocket
+		//m_pService       *network.WebSocket
 		m_Inited         bool
 		m_config         ini.Config
 		m_Log            base.CLog
@@ -60,14 +60,14 @@ func (this *ServerMgr) GetLog() *base.CLog {
 }
 
 //socket
-//func (this *ServerMgr) GetServer() *network.ServerSocket{
-// 	return this.m_pService
-//}
+func (this *ServerMgr) GetServer() *network.ServerSocket {
+	return this.m_pTcpService
+}
 
 //websocket
-func (this *ServerMgr) GetServer() *network.WebSocket {
-	return this.m_pService
-}
+//func (this *ServerMgr) GetWebSocketServer() *network.WebSocket {
+//	return this.m_pService
+//}
 
 func (this *ServerMgr) GetCluster() *cluster.Cluster {
 	return this.m_pCluster
@@ -102,6 +102,32 @@ func (this *ServerMgr) SendToCenter(Id int64, ClusterId uint32, funcName string,
 	SERVER.GetCluster().SendMsg(head, funcName, params...)
 }
 
+func (this *ServerMgr) InitSocket(thisip string, thisport int) bool {
+	this.m_pTcpService = new(network.ServerSocket)
+	this.m_pTcpService.Init(thisip, thisport)
+	this.m_pTcpService.SetMaxPacketLen(base.MAX_CLIENT_PACKET)
+	this.m_pTcpService.SetConnectType(network.CLIENT_CONNECT)
+	//this.m_pService.Start()
+	packet := new(UserPrcoess)
+	packet.Init()
+	this.m_pTcpService.BindPacketFunc(packet.PacketFunc)
+	this.m_pTcpService.Start()
+	message.Init()
+	return true
+}
+
+//func (this *ServerMgr)InitWebsocket(thisip string, thisport int) bool {
+//	this.m_pService = new(network.WebSocket)
+//	this.m_pService.Init(thisip, thisport)
+//	this.m_pService.SetConnectType(network.CLIENT_CONNECT)
+//	//this.m_pService.Start()
+//	packet := new(UserPrcoess)
+//	packet.Init()
+//	this.m_pService.BindPacketFunc(packet.PacketFunc)
+//	this.m_pService.Start()
+//	return true
+//}
+
 func (this *ServerMgr) Init() bool {
 	if this.m_Inited {
 		return true
@@ -112,17 +138,6 @@ func (this *ServerMgr) Init() bool {
 	//初始配置文件
 	//base.ReadConf("D:\\workspace-go\\gonet\\server\\bin\\gonet.yaml", &CONF)
 	this.InitConfig(&CONF)
-
-	//初始化socket
-	//this.m_pService = new(network.ServerSocket)
-	//this.m_pService.Init(CONF.Server.Ip, CONF.Server.Port)
-	//this.m_pService.SetMaxPacketLen(base.MAX_CLIENT_PACKET)
-	//this.m_pService.SetConnectType(network.CLIENT_CONNECT)
-	////this.m_pService.Start()
-	//packet := new(UserPrcoess)
-	//packet.Init()
-	//this.m_pService.BindPacketFunc(packet.PacketFunc)
-	//this.m_pService.Start()
 
 	//etcd 的处理
 	service := &etv3.Service{}
@@ -145,16 +160,11 @@ func (this *ServerMgr) Init() bool {
 	}
 
 	this.InitCenterClient()
+	//初始化socket
+	this.InitSocket(thisip, thisport)
+	//websocket 暂时不用
+	//this.InitWebsocket(thisip, thisport)
 
-	//websocket
-	this.m_pService = new(network.WebSocket)
-	this.m_pService.Init(thisip, thisport)
-	this.m_pService.SetConnectType(network.CLIENT_CONNECT)
-	//this.m_pService.Start()
-	packet := new(UserPrcoess)
-	packet.Init()
-	this.m_pService.BindPacketFunc(packet.PacketFunc)
-	this.m_pService.Start()
 	//注册到集群服务器
 	var packet1 EventProcess
 	packet1.Init()
@@ -180,9 +190,9 @@ func (this *ServerMgr) Init() bool {
 	return false
 }
 
-func (this *ServerMgr) OnServerStart() {
-	this.m_pService.Start()
-}
+//func (this *ServerMgr) OnServerStart() {
+//	this.m_pService.Start()
+//}
 
 func (this *ServerMgr) GetEventProcess() *EventProcess {
 	return this.m_pEventProcess

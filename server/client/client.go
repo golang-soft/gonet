@@ -3,25 +3,32 @@ package main
 import (
 	"fmt"
 	"gonet/base"
+	"gonet/base/config"
+	"gonet/base/system"
 	"gonet/common"
+	"gonet/common/cluster/etv3"
 	"gonet/network"
+	"gonet/rpc"
 	"gonet/server/message"
 	"os"
 	"os/signal"
+	"strconv"
+	"strings"
 )
 
 type (
 	Config struct {
-		common.Server `yaml:"netgate"`
+		common.MServer `yaml:"mnetgate"`
+		common.Etcd    `yaml:"etcd"`
 	}
 )
 
 var (
 	m_Log base.CLog
 
-	CONF   Config
-	CLIENT *network.ClientWebSocket2
-	//CLIENT *network.WebSocketClient
+	CONF Config
+	//CLIENT *network.ClientWebSocket2
+	CLIENT *network.ClientSocket
 )
 
 func main() {
@@ -29,24 +36,46 @@ func main() {
 
 	m_Log.Init("client")
 
-	base.ReadConf("D:\\workspace-go\\gonet\\server\\client\\gonet.yaml", &CONF)
+	//base.ReadConf("D:\\workspace-go\\gonet\\server\\client\\gonet.yaml", &CONF)
+	config.Init(system.Args.Env, &CONF)
 
-	ShowMessage := func() {
-		m_Log.Println("**********************************************************")
-		m_Log.Printf("\tClient Version:\t%s", base.BUILD_NO)
-		m_Log.Printf("\tClient(LAN):\t%s:%d", CONF.Server.Ip, CONF.Server.Port)
-		m_Log.Println("**********************************************************")
+	CLIENT = new(network.ClientSocket)
+
+	service := &etv3.Service{}
+	thisip := "127.0.0.1"
+	thisport := 3000
+
+	for i := 0; i < len(CONF.MServer.Endpoints); i++ {
+		sport := strings.Split(CONF.MServer.Endpoints[i], ":")[1]
+		port, _ := strconv.Atoi(sport)
+		ip := strings.Split(CONF.MServer.Endpoints[i], ":")[0]
+		thisip = ip
+		thisport = port
+		//index := this.GetIndex(this.m_pCluster.GetService().IpString())
+		res := service.CheckExist(&common.ClusterInfo{Type: rpc.SERVICE_GATESERVER, Ip: ip, Port: int32(port)}, CONF.Etcd.Endpoints)
+		if !res {
+			break
+		} else {
+			continue
+		}
 	}
-	ShowMessage()
 
-	CLIENT = new(network.ClientWebSocket2)
-	CLIENT.Init(CONF.Server.Ip, CONF.Server.Port)
+	CLIENT.Init(thisip, thisport)
 	PACKET = new(EventProcess)
 	PACKET.Init()
 	CLIENT.BindPacketFunc(PACKET.PacketFunc)
 	PACKET.Client = CLIENT
-	host := fmt.Sprintf("%s:%d", CONF.Server.Ip, CONF.Server.Port)
-	if !CLIENT.Start(host) {
+
+	ShowMessage := func() {
+		m_Log.Println("**********************************************************")
+		m_Log.Printf("\tClient Version:\t%s", base.BUILD_NO)
+		m_Log.Printf("\tClient(LAN):\t%s:%d", thisip, thisport)
+		m_Log.Println("**********************************************************")
+	}
+	ShowMessage()
+
+	host := fmt.Sprintf("%s:%d", thisip, thisport)
+	if !CLIENT.Start() {
 		m_Log.Debugf("链接失败")
 		return
 	}

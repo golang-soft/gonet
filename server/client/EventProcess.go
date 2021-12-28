@@ -10,6 +10,7 @@ import (
 	"gonet/server/game/lmath"
 	"gonet/server/message"
 	"sync/atomic"
+	"time"
 
 	"github.com/golang/protobuf/proto"
 )
@@ -18,8 +19,7 @@ type (
 	EventProcess struct {
 		actor.Actor
 
-		Client *network.ClientWebSocket2
-		//Client      *network.WebSocketClient
+		Client      *network.ClientSocket
 		AccountId   int64
 		PlayerId    int64
 		AccountName string
@@ -75,7 +75,7 @@ func (this *EventProcess) Init() {
 	this.Actor.Init()
 	this.Pos = lmath.Point3F{1, 1, 1}
 	this.m_Dh.Init()
-	this.RegisterTimer((network.HEART_TIME_OUT/3)*1000*1000*1000, this.Update) //定时器
+	this.RegisterTimer((network.HEART_TIME_OUT/6)*time.Second, this.Update) //定时器
 	this.RegisterCall("W_C_SelectPlayerResponse", func(ctx context.Context, packet *message.W_C_SelectPlayerResponse) {
 		this.AccountId = packet.GetAccountId()
 		nLen := len(packet.GetPlayerData())

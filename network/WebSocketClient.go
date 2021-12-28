@@ -159,7 +159,7 @@ func (this *WebSocketClient) Run() bool {
 // heart
 func (this *WebSocketClient) Update() bool {
 	now := int(time.Now().Unix())
-	if this.m_HeartTime < now {
+	if this.m_HeartTime > 0 && this.m_HeartTime < now {
 		this.OnNetFail(2)
 		return false
 	}

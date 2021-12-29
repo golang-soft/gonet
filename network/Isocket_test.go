@@ -1,8 +1,9 @@
 package network_test
 
 import (
+	"gonet/grpc"
 	"gonet/network"
-	"gonet/rpc"
+	"gonet/server/rpc"
 	"testing"
 )
 

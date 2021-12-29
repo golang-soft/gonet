@@ -4,6 +4,7 @@ import (
 	"context"
 	"gonet/actor"
 	"gonet/server/message"
+	"gonet/server/smessage"
 )
 
 type (
@@ -19,7 +20,7 @@ type (
 func (this *EventProcess) Init() {
 	this.Actor.Init()
 
-	this.RegisterCall("ReqServerVerify", func(ctx context.Context, packet *message.ReqServerVerify) {
+	this.RegisterCall("ReqServerVerify", func(ctx context.Context, packet *smessage.ReqServerVerify) {
 		head := this.GetRpcHead(ctx)
 		SERVER.m_Log.Debugf("head[%v]", head)
 		if SERVER.m_pServerManager.UniqueAdd(packet.Info) {

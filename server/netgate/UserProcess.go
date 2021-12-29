@@ -6,6 +6,7 @@ import (
 	"gonet/base"
 	"gonet/network"
 	"gonet/rpc"
+	"gonet/server/common"
 	"gonet/server/message"
 	"strings"
 )
@@ -119,29 +120,29 @@ func (this *UserPrcoess) HandleBasicMessage(socketid uint32, packetId uint32, bu
 func (this *UserPrcoess) PacketFunc(packet1 rpc.Packet) bool {
 	buff := packet1.Buff
 	socketid := packet1.Id
-	packetId, data := message.Decode(buff)
-	packet := message.GetPakcet(packetId)
+	packetId, data := common.Decode(buff)
+	packet := common.GetPakcet(packetId)
 	if packet == nil {
 		return this.HandleBasicMessage(socketid, packetId, buff)
 	}
 
 	//获取配置的路由地址
 
-	err := message.UnmarshalText(packet, data)
+	err := common.UnmarshalText(packet, data)
 	if err != nil {
 		SERVER.GetLog().Printf("包解析错误2  socket=%d", socketid)
 		return true
 	}
-	destServerType := packet.(message.Packet).GetPacketHead().DestServerType
+	//destServerType := packet.(common.Packet).GetPacketHead().DestServerType
 
-	packetHead := packet.(message.Packet).GetPacketHead()
-	packetHead.DestServerType = destServerType
-	if packetHead == nil || packetHead.Ckx != message.Default_Ipacket_Ckx || packetHead.Stx != message.Default_Ipacket_Stx {
+	packetHead := packet.(common.Packet).GetPacketHead()
+	//packetHead.DestServerType = destServerType
+	if packetHead == nil || packetHead.Ckx != common.Default_Ipacket_Ckx || packetHead.Stx != common.Default_Ipacket_Stx {
 		SERVER.GetLog().Printf("(A)致命的越界包,已经被忽略 socket=%d", socketid)
 		return true
 	}
 
-	packetName := message.GetMessageName(packet)
+	packetName := common.GetMessageName(packet)
 	head := rpc.RpcHead{Id: packetHead.Id, SrcClusterId: SERVER.GetCluster().Id()}
 	if packetName == C_A_LoginRequest {
 		head.ClusterId = socketid
@@ -150,16 +151,16 @@ func (this *UserPrcoess) PacketFunc(packet1 rpc.Packet) bool {
 	}
 
 	//解析整个包
-	if packetHead.DestServerType == message.SERVICE_WORLDSERVER {
-		this.SwtichSendToWorld(socketid, packetName, head, rpc.Marshal(head, packetName, packet))
-	} else if packetHead.DestServerType == message.SERVICE_ACCOUNTSERVER {
-		this.SwtichSendToAccount(socketid, packetName, head, rpc.Marshal(head, packetName, packet))
-	} else if packetHead.DestServerType == message.SERVICE_ZONESERVER {
-		this.SwtichSendToZone(socketid, packetName, head, rpc.Marshal(head, packetName, packet))
-	} else {
-		this.Actor.PacketFunc(rpc.Packet{Id: socketid, Buff: rpc.Marshal(head, packetName, packet)})
-	}
-
+	//if packetHead.DestServerType == smessage.SERVICE_WORLDSERVER {
+	//	this.SwtichSendToWorld(socketid, packetName, head, rpc.Marshal(head, packetName, packet))
+	//} else if packetHead.DestServerType == smessage.SERVICE_ACCOUNTSERVER {
+	//	this.SwtichSendToAccount(socketid, packetName, head, rpc.Marshal(head, packetName, packet))
+	//} else if packetHead.DestServerType == smessage.SERVICE_ZONESERVER {
+	//	this.SwtichSendToZone(socketid, packetName, head, rpc.Marshal(head, packetName, packet))
+	//} else {
+	//	this.Actor.PacketFunc(rpc.Packet{Id: socketid, Buff: rpc.Marshal(head, packetName, packet)})
+	//}
+	this.Actor.PacketFunc(rpc.Packet{Id: socketid, Buff: rpc.Marshal(head, packetName, packet)})
 	return true
 }
 
@@ -177,7 +178,7 @@ func (this *UserPrcoess) Init() {
 	this.RegisterCall("C_G_LogoutRequest", func(ctx context.Context, accountId int, UID int) {
 		SERVER.GetLog().Printf("logout Socket:%d Account:%d UID:%d ", this.GetRpcHead(ctx).SocketId, accountId, UID)
 		SERVER.GetPlayerMgr().SendMsg(rpc.RpcHead{}, "DEL_ACCOUNT", this.GetRpcHead(ctx).SocketId)
-		SendToClient(this.GetRpcHead(ctx).SocketId, &message.C_G_LogoutResponse{PacketHead: message.BuildPacketHead(0, 0)})
+		SendToClient(this.GetRpcHead(ctx).SocketId, &message.C_G_LogoutResponse{PacketHead: common.BuildPacketHead(0, 0)})
 	})
 
 	this.RegisterCall("C_G_LoginResquest", func(ctx context.Context, packet *message.C_G_LoginResquest) {
@@ -186,7 +187,7 @@ func (this *UserPrcoess) Init() {
 		dh.Init()
 		dh.ExchangePubk(packet.GetKey())
 		this.addKey(head.SocketId, &dh)
-		SendToClient(head.SocketId, &message.G_C_LoginResponse{PacketHead: message.BuildPacketHead(0, 0), Key: dh.PubKey()})
+		SendToClient(head.SocketId, &message.G_C_LoginResponse{PacketHead: common.BuildPacketHead(0, 0), Key: dh.PubKey()})
 	})
 
 	this.RegisterCall("C_A_LoginRequest", func(ctx context.Context, packet *message.C_A_LoginRequest) {

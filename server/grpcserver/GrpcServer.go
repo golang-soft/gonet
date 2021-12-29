@@ -11,7 +11,7 @@ import (
 	"gonet/network"
 	"gonet/rpc"
 	"gonet/server/game"
-	"gonet/server/message"
+	"gonet/server/smessage"
 )
 
 type (
@@ -57,8 +57,8 @@ func (this *ServerMgr) InitCenterClient() bool {
 }
 
 func (this *ServerMgr) VerifyServer(thisip string, thisport int) {
-	msg := &message.ReqServerVerify{}
-	msg.Info = &message.ServerInfo{
+	msg := &smessage.ReqServerVerify{}
+	msg.Info = &smessage.ServerInfo{
 		Id:   uint32(this.GetId()),
 		Type: uint32(rpc.SERVICE_GRPCSERVER),
 		Ip:   thisip,

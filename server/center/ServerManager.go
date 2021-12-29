@@ -1,23 +1,23 @@
 package center
 
 import (
-	"gonet/server/message"
+	"gonet/server/smessage"
 	"sync"
 )
 
 type ServerManager struct {
 	mutex     sync.Mutex
-	serverMap map[uint32]*message.ServerInfo
+	serverMap map[uint32]*smessage.ServerInfo
 }
 
 func NewServerManager() *ServerManager {
 	mgr := &ServerManager{
-		serverMap: make(map[uint32]*message.ServerInfo),
+		serverMap: make(map[uint32]*smessage.ServerInfo),
 	}
 	return mgr
 }
 
-func (this *ServerManager) GetById(id uint32) *message.ServerInfo {
+func (this *ServerManager) GetById(id uint32) *smessage.ServerInfo {
 	this.mutex.Lock()
 	defer this.mutex.Unlock()
 
@@ -28,12 +28,12 @@ func (this *ServerManager) GetById(id uint32) *message.ServerInfo {
 	return this.serverMap[id]
 }
 
-func (this *ServerManager) GetByType(tp uint32) []*message.ServerInfo {
+func (this *ServerManager) GetByType(tp uint32) []*smessage.ServerInfo {
 
 	this.mutex.Lock()
 	defer this.mutex.Unlock()
 
-	serverlist := make([]*message.ServerInfo, 0, 0)
+	serverlist := make([]*smessage.ServerInfo, 0, 0)
 	for _, task := range this.serverMap {
 
 		if task.Type != tp {
@@ -45,7 +45,7 @@ func (this *ServerManager) GetByType(tp uint32) []*message.ServerInfo {
 	return serverlist
 }
 
-func (this *ServerManager) UniqueAdd(task *message.ServerInfo) bool {
+func (this *ServerManager) UniqueAdd(task *smessage.ServerInfo) bool {
 
 	if this.GetById(task.Id) != nil {
 		SERVER.m_Log.Println("重复添加服务器 %s", task.Id)
@@ -60,7 +60,7 @@ func (this *ServerManager) UniqueAdd(task *message.ServerInfo) bool {
 	return true
 }
 
-func (mgr *ServerManager) UniqueRemove(task *message.ServerInfo) {
+func (mgr *ServerManager) UniqueRemove(task *smessage.ServerInfo) {
 
 	mgr.mutex.Lock()
 	defer mgr.mutex.Unlock()

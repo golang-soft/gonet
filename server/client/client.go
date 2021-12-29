@@ -9,7 +9,7 @@ import (
 	"gonet/common/cluster/etv3"
 	"gonet/network"
 	"gonet/rpc"
-	"gonet/server/message"
+	common2 "gonet/server/common"
 	"os"
 	"os/signal"
 	"strconv"
@@ -32,7 +32,7 @@ var (
 )
 
 func main() {
-	message.InitClient()
+	common2.InitClient()
 
 	m_Log.Init("client")
 

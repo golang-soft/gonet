@@ -1,2 +1,2 @@
-protoc.exe  --go_out=../message --proto_path=../message  ../message/message.proto ../message/client.proto ../message/game.proto ../message/center.proto
-protoc.exe  --go_out=plugins=grpc:../message --proto_path=../message  ../message/server.proto
+protoc.exe  --go_out=../message --proto_path=../message  ../message/*.proto
+protoc.exe  --go_out=plugins=grpc:../smessage --proto_path=../smessage  ../smessage/*.proto

@@ -1,0 +1,41 @@
+syntax = "proto3";
+import "pub.proto";
+
+package message;
+option go_package = "./;message";
+
+//新版本的协议
+//登录
+//移动
+//离开
+//加入
+//攻击
+//attack_cure
+//attack_dizzy
+//attack_reduce_speed
+//攻击成功
+//out_range
+//夺旗
+//跳跃
+//技能护盾
+//技能反伤
+//技能效果变身
+//技能效果无敌
+//skill_movig
+//加入房间
+//房间消息
+//复活
+//夺旗成功
+//使用道具
+//加血
+//使用道具1003
+//更新dvt
+//排行榜
+//奖励
+
+
+
+
+
+
+

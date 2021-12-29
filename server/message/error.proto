@@ -1,0 +1,18 @@
+syntax = "proto3";
+import "pub.proto";
+
+package message;
+option go_package = "./;message";
+
+// 错误协议
+
+
+
+
+
+
+
+
+
+
+

@@ -1,6 +1,6 @@
 syntax = "proto3";
-package message;
-option go_package = "./;message";
+package smessage;
+option go_package = "./;smessage";
 
 
 message ServerInfo {
@@ -19,13 +19,6 @@ message ReqServerVerify {
 message RetServerVerify {
 
 }
-
-service Greeter {
-    rpc ReqOnlineUserCount (OnlineUserRequest) returns (OnlineUserResponse) {}
-    rpc ReqServerId (ServerIdRequest) returns (ServerIdResponse) {}
-}
-
-
 message OnlineUserRequest {
 }
 message OnlineUserResponse {
@@ -37,3 +30,10 @@ message ServerIdRequest {
 message ServerIdResponse {
     int64 id = 1;
 }
+
+service Greeter {
+    rpc ReqOnlineUserCount (OnlineUserRequest) returns (OnlineUserResponse) {}
+    rpc ReqServerId (ServerIdRequest) returns (ServerIdResponse) {}
+}
+
+

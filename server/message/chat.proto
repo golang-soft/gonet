@@ -1,0 +1,23 @@
+syntax = "proto3";
+import "pub.proto";
+
+package message;
+option go_package = "./;message";
+
+
+enum CHAT{
+    MSG_TYPE_WORLD= 0;
+    MSG_TYPE_PRIVATE= 1;
+    MSG_TYPE_ORG= 2;
+    MSG_TYPE_COUNT= 3;
+};
+
+
+
+
+
+
+
+
+
+

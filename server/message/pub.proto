@@ -1,0 +1,29 @@
+syntax = "proto3";
+// import "message.proto";
+
+package message;
+option go_package = "./;message";
+
+
+//客户端包头
+message Ipacket{
+    int32  Stx = 1;
+    int32  Ckx = 2;
+    int64  Id = 3;
+}
+
+//心跳包
+message HeardPacket{ 
+}
+
+message PlayerData{
+    int64 PlayerID = 1;
+    string PlayerName = 2;
+    int32 PlayerGold = 3;
+}
+
+
+
+
+
+

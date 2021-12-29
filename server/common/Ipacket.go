@@ -1,10 +1,11 @@
-package message
+package common
 
 import (
 	"github.com/golang/glog"
 	"github.com/golang/protobuf/proto"
 	"gonet/base"
 	"gonet/rpc"
+	"gonet/server/message"
 	"google.golang.org/protobuf/reflect/protoreflect"
 	"reflect"
 	"strings"
@@ -24,16 +25,16 @@ const (
 type (
 	//获取包头
 	Packet interface {
-		GetPacketHead() *Ipacket
+		GetPacketHead() *message.Ipacket
 	}
 )
 
-func BuildPacketHead(id int64, destservertype rpc.SERVICE) *Ipacket {
-	ipacket := &Ipacket{
-		Stx:            Default_Ipacket_Stx,
-		DestServerType: SERVICE(destservertype),
-		Ckx:            Default_Ipacket_Ckx,
-		Id:             id,
+func BuildPacketHead(id int64, destservertype rpc.SERVICE) *message.Ipacket {
+	ipacket := &message.Ipacket{
+		Stx: Default_Ipacket_Stx,
+		/*DestServerType: smessage.SERVICE(destservertype),*/
+		Ckx: Default_Ipacket_Ckx,
+		Id:  id,
 	}
 	return ipacket
 }
@@ -116,30 +117,30 @@ func Init() {
 	initCrcNames()
 	//注册消息
 	//PacketHead 中的 DestServerType 决定转发到那个服务器
-	RegisterPacket(&C_A_LoginRequest{PacketHead: BuildPacketHead(0, rpc.SERVICE_GATESERVER)})
-	RegisterPacket(&C_G_LoginResquest{PacketHead: BuildPacketHead(0, rpc.SERVICE_GATESERVER)})
-	RegisterPacket(&C_A_RegisterRequest{PacketHead: BuildPacketHead(0, rpc.SERVICE_ACCOUNTSERVER)})
-	RegisterPacket(&C_G_LogoutResponse{PacketHead: BuildPacketHead(0, rpc.SERVICE_GATESERVER)})
-	RegisterPacket(&C_W_CreatePlayerRequest{PacketHead: BuildPacketHead(0, rpc.SERVICE_WORLDSERVER)})
-	RegisterPacket(&C_W_Game_LoginRequset{PacketHead: BuildPacketHead(0, rpc.SERVICE_WORLDSERVER)})
-	RegisterPacket(&W_C_Test{PacketHead: BuildPacketHead(0, rpc.SERVICE_GATESERVER)})
-	RegisterPacket(&C_W_ChatMessage{PacketHead: BuildPacketHead(0, rpc.SERVICE_WORLDSERVER)})
+	RegisterPacket(&message.C_A_LoginRequest{PacketHead: BuildPacketHead(0, rpc.SERVICE_GATESERVER)})
+	RegisterPacket(&message.C_G_LoginResquest{PacketHead: BuildPacketHead(0, rpc.SERVICE_GATESERVER)})
+	RegisterPacket(&message.C_A_RegisterRequest{PacketHead: BuildPacketHead(0, rpc.SERVICE_ACCOUNTSERVER)})
+	RegisterPacket(&message.C_G_LogoutResponse{PacketHead: BuildPacketHead(0, rpc.SERVICE_GATESERVER)})
+	RegisterPacket(&message.C_W_CreatePlayerRequest{PacketHead: BuildPacketHead(0, rpc.SERVICE_WORLDSERVER)})
+	RegisterPacket(&message.C_W_Game_LoginRequset{PacketHead: BuildPacketHead(0, rpc.SERVICE_WORLDSERVER)})
+	RegisterPacket(&message.W_C_Test{PacketHead: BuildPacketHead(0, rpc.SERVICE_GATESERVER)})
+	RegisterPacket(&message.C_W_ChatMessage{PacketHead: BuildPacketHead(0, rpc.SERVICE_WORLDSERVER)})
 
-	RegisterPacket(&C_Z_LoginCopyMap{PacketHead: BuildPacketHead(0, rpc.SERVICE_ZONESERVER)})
-	RegisterPacket(&C_Z_Move{PacketHead: BuildPacketHead(0, rpc.SERVICE_ZONESERVER)})
-	RegisterPacket(&C_Z_Skill{PacketHead: BuildPacketHead(0, rpc.SERVICE_ZONESERVER)})
+	RegisterPacket(&message.C_Z_LoginCopyMap{PacketHead: BuildPacketHead(0, rpc.SERVICE_ZONESERVER)})
+	RegisterPacket(&message.C_Z_Move{PacketHead: BuildPacketHead(0, rpc.SERVICE_ZONESERVER)})
+	RegisterPacket(&message.C_Z_Skill{PacketHead: BuildPacketHead(0, rpc.SERVICE_ZONESERVER)})
 }
 
 //client消息回调
 func InitClient() {
 	initCrcNames()
 	//注册消息
-	RegisterPacket(&W_C_SelectPlayerResponse{})
-	RegisterPacket(&W_C_CreatePlayerResponse{})
-	RegisterPacket(&Z_C_LoginMap{})
-	RegisterPacket(&Z_C_ENTITY{})
-	RegisterPacket(&W_C_ChatMessage{})
-	RegisterPacket(&A_C_LoginResponse{})
-	RegisterPacket(&A_C_RegisterResponse{})
-	RegisterPacket(&G_C_LoginResponse{})
+	RegisterPacket(&message.W_C_SelectPlayerResponse{})
+	RegisterPacket(&message.W_C_CreatePlayerResponse{})
+	RegisterPacket(&message.Z_C_LoginMap{})
+	RegisterPacket(&message.Z_C_ENTITY{})
+	RegisterPacket(&message.W_C_ChatMessage{})
+	RegisterPacket(&message.A_C_LoginResponse{})
+	RegisterPacket(&message.A_C_RegisterResponse{})
+	RegisterPacket(&message.G_C_LoginResponse{})
 }

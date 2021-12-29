@@ -6,7 +6,7 @@ import (
 	"gonet/actor"
 	"gonet/common"
 	"gonet/rpc"
-	"gonet/server/message"
+	common2 "gonet/server/common"
 	"gonet/server/world/toprank"
 	"runtime"
 	"strconv"
@@ -43,19 +43,19 @@ func (this *CmdProcess) Init() {
 		fmt.Println("gc finished")
 	})
 
-	this.RegisterCall("InTopRank", func(ctx context.Context, argv0,argv1,argv2,argv3,argv4,argv5 string) {
+	this.RegisterCall("InTopRank", func(ctx context.Context, argv0, argv1, argv2, argv3, argv4, argv5 string) {
 		nType, _ := strconv.Atoi(argv0)
 		id, _ := strconv.Atoi(argv1)
 		name := argv2
 		score, _ := strconv.Atoi(argv3)
 		val0, _ := strconv.Atoi(argv4)
 		val1, _ := strconv.Atoi(argv5)
-		toprank.MGR().SendMsg( rpc.RpcHead{},"InTopRank", nType, int64(id), name, score, val0, val1)
+		toprank.MGR().SendMsg(rpc.RpcHead{}, "InTopRank", nType, int64(id), name, score, val0, val1)
 	})
 
 	this.RegisterCall("showrpc", func(ctx context.Context) {
 		fmt.Printf("--------------  PACKET  -------------\n")
-		for i, v := range message.Packet_CrcNamesMap{
+		for i, v := range common2.Packet_CrcNamesMap {
 			fmt.Printf("packetName[%s], crc[%d]\n", v, i)
 		}
 		fmt.Printf("--------------  PACKET  -------------\n")
@@ -64,11 +64,11 @@ func (this *CmdProcess) Init() {
 	this.Actor.Start()
 }
 
-var(
+var (
 	g_Cmd *CmdProcess
 )
 
-func Init(){
+func Init() {
 	g_Cmd = &CmdProcess{}
 	g_Cmd.Init()
 	common.StartConsole(g_Cmd)

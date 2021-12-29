@@ -3,13 +3,13 @@ package game
 import (
 	"context"
 	"fmt"
-	"gonet/server/message"
+	"gonet/server/smessage"
 	"google.golang.org/grpc"
 	"strconv"
 	"time"
 )
 
-var client message.GreeterClient
+var client smessage.GreeterClient
 
 type GrpcClient struct {
 }
@@ -27,7 +27,7 @@ func (this *GrpcClient) DialToServer(port int) chan error {
 	}
 	//defer conn.Close()
 	// 新建一个客户端
-	client = message.NewGreeterClient(conn)
+	client = smessage.NewGreeterClient(conn)
 	fmt.Printf("连接grpc服务器成功, port: %d", port)
 	return nil
 }
@@ -48,7 +48,7 @@ func (this *GrpcClient) ConnectToServer(port int) bool {
 
 func (this *GrpcClient) ReqOnlineUsers() {
 	// 调用服务端函数
-	res, err := client.ReqOnlineUserCount(context.Background(), &message.OnlineUserRequest{})
+	res, err := client.ReqOnlineUserCount(context.Background(), &smessage.OnlineUserRequest{})
 	if err != nil {
 		fmt.Printf("调用服务端代码失败: %s", err)
 		return
@@ -58,7 +58,7 @@ func (this *GrpcClient) ReqOnlineUsers() {
 
 func (this *GrpcClient) ReqServerId() int64 {
 	// 调用服务端函数
-	res, err := client.ReqServerId(context.Background(), &message.ServerIdRequest{})
+	res, err := client.ReqServerId(context.Background(), &smessage.ServerIdRequest{})
 	if err != nil {
 		fmt.Printf("调用服务端代码失败: %s", err)
 		return 0

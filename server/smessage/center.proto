@@ -1,8 +1,8 @@
 syntax = "proto3";
-package message;
+package smessage;
 import "message.proto";
 
-option go_package = "./;message";
+option go_package = "./;smessage";
 //
 //message ServerData {
 //    int64 ServerId = 1;

@@ -8,6 +8,7 @@ import (
 	"gonet/base"
 	"gonet/db"
 	"gonet/rpc"
+	"gonet/server/common"
 	"gonet/server/message"
 	"log"
 )
@@ -60,7 +61,7 @@ func (this *EventProcess) Init() {
 		}
 		if nError != 0 {
 			SendToClient(rpc.RpcHead{ClusterId: this.GetRpcHead(ctx).SrcClusterId, SocketId: socketId}, &message.A_C_RegisterResponse{
-				PacketHead: message.BuildPacketHead(accountId, 0),
+				PacketHead: common.BuildPacketHead(accountId, 0),
 				Error:      int32(nError),
 			})
 		}
@@ -101,7 +102,7 @@ func (this *EventProcess) Init() {
 
 		if nError != base.NONE_ERROR {
 			SendToClient(rpc.RpcHead{ClusterId: this.GetRpcHead(ctx).SrcClusterId, SocketId: socketId}, &message.A_C_LoginResponse{
-				PacketHead:  message.BuildPacketHead(0, 0),
+				PacketHead:  common.BuildPacketHead(0, 0),
 				Error:       int32(nError),
 				AccountName: packet.AccountName,
 			})

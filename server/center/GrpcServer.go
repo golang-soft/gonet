@@ -2,7 +2,7 @@ package center
 
 import (
 	"context"
-	"gonet/server/message"
+	"gonet/server/smessage"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 	"net"
@@ -11,14 +11,14 @@ import (
 
 type GrpcServer struct{}
 
-func (s *GrpcServer) ReqOnlineUserCount(ctx context.Context, in *message.OnlineUserRequest) (*message.OnlineUserResponse, error) {
-	data := &message.OnlineUserResponse{}
+func (s *GrpcServer) ReqOnlineUserCount(ctx context.Context, in *smessage.OnlineUserRequest) (*smessage.OnlineUserResponse, error) {
+	data := &smessage.OnlineUserResponse{}
 	data.Count = GetUserManager().getOnlineUserCount()
 	return data, nil
 }
 
-func (s *GrpcServer) ReqServerId(ctx context.Context, in *message.ServerIdRequest) (*message.ServerIdResponse, error) {
-	data := &message.ServerIdResponse{}
+func (s *GrpcServer) ReqServerId(ctx context.Context, in *smessage.ServerIdRequest) (*smessage.ServerIdResponse, error) {
+	data := &smessage.ServerIdResponse{}
 	data.Id = GetServerIdManager().getNextServerId()
 	return data, nil
 }
@@ -34,7 +34,7 @@ func StartGrpcServer(port int64) {
 	// 创建gRPC服务器
 	s := grpc.NewServer()
 	// 注册服务
-	message.RegisterGreeterServer(s, &GrpcServer{})
+	smessage.RegisterGreeterServer(s, &GrpcServer{})
 	reflection.Register(s)
 	err = s.Serve(lis)
 	if err != nil {

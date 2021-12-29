@@ -6,6 +6,7 @@ import (
 	"github.com/golang/protobuf/proto"
 	"gonet/base"
 	"gonet/rpc"
+	"gonet/server/common"
 	"gonet/server/message"
 	"reflect"
 )
@@ -17,7 +18,7 @@ var (
 )
 
 func SendToClient(socketId uint32, packet proto.Message) {
-	SERVER.GetServer().Send(rpc.RpcHead{SocketId: socketId}, message.Encode(packet))
+	SERVER.GetServer().Send(rpc.RpcHead{SocketId: socketId}, common.Encode(packet))
 }
 
 func DispatchPacket(packet rpc.Packet) bool {
@@ -36,7 +37,7 @@ func DispatchPacket(packet rpc.Packet) bool {
 		dec.Decode(&messageName)
 		packet := reflect.New(proto.MessageType(messageName).Elem()).Interface().(proto.Message)
 		dec.Decode(packet)
-		buff := message.Encode(packet)
+		buff := common.Encode(packet)
 		if messageName == A_C_RegisterResponse || messageName == A_C_LoginResponse {
 			SERVER.GetServer().Send(rpc.RpcHead{SocketId: head.SocketId}, buff)
 		} else if messageName == W_C_Test {

@@ -11,8 +11,9 @@ import (
 	"gonet/db"
 	"gonet/network"
 	"gonet/rpc"
+	common2 "gonet/server/common"
 	"gonet/server/game"
-	"gonet/server/message"
+	"gonet/server/smessage"
 	"log"
 	"strconv"
 	"strings"
@@ -72,8 +73,8 @@ func (this *ServerMgr) InitCenterClient() bool {
 }
 
 func (this *ServerMgr) VerifyServer(thisip string, thisport int) {
-	msg := &message.ReqServerVerify{}
-	msg.Info = &message.ServerInfo{
+	msg := &smessage.ReqServerVerify{}
+	msg.Info = &smessage.ServerInfo{
 		Id:   uint32(this.GetId()),
 		Type: uint32(rpc.SERVICE_ACCOUNTSERVER),
 		Ip:   thisip,
@@ -213,7 +214,7 @@ func BoardCastToWorld(funcName string, params ...interface{}) {
 
 //发送到客户端
 func SendToClient(head rpc.RpcHead, packet proto.Message) {
-	pakcetHead := packet.(message.Packet).GetPacketHead()
+	pakcetHead := packet.(common2.Packet).GetPacketHead()
 	if pakcetHead != nil {
 		head.DestServerType = rpc.SERVICE_GATESERVER
 		head.Id = pakcetHead.Id

@@ -1,0 +1,27 @@
+syntax = "proto3";
+import "pub.proto";
+
+package message;
+option go_package = "./;message";
+
+// 获取房间数据
+// 创建房间
+// 加入房间
+// 快速加入房间
+// 离开房间
+// 匹配
+// 房间重命名
+// 房间修改密码
+// 踢人
+// 删除房间
+// 改变房间owner
+
+
+
+
+
+
+
+
+
+

@@ -5,6 +5,7 @@ import (
 	"gonet/actor"
 	"gonet/common"
 	"gonet/rpc"
+	common2 "gonet/server/common"
 	"gonet/server/message"
 	"strconv"
 )
@@ -22,7 +23,7 @@ type (
 func (this *CmdProcess) Init() {
 	this.Actor.Init()
 	this.RegisterCall("msg", func(ctx context.Context, args string) {
-		packet1 := &message.C_W_ChatMessage{PacketHead: message.BuildPacketHead(PACKET.AccountId, rpc.SERVICE_GATESERVER),
+		packet1 := &message.C_W_ChatMessage{PacketHead: common2.BuildPacketHead(PACKET.AccountId, rpc.SERVICE_GATESERVER),
 			Sender:      PACKET.PlayerId,
 			Recver:      0,
 			MessageType: int32(message.CHAT_MSG_TYPE_WORLD),

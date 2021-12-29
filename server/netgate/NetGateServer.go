@@ -9,8 +9,9 @@ import (
 	"gonet/common/cluster/etv3"
 	"gonet/network"
 	"gonet/rpc"
+	common2 "gonet/server/common"
 	"gonet/server/game"
-	"gonet/server/message"
+	"gonet/server/smessage"
 	"strconv"
 	"strings"
 	"time"
@@ -86,8 +87,8 @@ func (this *ServerMgr) InitCenterClient() bool {
 }
 
 func (this *ServerMgr) VerifyServer(thisip string, thisport int) {
-	msg := &message.ReqServerVerify{}
-	msg.Info = &message.ServerInfo{
+	msg := &smessage.ReqServerVerify{}
+	msg.Info = &smessage.ServerInfo{
 		Id:   uint32(this.GetId()),
 		Type: uint32(rpc.SERVICE_GATESERVER),
 		Ip:   thisip,
@@ -112,7 +113,7 @@ func (this *ServerMgr) InitSocket(thisip string, thisport int) bool {
 	packet.Init()
 	this.m_pTcpService.BindPacketFunc(packet.PacketFunc)
 	this.m_pTcpService.Start()
-	message.Init()
+	common2.Init()
 	return true
 }
 

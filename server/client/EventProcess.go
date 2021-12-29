@@ -7,6 +7,7 @@ import (
 	"gonet/base"
 	"gonet/network"
 	"gonet/rpc"
+	"gonet/server/common"
 	"gonet/server/game/lmath"
 	"gonet/server/message"
 	"sync/atomic"
@@ -47,24 +48,24 @@ func ToCrc(accountName string, pwd string, buildNo string, nKey int64) uint32 {
 }
 
 func SendPacket(packet proto.Message) {
-	buff := message.Encode(packet)
+	buff := common.Encode(packet)
 	CLIENT.Send(rpc.RpcHead{}, buff)
 }
 
 func (this *EventProcess) SendPacket(packet proto.Message) {
-	buff := message.Encode(packet)
+	buff := common.Encode(packet)
 	this.Client.Send(rpc.RpcHead{}, buff)
 }
 
 func (this *EventProcess) PacketFunc(packet1 rpc.Packet) bool {
-	packetId, data := message.Decode(packet1.Buff)
-	packet := message.GetPakcet(packetId)
+	packetId, data := common.Decode(packet1.Buff)
+	packet := common.GetPakcet(packetId)
 	if packet == nil {
 		return true
 	}
-	err := message.UnmarshalText(packet, data)
+	err := common.UnmarshalText(packet, data)
 	if err == nil {
-		this.Send(rpc.RpcHead{}, rpc.Marshal(rpc.RpcHead{}, message.GetMessageName(packet), packet))
+		this.Send(rpc.RpcHead{}, rpc.Marshal(rpc.RpcHead{}, common.GetMessageName(packet), packet))
 		return true
 	}
 
@@ -81,7 +82,7 @@ func (this *EventProcess) Init() {
 		nLen := len(packet.GetPlayerData())
 		//fmt.Println(len(packet.PlayerData), this.AccountId, packet.PlayerData)
 		if nLen == 0 {
-			packet1 := &message.C_W_CreatePlayerRequest{PacketHead: message.BuildPacketHead(this.AccountId, rpc.SERVICE_GATESERVER),
+			packet1 := &message.C_W_CreatePlayerRequest{PacketHead: common.BuildPacketHead(this.AccountId, rpc.SERVICE_GATESERVER),
 				PlayerName: "我是大坏蛋",
 				Sex:        int32(0)}
 			this.SendPacket(packet1)
@@ -107,7 +108,7 @@ func (this *EventProcess) Init() {
 
 	this.RegisterCall("A_C_LoginResponse", func(ctx context.Context, packet *message.A_C_LoginResponse) {
 		if packet.GetError() == base.ACCOUNT_NOEXIST {
-			packet1 := &message.C_A_RegisterRequest{PacketHead: message.BuildPacketHead(0, rpc.SERVICE_GATESERVER),
+			packet1 := &message.C_A_RegisterRequest{PacketHead: common.BuildPacketHead(0, rpc.SERVICE_GATESERVER),
 				AccountName: packet.AccountName, Password: this.PassWd}
 			this.SendPacket(packet1)
 		} else if packet.GetError() == base.PASSWORD_ERROR {
@@ -160,7 +161,7 @@ func (this *EventProcess) Init() {
 }
 
 func (this *EventProcess) LoginGame() {
-	packet1 := &message.C_W_Game_LoginRequset{PacketHead: message.BuildPacketHead(this.AccountId, rpc.SERVICE_GATESERVER),
+	packet1 := &message.C_W_Game_LoginRequset{PacketHead: common.BuildPacketHead(this.AccountId, rpc.SERVICE_GATESERVER),
 		PlayerId: this.PlayerId}
 	this.SendPacket(packet1)
 }
@@ -174,13 +175,13 @@ func (this *EventProcess) LoginAccount() {
 	this.AccountName = fmt.Sprintf("test321%d", id)
 	this.PassWd = base.MD5(ToSlat(this.AccountName, "123456"))
 	//this.AccountName = fmt.Sprintf("test%d", base.RAND.RandI(0, 7000))
-	packet1 := &message.C_A_LoginRequest{PacketHead: message.BuildPacketHead(0, rpc.SERVICE_GATESERVER),
+	packet1 := &message.C_A_LoginRequest{PacketHead: common.BuildPacketHead(0, rpc.SERVICE_GATESERVER),
 		AccountName: this.AccountName, Password: this.PassWd, BuildNo: base.BUILD_NO, Key: this.m_Dh.ShareKey()}
 	this.SendPacket(packet1)
 }
 
 func (this *EventProcess) LoginGate() {
-	packet1 := &message.C_G_LoginResquest{PacketHead: message.BuildPacketHead(0, rpc.SERVICE_GATESERVER),
+	packet1 := &message.C_G_LoginResquest{PacketHead: common.BuildPacketHead(0, rpc.SERVICE_GATESERVER),
 		Key: this.m_Dh.PubKey()}
 	this.SendPacket(packet1)
 }
@@ -191,7 +192,7 @@ func (this *EventProcess) SendTest() {
 		aa = append(aa, int32(1))
 	}
 
-	packet1 := &message.W_C_Test{PacketHead: message.BuildPacketHead(0, rpc.SERVICE_GATESERVER),
+	packet1 := &message.W_C_Test{PacketHead: common.BuildPacketHead(0, rpc.SERVICE_GATESERVER),
 		Recv: aa}
 	this.SendPacket(packet1)
 }
@@ -201,7 +202,7 @@ var (
 )
 
 func (this *EventProcess) Move(yaw float32, time float32) {
-	packet1 := &message.C_Z_Move{PacketHead: message.BuildPacketHead(this.AccountId, rpc.SERVICE_GATESERVER),
+	packet1 := &message.C_Z_Move{PacketHead: common.BuildPacketHead(this.AccountId, rpc.SERVICE_GATESERVER),
 		Move: &message.C_Z_Move_Move{Mode: 0, Normal: &message.C_Z_Move_Move_Normal{Pos: &message.Point3F{X: this.Pos.X, Y: this.Pos.Y, Z: this.Pos.Z}, Yaw: yaw, Duration: time}}}
 	this.SendPacket(packet1)
 }

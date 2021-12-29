@@ -10,6 +10,7 @@ import (
 	"gonet/common/cluster"
 	"gonet/db"
 	"gonet/rpc"
+	common2 "gonet/server/common"
 	"gonet/server/message"
 	"gonet/server/world"
 	"time"
@@ -54,7 +55,7 @@ func (this *Player) Init() {
 		this.m_Log.Println("玩家登录成功")
 		this.SetGateClusterId(gateClusterId)
 		this.m_PlayerRaft = clusterInfo
-		this.SendToClient(&message.W_C_SelectPlayerResponse{PacketHead: message.BuildPacketHead(this.AccountId, rpc.SERVICE_GATESERVER),
+		this.SendToClient(&message.W_C_SelectPlayerResponse{PacketHead: common2.BuildPacketHead(this.AccountId, rpc.SERVICE_GATESERVER),
 			AccountId:  this.AccountId,
 			PlayerData: PlayerDataList,
 		})
@@ -86,7 +87,7 @@ func (this *Player) Init() {
 				if player_count >= 1 {
 					this.m_Log.Printf("账号[%d]创建玩家上限", this.AccountId)
 					world.SendToClient(this.GetRpcHead(ctx).SrcClusterId, &message.W_C_CreatePlayerResponse{
-						PacketHead: message.BuildPacketHead(this.AccountId, 0),
+						PacketHead: common2.BuildPacketHead(this.AccountId, 0),
 						Error:      int32(1),
 						PlayerId:   0,
 					})
@@ -108,7 +109,7 @@ func (this *Player) Init() {
 		}
 
 		world.SendToClient(gClusterId, &message.W_C_CreatePlayerResponse{
-			PacketHead: message.BuildPacketHead(this.AccountId, 0),
+			PacketHead: common2.BuildPacketHead(this.AccountId, 0),
 			Error:      int32(err),
 			PlayerId:   playerId,
 		})

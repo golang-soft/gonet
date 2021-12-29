@@ -6,7 +6,8 @@ import (
 	"gonet/base"
 	"gonet/base/mpsc"
 	"gonet/common/timer"
-	"gonet/rpc"
+	"gonet/grpc"
+	"gonet/server/rpc"
 	"log"
 	"reflect"
 	"runtime"
@@ -171,7 +172,7 @@ func (this *Actor) RegisterCall(funcName string, call interface{}) {
 
 func (this *Actor) SendMsg(head rpc.RpcHead, funcName string, params ...interface{}) {
 	head.SocketId = 0
-	this.Send(head, rpc.Marshal(head, funcName, params...))
+	this.Send(head, grpc.Marshal(head, funcName, params...))
 }
 
 func (this *Actor) Send(head rpc.RpcHead, buff []byte) {
@@ -191,7 +192,7 @@ func (this *Actor) Send(head rpc.RpcHead, buff []byte) {
 }
 
 func (this *Actor) PacketFunc(packet rpc.Packet) bool {
-	rpcPacket, head := rpc.UnmarshalHead(packet.Buff)
+	rpcPacket, head := grpc.UnmarshalHead(packet.Buff)
 	if this.FindCall(rpcPacket.FuncName) != nil {
 		log.Printf("PacketFunc [%s] 处理消息", rpcPacket.FuncName)
 		head.SocketId = packet.Id
@@ -208,7 +209,7 @@ func (this *Actor) Trace(funcName string) {
 }
 
 func (this *Actor) call(io CallIO) {
-	rpcPacket, _ := rpc.Unmarshal(io.Buff)
+	rpcPacket, _ := grpc.Unmarshal(io.Buff)
 	head := io.RpcHead
 	funcName := rpcPacket.FuncName
 	pFunc := this.FindCall(funcName)
@@ -217,7 +218,7 @@ func (this *Actor) call(io CallIO) {
 		f := pFunc.FuncVal
 		k := pFunc.FuncType
 		rpcPacket.RpcHead.SocketId = io.SocketId
-		params := rpc.UnmarshalBody(rpcPacket, k)
+		params := grpc.UnmarshalBody(rpcPacket, k)
 
 		if len(params) >= 1 {
 			in := make([]reflect.Value, len(params))
@@ -230,7 +231,7 @@ func (this *Actor) call(io CallIO) {
 			this.Trace("")
 			if ret != nil && head.Reply != "" {
 				ret = append([]reflect.Value{reflect.ValueOf(&head)}, ret...)
-				rpc.GCall.Call(ret)
+				grpc.GCall.Call(ret)
 			}
 		} else {
 			log.Printf("func [%s] params at least one context", funcName)

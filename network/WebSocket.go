@@ -2,9 +2,11 @@ package network
 
 import (
 	"fmt"
+	"gonet/server/rpc"
+
 	//"github.com/gorilla/websocket"
 	"golang.org/x/net/websocket"
-	"gonet/rpc"
+	"gonet/grpc"
 	"log"
 	"net/http"
 	"sync"
@@ -141,7 +143,7 @@ func (this *WebSocket) Send(head rpc.RpcHead, buff []byte) int {
 func (this *WebSocket) SendMsg(head rpc.RpcHead, funcName string, params ...interface{}) {
 	pClient := this.GetClientById(head.SocketId)
 	if pClient != nil {
-		pClient.Send(head, rpc.Marshal(head, funcName, params...))
+		pClient.Send(head, grpc.Marshal(head, funcName, params...))
 	}
 }
 

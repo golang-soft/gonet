@@ -1,0 +1,237 @@
+syntax = "proto3";
+import "pub.proto";
+
+package cmessage;
+option go_package = "./;cmessage";
+
+//新版本的协议
+//登录
+//移动
+message MovingReq {
+    Ipacket PacketHead = 1;
+    string from = 2;
+    int64 skill = 3;
+    string to = 4;
+    float x = 5;
+    float y = 6;
+    int32 skillId = 7;
+    string msg = 8;
+    float dir = 9;
+}
+
+message MovingResp{
+    Ipacket PacketHead = 1;
+    int32 speed = 2;
+    int64 reduceSpeedTs = 3;
+    float direction = 4;
+    int32 barrier = 5;
+    int32 dizzy = 6;
+    int32 dizzyTs = 7;
+    float x = 8;
+    float y = 9;
+    int32 stopMove = 10;
+    int64 stopMoveTs = 11;
+    int64 posUpdateTs = 12;
+    string user = 13;
+    string funcName = 14;
+}
+//离开
+//加入
+//攻击
+message AttackReq {
+    Ipacket PacketHead = 1;
+    string from = 2;
+    int32 round = 3;
+    string to  = 4;
+    int32 skill = 5;
+    int32 skillId = 6;
+    float x = 7;
+    float y = 8;
+    float z = 9;
+    string msg = 10;
+}
+message AttackResp {
+    Ipacket PacketHead = 1;
+    string from = 2;
+    string to  = 3;
+    int32 skill = 4;
+    int32 skillId = 5;
+    int32 shield = 6;
+    int32 isSkip = 7;
+    int32 hp = 8;
+    int32 damage = 9;
+    int32 critical = 10;
+    int64 ts = 11;
+}
+
+//attack_cure
+//attack_dizzy
+//attack_reduce_speed
+//攻击成功
+message AttackSuccessResp{
+    Ipacket PacketHead = 1;
+    string from = 2;
+    string to  = 3;
+    int32 skill = 4;
+    int32 skillId = 5;
+    float x = 6;
+    float y = 7;
+    float z = 8;
+    string msg = 9;
+}
+//out_range
+
+//跳跃
+message JumpReq {
+    Ipacket PacketHead = 1;
+    string user = 2;
+}
+message JumpResp {
+    Ipacket PacketHead = 1;
+    string user = 2;
+}
+//技能护盾
+message SkillShieldResp {
+    Ipacket PacketHead = 1;
+    string user = 2;
+    int32 shield = 3;
+    int64 shieldTs = 4;
+}
+//技能反伤
+message SkillThornsResp {
+    Ipacket PacketHead = 1;
+    string user = 2;
+    int32 thorns = 3;
+    int64 thornsTs = 4;
+}
+//技能效果变身
+message SkillDeformationResp {
+    Ipacket PacketHead = 1;
+    string user = 2;
+    int32 addAtk = 3;
+}
+//技能效果无敌
+message SkillImmuneResp {
+    Ipacket PacketHead = 1;
+    string user = 2;
+    int32 immune = 3;
+    int64 immuneTs = 4;
+}
+//skill_movig
+//加入房间
+//房间消息
+//复活
+message ReliveResp{
+    Ipacket PacketHead = 1;
+    string user = 2;
+    int32 round = 3;
+    int32 part = 4;
+    string hid = 5;
+    int32 type = 6;
+    int32 defPercent = 7;
+    int64 hp = 8;
+    int64 updateTs = 9;
+    float x = 10;
+    float y = 11;
+    int32 speed = 12;
+    int64 reduceSpeedTs = 13;
+    int32 direction = 14;
+    int32 barrier = 15;
+    int32 dizzy = 16;
+    int64 dizzyTs = 17;
+    int32 shield = 18;
+    int64 shieldTs = 19;
+    int32 immune = 20;
+    int64 immuneTs = 21;
+    int32 thorns = 22;
+    int64 thornsTs = 23;
+    int64 stopMoveTs = 24;
+    int32 stopMove = 25;
+    int32 addDef = 26;
+    int64 addDefTs = 27;
+    int32 addAtk = 28;
+    int64 posUpdateTs = 29;
+    int64 dieTs = 30;
+    int32 allAttr = 31;
+    int32 dvt = 32;
+    int32 getDvt = 33;
+    int32 desDvt = 34;
+    int32 kill = 35;
+    int32 die = 36;
+    int32 dps = 37;
+    int32 skill_1101_cd = 38;
+    int32 skill_1102_cd = 39;
+    int32 skill_1103_cd = 40;
+    int32 skill_1104_cd = 41;
+    int32 item_1002_cd = 42;
+    int32 item_1003_cd = 43;
+    int32 item_1004_cd = 44;
+    int32 equip_1 = 45;
+    int32 equip_3 = 46;
+    repeated int32 equip = 47;
+}
+//夺旗
+message FlagReq{
+    Ipacket PacketHead = 1;
+}
+message FlagResp {
+    Ipacket PacketHead = 1;
+}
+
+//夺旗成功
+message FlagSuccessResp{
+    Ipacket PacketHead = 1;
+    int32 part = 2;
+    int32 part1score = 3;
+    int32 part2score = 4;
+
+}
+//使用道具
+message UseItemReq {
+    Ipacket PacketHead = 1;
+    string from = 2;
+    int32 itemId = 3;
+    int32 count = 4;
+    string msg = 5;
+}
+//加血
+message AddHpResp {
+    Ipacket PacketHead = 1;
+    int64 hp = 2;
+    int32 add = 3;
+}
+//使用道具1003
+message UseItem1003Resp{
+    Ipacket PacketHead = 1;
+    int32 hp = 2;
+    int32 allAttr = 3;
+}
+//更新dvt
+message UpdateDvtResp {
+    Ipacket PacketHead = 1;
+    string from = 2;
+    string to = 3;
+    int32 get = 4;
+}
+//排行榜
+//奖励
+message RewardReq {
+    Ipacket PacketHead = 1;
+}
+message RewardItem {
+    int32 id = 1;
+    int32 count = 2;
+}
+message RewardResp {
+    Ipacket PacketHead = 1;
+    repeated RewardItem item = 2;
+    bool victory = 3;
+    int32 dvt = 4;
+    int32 shareDvt = 5;
+}
+
+
+
+
+
+

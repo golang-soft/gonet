@@ -1,0 +1,94 @@
+syntax = "proto3";
+import "pub.proto";
+
+package cmessage;
+option go_package = "./;cmessage";
+
+// 游戏开始
+message GameStartReq {
+    Ipacket PacketHead = 1;
+}
+
+message GameData {
+    int64 round = 1;
+    int64 startTs = 2;
+    int64 endTs = 3;
+    int64 flagOwner = 4;
+    int64 flagUPdateTs = 5;
+    int64 part1Score = 6;
+    int64 part1Ts = 7;
+    int64 part2Ts = 8;
+    int64 part2Score =9;
+}
+message UserData {
+    string user = 1;
+    int64 round = 2;
+    int32 part = 3;
+    string hid = 4;
+    int32 type = 5;
+    int32 defPercent = 6;
+    int32 hp = 7;
+    int64 updateTs = 8;
+    int32 x = 9;
+    int32 y = 10;
+    int32 speed = 11;
+    int32 reduceSpeedTs = 12;
+    int32 direction = 13;
+    int32 barrier = 14;
+    int32 dizzy = 15;
+    int64 dizzyTs = 16;
+    int32 shield = 17;
+    int64 shieldTs = 18;
+    int32 immune = 19;
+    int32 immuneTs = 20;
+    int32 thorns = 21;
+    int32 thornsTs = 22;
+    int32 stopMoveTs = 23;
+    int32 stopMove = 24;
+    int32 addDef = 25;
+    int32 addDefTs = 26;
+    int32 addAtk = 27;
+    int64 posUpdateTs = 28;
+    int64 dieTs = 29;
+    int32 allAttr = 30;
+    int32 dvt = 31;
+    int32 getDvt = 32;
+    int32 desDvt = 33;
+    int32 kill = 34;
+    int32 die = 35;
+    int32 dps = 36;
+    int32 skill_1101_cd = 37;
+    int32 skill_1102_cd = 38;
+    int32 skill_1103_cd = 39;
+    int32 skill_1104_cd = 40;
+    int32 item_1002_cd = 41;
+    int32 item_1003_cd = 42;
+    int32 item_1004_cd = 43;
+    int32 equip_1 = 44;
+    int32 equip_3 = 45;
+    repeated int32 equip = 46;
+}
+
+message GameStartResp {
+    Ipacket PacketHead = 1;
+    GameData game = 2;
+    repeated UserData users = 3;
+}
+
+// 游戏结束
+message GameEndReq {
+    Ipacket PacketHead = 1;
+}
+message GameEndResp{
+    Ipacket PacketHead = 1;
+}
+
+
+
+
+
+
+
+
+
+

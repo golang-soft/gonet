@@ -1,7 +1,7 @@
 package chat
 
 import (
-	"gonet/server/message"
+	"gonet/server/cmessage"
 )
 
 type (
@@ -30,16 +30,16 @@ var (
 func (this *ChannelMgr) Init() {
 	this.m_hmChannelMap = make(map[int64]*Channel)
 	this.m_hmPlayerChannelMap = make(map[int8]map[int64]int64)
-	for i := message.CHAT_MSG_TYPE_WORLD; i < message.CHAT_MSG_TYPE_COUNT; i++ {
+	for i := cmessage.CHAT_MSG_TYPE_WORLD; i < cmessage.CHAT_MSG_TYPE_COUNT; i++ {
 		this.m_hmPlayerChannelMap[int8(i)] = make(map[int64]int64)
 	}
 
-	this.RegisterChannel(int8(message.CHAT_MSG_TYPE_WORLD), "world", g_wordChannelId)
+	this.RegisterChannel(int8(cmessage.CHAT_MSG_TYPE_WORLD), "world", g_wordChannelId)
 }
 
 func (this *ChannelMgr) RegisterChannel(cMessageType int8, ChannelName string, nId int64) {
 	// 大规模消息不能创建频道
-	if cMessageType < int8(message.CHAT_MSG_TYPE_WORLD) {
+	if cMessageType < int8(cmessage.CHAT_MSG_TYPE_WORLD) {
 		return
 	}
 
@@ -106,7 +106,7 @@ func (this *ChannelMgr) getChannel(channelid int64) *Channel {
 
 func (this *ChannelMgr) getChannelByType(playerid int64, cMessageType int8) *Channel {
 	// 对于大规模消息来说，没有意义
-	if cMessageType < int8(message.CHAT_MSG_TYPE_WORLD) {
+	if cMessageType < int8(cmessage.CHAT_MSG_TYPE_WORLD) {
 		return nil
 	}
 

@@ -1,0 +1,42 @@
+﻿syntax = "proto3";
+package cmessage;
+option go_package = "./;cmessage";
+
+enum MessageID {
+
+    MSG_BEGIN = 0;
+
+    //============================================================================================
+    //                 一般消息定义
+    //============================================================================================
+    //    MSG_NORMAL_MSGID_BEGIN           = 100000;
+    //
+    MSG_CHECK_VERSION_REQ = 100001;    //版本验证
+    MSG_CHECK_VERSION_ACK = 100002;    //版本验证返回
+    MSG_MovingReq = 100003;    //移动请求
+    MSG_MovingResp = 100004;    //移动请求返回
+
+    MSG_AttackReq = 100005;    //攻击请求
+    MSG_AttackResp = 100006;    //攻击请求返回
+    MSG_AttackSuccessResp = 100007;    //攻击成功返回
+    MSG_JumpReq = 100008;    //跳跃请求
+    MSG_JumpResp = 100009;    //跳跃请求返回
+    MSG_SkillShieldResp = 100010;    //技能护盾返回
+    MSG_SkillThornsResp = 100011;    //技能反伤返回
+    MSG_SkillDeformationResp = 100012;    //技能效果变身返回
+    MSG_SkillImmuneResp = 100013;    //技能效果无敌返回
+    MSG_ReliveResp = 100014;    //复活返回
+    MSG_FlagReq = 100015;    ///夺旗
+    MSG_FlagResp = 100016;    //夺旗返回
+    MSG_FlagSuccessResp = 100017;    //夺旗成功返回
+    MSG_UseItemReq = 100018;    //使用道具请求
+    MSG_AddHpResp = 100019;    //加血请求
+    MSG_UseItem1003Resp = 100020;    //使用道具1003
+    MSG_UpdateDvtResp = 100021;    //更新dvt
+    MSG_RewardReq = 100022;    //奖励
+    MSG_RewardResp = 100023;    //奖励返回
+
+
+
+}
+

@@ -12,9 +12,9 @@ import (
 	"gonet/db"
 	"gonet/network"
 	"gonet/rd"
-	"gonet/rpc"
 	common2 "gonet/server/common"
 	"gonet/server/game"
+	"gonet/server/rpc"
 	"gonet/server/smessage"
 	"gonet/server/world/table"
 	"log"
@@ -250,7 +250,7 @@ func SendToAccount(funcName string, params ...interface{}) {
 func SendToClient(clusterId uint32, packet proto.Message) {
 	pakcetHead := packet.(common2.Packet).GetPacketHead()
 	if pakcetHead != nil {
-		SERVER.GetCluster().SendMsg(rpc.RpcHead{DestServerType: rpc.SERVICE_GATESERVER, ClusterId: clusterId, Id: pakcetHead.Id}, "", proto.MessageName(packet), packet)
+		SERVER.GetCluster().SendMsg(rpc.RpcHead{DestServerType: rpc.SERVICE_GATESERVER, ClusterId: clusterId, Id: int64(pakcetHead.Id)}, "", proto.MessageName(packet), packet)
 	}
 }
 

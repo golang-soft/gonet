@@ -1,12 +1,12 @@
 package common
 
 import (
-	"fmt"
 	"bufio"
-	"gonet/base"
-	"gonet/rpc"
-	"os"
+	"fmt"
 	"gonet/actor"
+	"gonet/base"
+	"gonet/server/rpc"
+	"os"
 	"strings"
 	"time"
 )
@@ -15,49 +15,49 @@ func StartConsole(pCmd actor.IActor) {
 	go consoleroutine(pCmd)
 }
 
-func consoleError(command string){
+func consoleError(command string) {
 	fmt.Printf("Command[%s] error, try again.", command)
 }
 
- func ParseConsole(pCmd actor.IActor, command string) {
+func ParseConsole(pCmd actor.IActor, command string) {
 	defer func() {
-		if err := recover(); err != nil{
+		if err := recover(); err != nil {
 			base.TraceCode(err)
 		}
 	}()
 
-	if command == ""{
+	if command == "" {
 		return
 	}
 
 	args := strings.Split(command, "(")
-	if len(args) != 2{
+	if len(args) != 2 {
 		consoleError(command)
 		return
 	}
 
 	funcName := args[0]
-	if funcName == ""{
+	if funcName == "" {
 		return
 	}
 
 	args = strings.Split(args[1], ")")
-	if len(args) != 2{
+	if len(args) != 2 {
 		consoleError(command)
 		return
 	}
 
 	args = strings.Split(args[0], ",")
 	params := make([]interface{}, 0)
-	for _,v := range args{
-		if v != ""{
+	for _, v := range args {
+		if v != "" {
 			params = append(params, v)
 		}
 	}
 
-	if pCmd.FindCall(funcName) != nil{
+	if pCmd.FindCall(funcName) != nil {
 		pCmd.SendMsg(rpc.RpcHead{}, funcName, params...)
-	}else{
+	} else {
 		consoleError(command)
 	}
 }

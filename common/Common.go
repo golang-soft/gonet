@@ -3,7 +3,7 @@ package common
 import (
 	"fmt"
 	"gonet/base"
-	"gonet/rpc"
+	"gonet/server/rpc"
 	"strings"
 )
 

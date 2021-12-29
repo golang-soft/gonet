@@ -5,8 +5,8 @@ import (
 	"database/sql"
 	"gonet/actor"
 	"gonet/db"
-	"gonet/rpc"
-	"gonet/server/message"
+	"gonet/server/cmessage"
+	"gonet/server/rpc"
 	"gonet/server/world"
 	"time"
 )
@@ -70,7 +70,7 @@ func (this *PlayerMgr) Init() {
 		}
 	})
 
-	this.RegisterCall("W_C_Test", func(ctx context.Context, packet *message.W_C_Test) {
+	this.RegisterCall("W_C_Test", func(ctx context.Context, packet *cmessage.W_C_Test) {
 		head := this.GetRpcHead(ctx)
 		SERVER.m_Log.Debugf("head[%v]", head)
 

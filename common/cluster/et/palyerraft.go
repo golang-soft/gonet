@@ -21,7 +21,7 @@ type (
 	PlayerRaft struct {
 		m_KeysAPI      client.KeysAPI
 		m_PlayerLocker *sync.RWMutex
-		m_PlayerMap    map[int64]*rpc.PlayerClusterInfo
+		m_PlayerMap    map[int64]*grpc.PlayerClusterInfo
 	}
 )
 
@@ -39,7 +39,7 @@ func (this *PlayerRaft) Init(endpoints []string) {
 	}
 	this.m_KeysAPI = client.NewKeysAPI(etcdClient)
 	this.m_PlayerLocker = &sync.RWMutex{}
-	this.m_PlayerMap = map[int64]*rpc.PlayerClusterInfo{}
+	this.m_PlayerMap = map[int64]*grpc.PlayerClusterInfo{}
 	this.Start()
 	this.InitPlayers()
 }
@@ -48,7 +48,7 @@ func (this *PlayerRaft) Start() {
 	go this.Run()
 }
 
-func (this *PlayerRaft) Publish(info *rpc.PlayerClusterInfo) bool {
+func (this *PlayerRaft) Publish(info *grpc.PlayerClusterInfo) bool {
 	//info.LeaseId = int64(info.Id)
 	//key := PLAYER_DIR + fmt.Sprintf("%d", info.Id)
 	//data, _ := proto.Marshal(info)
@@ -67,7 +67,7 @@ func (this *PlayerRaft) Lease(Id int64) error {
 	return err
 }
 
-func (this *PlayerRaft) addPlayer(info *rpc.PlayerClusterInfo) {
+func (this *PlayerRaft) addPlayer(info *grpc.PlayerClusterInfo) {
 	this.m_PlayerLocker.Lock()
 	pPlayer, bOk := this.m_PlayerMap[info.Id]
 	if !bOk {
@@ -78,13 +78,13 @@ func (this *PlayerRaft) addPlayer(info *rpc.PlayerClusterInfo) {
 	this.m_PlayerLocker.Unlock()
 }
 
-func (this *PlayerRaft) delPlayer(info *rpc.PlayerClusterInfo) {
+func (this *PlayerRaft) delPlayer(info *grpc.PlayerClusterInfo) {
 	this.m_PlayerLocker.Lock()
 	delete(this.m_PlayerMap, int64(info.Id))
 	this.m_PlayerLocker.Unlock()
 }
 
-func (this *PlayerRaft) GetPlayer(Id int64) *rpc.PlayerClusterInfo {
+func (this *PlayerRaft) GetPlayer(Id int64) *grpc.PlayerClusterInfo {
 	this.m_PlayerLocker.RLock()
 	pPlayer, bEx := this.m_PlayerMap[Id]
 	this.m_PlayerLocker.RUnlock()
@@ -129,7 +129,7 @@ func (this *PlayerRaft) InitPlayers() {
 	}
 }
 
-func NodeToPlayer(val []byte) *rpc.PlayerClusterInfo {
+func NodeToPlayer(val []byte) *grpc.PlayerClusterInfo {
 	//info := &rpc.PlayerClusterInfo{}
 	//err := proto.Unmarshal([]byte(val), info)
 	//if err != nil {

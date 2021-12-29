@@ -10,7 +10,7 @@ import (
 	"gonet/common/cluster"
 	"gonet/db"
 	"gonet/network"
-	"gonet/rpc"
+	"gonet/server/rpc"
 )
 
 type (
@@ -52,7 +52,7 @@ func (this *ServerMgr) Init() bool {
 	}
 
 	//初始化log文件
-	this.m_Log.Init("world")
+	this.m_Log.Init("center")
 	//初始配置文件
 	this.InitConfig(&CONF)
 

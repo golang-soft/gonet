@@ -2,9 +2,9 @@ package login
 
 import (
 	"github.com/golang/protobuf/proto"
-	"gonet/rpc"
+	"gonet/server/cmessage"
 	"gonet/server/common"
-	"gonet/server/message"
+	"gonet/server/rpc"
 	"net/http"
 )
 
@@ -18,7 +18,7 @@ func SendToAccount(funcName string, params ...interface{}) {
 func SendToClient(clusterId uint32, packet proto.Message) {
 	pakcetHead := packet.(common.Packet).GetPacketHead()
 	if pakcetHead != nil {
-		SERVER.GetCluster().SendMsg(rpc.RpcHead{DestServerType: rpc.SERVICE_GATESERVER, ClusterId: clusterId, Id: pakcetHead.Id, SendType: rpc.SEND_BOARD_CAST}, "", proto.MessageName(packet), packet)
+		SERVER.GetCluster().SendMsg(rpc.RpcHead{DestServerType: rpc.SERVICE_GATESERVER, ClusterId: clusterId, Id: int64(pakcetHead.Id), SendType: rpc.SEND_BOARD_CAST}, "", proto.MessageName(packet), packet)
 	}
 }
 
@@ -61,13 +61,13 @@ func SendToGrpcServer(clusterId uint32, funcName string, packet proto.Message) {
 func Test(w http.ResponseWriter, r *http.Request) {
 	//SendToClient(1, &message.W_C_Test{PacketHead: message.BuildPacketHead(1, 0),})
 	//SendToCenter(1, 0, "LoginCenter","")
-	SendToCenter2(1, "PlayerData", &message.PlayerData{PlayerID: 1111, PlayerName: "顶顶顶顶"})
+	SendToCenter2(1, "PlayerData", &cmessage.PlayerData{PlayerID: 1111, PlayerName: "顶顶顶顶"})
 }
 
 func TestWorld(w http.ResponseWriter, r *http.Request) {
-	SendToWorld(1, "W_C_Test", &message.W_C_Test{PacketHead: common.BuildPacketHead(1, 0), PlayerId: 111222})
+	SendToWorld(1, "W_C_Test", &cmessage.W_C_Test{PacketHead: common.BuildPacketHead(1, 0), PlayerId: 111222})
 }
 
 func TestGrpc(w http.ResponseWriter, r *http.Request) {
-	SendToGrpcServer(1, "W_C_Test", &message.W_C_Test{PacketHead: common.BuildPacketHead(1, 0), PlayerId: 111222})
+	SendToGrpcServer(1, "W_C_Test", &cmessage.W_C_Test{PacketHead: common.BuildPacketHead(1, 0), PlayerId: 111222})
 }

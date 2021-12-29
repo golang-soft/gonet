@@ -5,16 +5,17 @@ import (
 	"encoding/gob"
 	"github.com/golang/protobuf/proto"
 	"gonet/base"
-	"gonet/rpc"
+	"gonet/grpc"
+	"gonet/server/cmessage"
 	"gonet/server/common"
-	"gonet/server/message"
+	"gonet/server/rpc"
 	"reflect"
 )
 
 var (
-	A_C_RegisterResponse = proto.MessageName(&message.A_C_RegisterResponse{})
-	A_C_LoginResponse    = proto.MessageName(&message.A_C_LoginResponse{})
-	W_C_Test             = proto.MessageName(&message.W_C_Test{})
+	A_C_RegisterResponse = proto.MessageName(&cmessage.A_C_RegisterResponse{})
+	A_C_LoginResponse    = proto.MessageName(&cmessage.A_C_LoginResponse{})
+	W_C_Test             = proto.MessageName(&cmessage.W_C_Test{})
 )
 
 func SendToClient(socketId uint32, packet proto.Message) {
@@ -28,7 +29,7 @@ func DispatchPacket(packet rpc.Packet) bool {
 		}
 	}()
 
-	rpcPacket, head := rpc.Unmarshal(packet.Buff)
+	rpcPacket, head := grpc.Unmarshal(packet.Buff)
 	switch head.DestServerType {
 	case rpc.SERVICE_GATESERVER:
 		messageName := ""

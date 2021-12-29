@@ -1,15 +1,15 @@
 syntax = "proto3";
-// import "message.proto";
+import "msgid.proto";
 
-package message;
-option go_package = "./;message";
+package cmessage;
+option go_package = "./;cmessage";
 
 
 //客户端包头
 message Ipacket{
     int32  Stx = 1;
     int32  Ckx = 2;
-    int64  Id = 3;
+    MessageID  Id = 3;
 }
 
 //心跳包

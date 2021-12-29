@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"gonet/actor"
 	"gonet/db"
-	"gonet/rpc"
+	"gonet/server/rpc"
 )
 
 type (
@@ -43,8 +43,8 @@ func (this *AccountMgr) Init() {
 		if pPlayer == nil {
 			info := &rpc.PlayerClusterInfo{}
 			info.Id = accountId
-			info.WClusterId = SERVER.GetCluster().RandomCluster(rpc.RpcHead{Id: accountId, DestServerType: rpc.SERVICE_WORLDSERVER}).ClusterId
-			info.ZClusterId = SERVER.GetCluster().RandomCluster(rpc.RpcHead{Id: accountId, DestServerType: rpc.SERVICE_ZONESERVER}).ClusterId
+			//info.WClusterId = SERVER.GetCluster().RandomCluster(rpc.RpcHead{Id: accountId, DestServerType: rpc.SERVICE_WORLDSERVER}).ClusterId
+			//info.ZClusterId = SERVER.GetCluster().RandomCluster(rpc.RpcHead{Id: accountId, DestServerType: rpc.SERVICE_ZONESERVER}).ClusterId
 			if info.WClusterId != 0 {
 				if SERVER.GetPlayerRaft().Publish(info) {
 					pPlayer = info

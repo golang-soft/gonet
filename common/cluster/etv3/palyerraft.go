@@ -3,7 +3,7 @@ package etv3
 import (
 	"encoding/json"
 	"fmt"
-	"gonet/rpc"
+	"gonet/server/rpc"
 	"log"
 	"sync"
 

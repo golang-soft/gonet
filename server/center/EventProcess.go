@@ -3,7 +3,7 @@ package center
 import (
 	"context"
 	"gonet/actor"
-	"gonet/server/message"
+	"gonet/server/cmessage"
 	"gonet/server/smessage"
 )
 
@@ -29,7 +29,7 @@ func (this *EventProcess) Init() {
 		SERVER.m_pServerManager.DebugServerList()
 	})
 
-	this.RegisterCall("PlayerData", func(ctx context.Context, packet *message.PlayerData) {
+	this.RegisterCall("PlayerData", func(ctx context.Context, packet *cmessage.PlayerData) {
 		SERVER.m_Log.Debugf("head[%v]", packet)
 	})
 

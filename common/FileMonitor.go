@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 	"gonet/actor"
-	"gonet/rpc"
+	"gonet/server/rpc"
 	"os"
 	"time"
 	"unsafe"

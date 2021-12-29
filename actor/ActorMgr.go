@@ -3,7 +3,7 @@ package actor
 import (
 	"gonet/base"
 	"gonet/network"
-	"gonet/rpc"
+	"gonet/server/rpc"
 	"log"
 	"strings"
 )

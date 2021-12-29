@@ -4,7 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"gonet/rpc"
+	"gonet/server/rpc"
 	"google.golang.org/grpc"
 	"log"
 	"net/http"

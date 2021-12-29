@@ -1,8 +1,8 @@
 syntax = "proto3";
 import "pub.proto";
 
-package message;
-option go_package = "./;message";
+package cmessage;
+option go_package = "./;cmessage";
 
 // 错误协议
 

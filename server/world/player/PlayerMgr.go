@@ -8,7 +8,7 @@ import (
 	"gonet/base"
 	"gonet/common"
 	"gonet/db"
-	"gonet/rpc"
+	"gonet/server/rpc"
 	"gonet/server/world"
 )
 

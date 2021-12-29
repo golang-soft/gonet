@@ -4,7 +4,7 @@ import (
 	"context"
 	"gonet/actor"
 	"gonet/base"
-	"gonet/rpc"
+	"gonet/server/rpc"
 	"sync"
 	"time"
 )

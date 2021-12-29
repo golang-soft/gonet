@@ -1,1 +1,1 @@
-protoc.exe  --go_out=plugins=grpc:../../rpc --proto_path=../../rpc ../../rpc/rpc3.proto ../../rpc/proto.proto
+protoc.exe  --go_out=plugins=grpc:../rpc --proto_path=../rpc --proto_path=../cmessage ../rpc/rpc3.proto ../rpc/proto.proto

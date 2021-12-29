@@ -2,7 +2,8 @@ package network
 
 import (
 	"fmt"
-	"gonet/rpc"
+	"gonet/grpc"
+	"gonet/server/rpc"
 	"log"
 	"net"
 	"sync"
@@ -153,7 +154,7 @@ func (this *ServerSocket) Send(head rpc.RpcHead, buff []byte) int {
 func (this *ServerSocket) SendMsg(head rpc.RpcHead, funcName string, params ...interface{}) {
 	pClient := this.GetClientById(head.SocketId)
 	if pClient != nil {
-		pClient.Send(head, rpc.Marshal(head, funcName, params...))
+		pClient.Send(head, grpc.Marshal(head, funcName, params...))
 	}
 }
 

@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"gonet/base"
 	"gonet/common/timer"
-	"gonet/rpc"
+	"gonet/server/rpc"
 	"hash/crc32"
 	"io"
 	"log"

@@ -2,7 +2,8 @@ package network
 
 import (
 	"gonet/base/vector"
-	"gonet/rpc"
+	"gonet/grpc"
+	"gonet/server/rpc"
 	"net"
 	"sync/atomic"
 )
@@ -216,7 +217,7 @@ func (this *Socket) BindPacketFunc(callfunc PacketFunc) {
 }
 
 func (this *Socket) CallMsg(funcName string, params ...interface{}) {
-	buff := rpc.Marshal(rpc.RpcHead{}, funcName, params...)
+	buff := grpc.Marshal(rpc.RpcHead{}, funcName, params...)
 	this.HandlePacket(buff)
 }
 

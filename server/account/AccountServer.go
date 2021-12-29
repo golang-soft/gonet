@@ -10,9 +10,9 @@ import (
 	"gonet/common/cluster/etv3"
 	"gonet/db"
 	"gonet/network"
-	"gonet/rpc"
 	common2 "gonet/server/common"
 	"gonet/server/game"
+	"gonet/server/rpc"
 	"gonet/server/smessage"
 	"log"
 	"strconv"
@@ -217,7 +217,7 @@ func SendToClient(head rpc.RpcHead, packet proto.Message) {
 	pakcetHead := packet.(common2.Packet).GetPacketHead()
 	if pakcetHead != nil {
 		head.DestServerType = rpc.SERVICE_GATESERVER
-		head.Id = pakcetHead.Id
+		head.Id = int64(pakcetHead.Id)
 	}
 	SERVER.GetCluster().SendMsg(head, "", proto.MessageName(packet), packet)
 }

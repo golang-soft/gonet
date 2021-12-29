@@ -9,8 +9,8 @@ import (
 	"gonet/common"
 	"gonet/common/cluster"
 	"gonet/network"
-	"gonet/rpc"
 	"gonet/server/game"
+	"gonet/server/rpc"
 	"gonet/server/smessage"
 )
 

@@ -4,8 +4,8 @@ import (
 	"database/sql"
 	"gonet/base"
 	"gonet/db"
-	"gonet/rpc"
 	"gonet/server/model"
+	"gonet/server/rpc"
 	"gonet/server/world"
 )
 
@@ -131,7 +131,7 @@ func (this *PlayerData) LoadPlayerData() {
 //-------------kv--------------//
 func (this *PlayerData) LoadKV() {
 	pData := &model.PlayerKvData{}
-	rows, err := this.m_db.Query(db.LoadSql(pData, db.WithWhere(model.PlayerKvData{PlayerId:this.GetPlayerId()})))
+	rows, err := this.m_db.Query(db.LoadSql(pData, db.WithWhere(model.PlayerKvData{PlayerId: this.GetPlayerId()})))
 	rs := db.Query(rows, err)
 	for rs.Next() {
 		pData := &model.PlayerKvData{}

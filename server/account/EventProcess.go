@@ -7,9 +7,9 @@ import (
 	"gonet/actor"
 	"gonet/base"
 	"gonet/db"
-	"gonet/rpc"
+	"gonet/server/cmessage"
 	"gonet/server/common"
-	"gonet/server/message"
+	"gonet/server/rpc"
 	"log"
 )
 
@@ -36,7 +36,7 @@ func (this *EventProcess) Init() {
 	this.Actor.Init()
 	this.m_db = SERVER.GetDB()
 	//创建账号
-	this.RegisterCall("C_A_RegisterRequest", func(ctx context.Context, packet *message.C_A_RegisterRequest) {
+	this.RegisterCall("C_A_RegisterRequest", func(ctx context.Context, packet *cmessage.C_A_RegisterRequest) {
 		accountName := packet.GetAccountName()
 		password := packet.GetPassword()
 		socketId := uint32(this.GetRpcHead(ctx).ClusterId)
@@ -60,15 +60,15 @@ func (this *EventProcess) Init() {
 			}
 		}
 		if nError != 0 {
-			SendToClient(rpc.RpcHead{ClusterId: this.GetRpcHead(ctx).SrcClusterId, SocketId: socketId}, &message.A_C_RegisterResponse{
-				PacketHead: common.BuildPacketHead(accountId, 0),
+			SendToClient(rpc.RpcHead{ClusterId: this.GetRpcHead(ctx).SrcClusterId, SocketId: socketId}, &cmessage.A_C_RegisterResponse{
+				PacketHead: common.BuildPacketHead(cmessage.MessageID(accountId), 0),
 				Error:      int32(nError),
 			})
 		}
 	})
 
 	//登录账号
-	this.RegisterCall("C_A_LoginRequest", func(ctx context.Context, packet *message.C_A_LoginRequest) {
+	this.RegisterCall("C_A_LoginRequest", func(ctx context.Context, packet *cmessage.C_A_LoginRequest) {
 		accountName := packet.GetAccountName()
 		password := packet.GetPassword()
 		buildVersion := packet.GetBuildNo()
@@ -101,7 +101,7 @@ func (this *EventProcess) Init() {
 		}
 
 		if nError != base.NONE_ERROR {
-			SendToClient(rpc.RpcHead{ClusterId: this.GetRpcHead(ctx).SrcClusterId, SocketId: socketId}, &message.A_C_LoginResponse{
+			SendToClient(rpc.RpcHead{ClusterId: this.GetRpcHead(ctx).SrcClusterId, SocketId: socketId}, &cmessage.A_C_LoginResponse{
 				PacketHead:  common.BuildPacketHead(0, 0),
 				Error:       int32(nError),
 				AccountName: packet.AccountName,

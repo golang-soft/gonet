@@ -7,8 +7,8 @@ import (
 	"gonet/base/server"
 	"gonet/common"
 	"gonet/common/cluster"
-	"gonet/rpc"
 	"gonet/server/game"
+	"gonet/server/rpc"
 	"gonet/server/smessage"
 	"net/http"
 )

@@ -6,7 +6,7 @@ import (
 	"gonet/base"
 	"gonet/common"
 	"gonet/common/cluster/etv3"
-	"gonet/rpc"
+	"gonet/server/rpc"
 	"strings"
 
 	"github.com/nats-io/nats.go"

@@ -9,9 +9,9 @@ import (
 	"gonet/common"
 	"gonet/common/cluster"
 	"gonet/db"
-	"gonet/rpc"
+	"gonet/server/cmessage"
 	common2 "gonet/server/common"
-	"gonet/server/message"
+	"gonet/server/rpc"
 	"gonet/server/world"
 	"time"
 
@@ -45,24 +45,24 @@ func (this *Player) Init() {
 		PlayerSimpleList := LoadSimplePlayerDatas(this.AccountId)
 		this.PlayerSimpleDataList = PlayerSimpleList
 
-		PlayerDataList := make([]*message.PlayerData, len(PlayerSimpleList))
+		PlayerDataList := make([]*cmessage.PlayerData, len(PlayerSimpleList))
 		this.PlayerIdList = []int64{}
 		for i, v := range PlayerSimpleList {
-			PlayerDataList[i] = &message.PlayerData{PlayerID: v.PlayerId, PlayerName: v.PlayerName, PlayerGold: int32(v.Gold)}
+			PlayerDataList[i] = &cmessage.PlayerData{PlayerID: v.PlayerId, PlayerName: v.PlayerName, PlayerGold: int32(v.Gold)}
 			this.PlayerIdList = append(this.PlayerIdList, v.PlayerId)
 		}
 
 		this.m_Log.Println("玩家登录成功")
 		this.SetGateClusterId(gateClusterId)
 		this.m_PlayerRaft = clusterInfo
-		this.SendToClient(&message.W_C_SelectPlayerResponse{PacketHead: common2.BuildPacketHead(this.AccountId, rpc.SERVICE_GATESERVER),
+		this.SendToClient(&cmessage.W_C_SelectPlayerResponse{PacketHead: common2.BuildPacketHead(cmessage.MessageID(this.AccountId), rpc.SERVICE_GATESERVER),
 			AccountId:  this.AccountId,
 			PlayerData: PlayerDataList,
 		})
 	})
 
 	//玩家登录到游戏
-	this.RegisterCall("C_W_Game_LoginRequset", func(ctx context.Context, packet *message.C_W_Game_LoginRequset) {
+	this.RegisterCall("C_W_Game_LoginRequset", func(ctx context.Context, packet *cmessage.C_W_Game_LoginRequset) {
 		nPlayerId := packet.GetPlayerId()
 		if !this.SetPlayerId(nPlayerId) {
 			this.m_Log.Printf("帐号[%d]登入的玩家[%d]不存在", this.AccountId, nPlayerId)
@@ -78,7 +78,7 @@ func (this *Player) Init() {
 	})
 
 	//创建玩家
-	this.RegisterCall("C_W_CreatePlayerRequest", func(ctx context.Context, packet *message.C_W_CreatePlayerRequest) {
+	this.RegisterCall("C_W_CreatePlayerRequest", func(ctx context.Context, packet *cmessage.C_W_CreatePlayerRequest) {
 		rows, err := this.m_db.Query(fmt.Sprintf("select count(player_id) as player_count from tbl_player where account_id = %d", this.AccountId))
 		if err == nil {
 			rs := db.Query(rows, err)
@@ -86,8 +86,8 @@ func (this *Player) Init() {
 				player_count := rs.Row().Int("player_count")
 				if player_count >= 1 {
 					this.m_Log.Printf("账号[%d]创建玩家上限", this.AccountId)
-					world.SendToClient(this.GetRpcHead(ctx).SrcClusterId, &message.W_C_CreatePlayerResponse{
-						PacketHead: common2.BuildPacketHead(this.AccountId, 0),
+					world.SendToClient(this.GetRpcHead(ctx).SrcClusterId, &cmessage.W_C_CreatePlayerResponse{
+						PacketHead: common2.BuildPacketHead(cmessage.MessageID(this.AccountId), 0),
 						Error:      int32(1),
 						PlayerId:   0,
 					})
@@ -108,8 +108,8 @@ func (this *Player) Init() {
 			this.PlayerIdList = append(this.PlayerIdList, playerId)
 		}
 
-		world.SendToClient(gClusterId, &message.W_C_CreatePlayerResponse{
-			PacketHead: common2.BuildPacketHead(this.AccountId, 0),
+		world.SendToClient(gClusterId, &cmessage.W_C_CreatePlayerResponse{
+			PacketHead: common2.BuildPacketHead(cmessage.MessageID(this.AccountId), 0),
 			Error:      int32(err),
 			PlayerId:   playerId,
 		})

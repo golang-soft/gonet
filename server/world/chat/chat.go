@@ -3,9 +3,9 @@ package chat
 import (
 	"context"
 	"gonet/actor"
-	"gonet/rpc"
+	"gonet/server/cmessage"
 	"gonet/server/common"
-	"gonet/server/message"
+	"gonet/server/rpc"
 	"gonet/server/world"
 	player2 "gonet/server/world/player"
 	"time"
@@ -68,7 +68,7 @@ func (this *ChatMgr) Init() {
 	actor.MGR.AddActor(this)
 	this.m_channelManager.Init()
 	//聊天信息
-	this.RegisterCall("C_W_ChatMessage", func(ctx context.Context, packet *message.C_W_ChatMessage) {
+	this.RegisterCall("C_W_ChatMessage", func(ctx context.Context, packet *cmessage.C_W_ChatMessage) {
 		playerId := packet.GetSender()
 		accountId := packet.GetPacketHead().GetId()
 		if accountId == 0 {
@@ -99,9 +99,9 @@ func (this *ChatMgr) Init() {
 
 		channelId := this.GetChannelManager().GetChannelIdByType(playerId, msg.MessageType)
 
-		if msg.MessageType == int8(message.CHAT_MSG_TYPE_PRIVATE) && msg.Recver != msg.Sender { // 不能给自己发点对点消息
+		if msg.MessageType == int8(cmessage.CHAT_MSG_TYPE_PRIVATE) && msg.Recver != msg.Sender { // 不能给自己发点对点消息
 			this.SendMessageTo(msg, msg.Recver)
-		} else if msg.MessageType == int8(message.CHAT_MSG_TYPE_WORLD) {
+		} else if msg.MessageType == int8(cmessage.CHAT_MSG_TYPE_WORLD) {
 			//this.SendMessageToAll(msg)
 			this.m_channelManager.SendMessageToChannel(msg, channelId)
 		} else {
@@ -121,7 +121,7 @@ func (this *ChatMgr) Init() {
 			return
 		}
 
-		if messageType == int8(message.CHAT_MSG_TYPE_ORG) {
+		if messageType == int8(cmessage.CHAT_MSG_TYPE_ORG) {
 		}
 	})
 
@@ -155,8 +155,8 @@ func (this *ChatMgr) SendMessageTo(msg *ChatMessage, playerId int64) {
 }
 
 func SendMessage(msg *ChatMessage, player *player) {
-	world.SendToClient(player.gateClusterId, &message.W_C_ChatMessage{
-		PacketHead:  common.BuildPacketHead(player.accountId, rpc.SERVICE_GATESERVER),
+	world.SendToClient(player.gateClusterId, &cmessage.W_C_ChatMessage{
+		PacketHead:  common.BuildPacketHead(cmessage.MessageID(player.accountId), rpc.SERVICE_GATESERVER),
 		Sender:      msg.Sender,
 		SenderName:  msg.SenderName,
 		Recver:      msg.Recver,
@@ -201,9 +201,9 @@ func (this *ChatMgr) getPlayerChatPendingTime(playerid int64, cMessageType int8)
 
 	if pData.nPendingTime == 0 {
 		switch cMessageType {
-		case int8(message.CHAT_MSG_TYPE_PRIVATE):
+		case int8(cmessage.CHAT_MSG_TYPE_PRIVATE):
 			pData.nPendingTime = CHAT_PENDING_TIME_PRIVATE
-		case int8(message.CHAT_MSG_TYPE_WORLD):
+		case int8(cmessage.CHAT_MSG_TYPE_WORLD):
 			pData.nPendingTime = CHAT_PENDING_TIME_WORLDPLUS
 		default:
 			pData.nPendingTime = CHAT_PENDING_TIME_NORAML

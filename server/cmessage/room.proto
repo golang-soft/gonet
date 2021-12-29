@@ -1,0 +1,110 @@
+syntax = "proto3";
+import "pub.proto";
+
+package cmessage;
+option go_package = "./;cmessage";
+
+// 获取房间数据
+message GetRoomAllDataReq{
+    Ipacket PacketHead = 1;
+	int64 userId = 2;
+}
+message RoleData {
+    string user = 1;
+    string name = 2;
+    int32 role = 3;
+    int32 heroId = 4;
+    repeated int32 equip = 5;
+}
+message RoomData {
+    int64 roomId = 1;
+    string roomName = 2;
+    int32 userCount = 3;
+    int64 battleId = 4;
+    int32 status = 5;
+    string pwd = 6;
+    int32 max = 7;
+    repeated RoleData list = 8;
+}
+
+message GetRoomAllDataResp{
+    Ipacket PacketHead = 1;
+	repeated RoomData room = 2;
+}
+
+// 创建房间
+message CreateRoomReq{
+    Ipacket PacketHead = 1;
+    string user = 2;
+    int64 battleId = 3;
+    string name = 4;
+    string pwd = 5;
+    string heroId = 6;
+    int64 role = 7;
+}
+
+message CreateRoomResp{
+    Ipacket PacketHead = 1;
+    RoomData room = 2;
+}
+
+// 加入房间
+message JoinRoomReq {
+    Ipacket PacketHead = 1;
+    int64 roomId = 2;
+    string user = 3;
+    int32 heroId = 4;
+    string pwd = 5;
+    int32 rold = 6;
+}
+message JoinRoomResp {
+    Ipacket PacketHead = 1;
+    RoomData room = 2;
+}
+// 快速加入房间
+message JoinRoomQuickReq {
+    Ipacket PacketHead = 1;
+    string user = 2;
+    int32 heroId = 3;
+    int32 rold = 4;
+}
+message JoinRoomQuickResp {
+    Ipacket PacketHead = 1;
+    RoomData room = 2;
+}
+// 离开房间
+message LeaveRoomReq {
+    Ipacket PacketHead = 1;
+    string user = 2;
+    int32 roomId = 3;
+}
+message LeaveRoomResp {
+    Ipacket PacketHead = 1;
+    RoomData room = 2;
+}
+// 匹配
+message MatchRoomReq {
+    Ipacket PacketHead = 1;
+    int32 roomId = 2;
+    string user = 3;
+}
+message MatchRoomResp {
+    Ipacket PacketHead = 1;
+    RoomData room = 2;
+}
+
+// 房间重命名
+// 房间修改密码
+// 踢人
+// 删除房间
+// 改变房间owner
+
+
+
+
+
+
+
+
+
+

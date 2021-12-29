@@ -4,10 +4,11 @@ import (
 	"context"
 	"gonet/actor"
 	"gonet/base"
+	"gonet/grpc"
 	"gonet/network"
-	"gonet/rpc"
+	"gonet/server/cmessage"
 	"gonet/server/common"
-	"gonet/server/message"
+	"gonet/server/rpc"
 	"strings"
 )
 
@@ -51,7 +52,7 @@ func (this *UserPrcoess) CheckClientEx(sockId uint32, packetName string, head rp
 
 func (this *UserPrcoess) CheckClient(sockId uint32, packetName string, head rpc.RpcHead) *AccountInfo {
 	pAccountInfo := SERVER.GetPlayerMgr().GetAccountInfo(sockId)
-	if pAccountInfo != nil && (pAccountInfo.AccountId <= 0 || pAccountInfo.AccountId != head.Id) {
+	if pAccountInfo != nil && (pAccountInfo.AccountId <= 0 || pAccountInfo.AccountId != int64(head.Id)) {
 		SERVER.GetLog().Fatalf("Old socket communication or viciousness[%d].", sockId)
 		return nil
 	}
@@ -143,7 +144,7 @@ func (this *UserPrcoess) PacketFunc(packet1 rpc.Packet) bool {
 	}
 
 	packetName := common.GetMessageName(packet)
-	head := rpc.RpcHead{Id: packetHead.Id, SrcClusterId: SERVER.GetCluster().Id()}
+	head := rpc.RpcHead{Id: int64(packetHead.Id), SrcClusterId: SERVER.GetCluster().Id()}
 	if packetName == C_A_LoginRequest {
 		head.ClusterId = socketid
 	} else if packetName == C_A_RegisterRequest {
@@ -160,7 +161,7 @@ func (this *UserPrcoess) PacketFunc(packet1 rpc.Packet) bool {
 	//} else {
 	//	this.Actor.PacketFunc(rpc.Packet{Id: socketid, Buff: rpc.Marshal(head, packetName, packet)})
 	//}
-	this.Actor.PacketFunc(rpc.Packet{Id: socketid, Buff: rpc.Marshal(head, packetName, packet)})
+	this.Actor.PacketFunc(rpc.Packet{Id: socketid, Buff: grpc.Marshal(head, packetName, packet)})
 	return true
 }
 
@@ -178,26 +179,26 @@ func (this *UserPrcoess) Init() {
 	this.RegisterCall("C_G_LogoutRequest", func(ctx context.Context, accountId int, UID int) {
 		SERVER.GetLog().Printf("logout Socket:%d Account:%d UID:%d ", this.GetRpcHead(ctx).SocketId, accountId, UID)
 		SERVER.GetPlayerMgr().SendMsg(rpc.RpcHead{}, "DEL_ACCOUNT", this.GetRpcHead(ctx).SocketId)
-		SendToClient(this.GetRpcHead(ctx).SocketId, &message.C_G_LogoutResponse{PacketHead: common.BuildPacketHead(0, 0)})
+		SendToClient(this.GetRpcHead(ctx).SocketId, &cmessage.C_G_LogoutResponse{PacketHead: common.BuildPacketHead(0, 0)})
 	})
 
-	this.RegisterCall("C_G_LoginResquest", func(ctx context.Context, packet *message.C_G_LoginResquest) {
+	this.RegisterCall("C_G_LoginResquest", func(ctx context.Context, packet *cmessage.C_G_LoginResquest) {
 		head := this.GetRpcHead(ctx)
 		dh := base.Dh{}
 		dh.Init()
 		dh.ExchangePubk(packet.GetKey())
 		this.addKey(head.SocketId, &dh)
-		SendToClient(head.SocketId, &message.G_C_LoginResponse{PacketHead: common.BuildPacketHead(0, 0), Key: dh.PubKey()})
+		SendToClient(head.SocketId, &cmessage.G_C_LoginResponse{PacketHead: common.BuildPacketHead(0, 0), Key: dh.PubKey()})
 	})
 
-	this.RegisterCall("C_A_LoginRequest", func(ctx context.Context, packet *message.C_A_LoginRequest) {
+	this.RegisterCall("C_A_LoginRequest", func(ctx context.Context, packet *cmessage.C_A_LoginRequest) {
 		head := this.GetRpcHead(ctx)
 		dh, bEx := this.m_KeyMap[head.SocketId]
 		if bEx {
 			if dh.ShareKey() == packet.GetKey() {
 				this.delKey(head.SocketId)
-				head.Id = int64(base.ToHash(packet.AccountName))
-				this.SwtichSendToAccount(head.SocketId, base.ToLower("C_A_LoginRequest"), head, rpc.Marshal(head, base.ToLower("C_A_LoginRequest"), packet))
+				//head.Id = int64(base.ToHash(packet.AccountName))
+				this.SwtichSendToAccount(head.SocketId, base.ToLower("C_A_LoginRequest"), head, grpc.Marshal(head, base.ToLower("C_A_LoginRequest"), packet))
 			} else {
 				SERVER.GetLog().Println("client key cheat", dh.ShareKey(), packet.GetKey())
 			}
@@ -208,14 +209,14 @@ func (this *UserPrcoess) Init() {
 		this.delKey(socketid)
 	})
 
-	this.RegisterCall("W_C_Test", func(ctx context.Context, packet *message.W_C_Test) {
+	this.RegisterCall("W_C_Test", func(ctx context.Context, packet *cmessage.W_C_Test) {
 		head := this.GetRpcHead(ctx)
 		dh := base.Dh{}
 		dh.Init()
 		this.addKey(head.SocketId, &dh)
 		//SendToClient(head.SocketId, &message.G_C_LoginResponse{PacketHead: message.BuildPacketHead(0, 0), Key: dh.PubKey()})
 
-		this.SwtichSendToWorldDb(head.SocketId, base.ToLower("W_C_Test"), head, rpc.Marshal(head, base.ToLower("W_C_Test"), packet))
+		this.SwtichSendToWorldDb(head.SocketId, base.ToLower("W_C_Test"), head, grpc.Marshal(head, base.ToLower("W_C_Test"), packet))
 
 	})
 

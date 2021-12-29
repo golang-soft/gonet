@@ -196,15 +196,15 @@ func (this *Cluster) boardCastSend(head rpc.RpcHead, buff []byte) {
 }
 
 func (this *Cluster) SendMsg(head rpc.RpcHead, funcName string, params ...interface{}) {
-	buff := rpc.Marshal(head, funcName, params...)
+	buff := grpc.Marshal(head, funcName, params...)
 	this.Send(head, buff)
 }
 
 func (this *Cluster) Send(head rpc.RpcHead, buff []byte) {
 	switch head.SendType {
-	case rpc.SEND_BALANCE:
+	case grpc.SEND_BALANCE:
 		this.balanceSend(head, buff)
-	case rpc.SEND_POINT:
+	case grpc.SEND_POINT:
 		this.sendPoint(head, buff)
 	default:
 		this.boardCastSend(head, buff)

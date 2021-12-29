@@ -1,4 +1,4 @@
-package rpc_test
+package grpc_test
 
 import (
 	"bytes"
@@ -11,90 +11,90 @@ import (
 	"testing"
 )
 
-func Benchmark_TestMarshalJson(b *testing.B){
+func Benchmark_TestMarshalJson(b *testing.B) {
 	b.StartTimer()
 	data := &TopRank{}
-	for i := 0; i < nArraySize; i++{
+	for i := 0; i < nArraySize; i++ {
 		data.Value = append(data.Value, nValue)
 	}
-	for i := 0; i < ntimes; i++{
+	for i := 0; i < ntimes; i++ {
 		json.Marshal(data)
 	}
 	b.StopTimer()
 }
 
-func Benchmark_TestUMarshalJson(b *testing.B){
+func Benchmark_TestUMarshalJson(b *testing.B) {
 	b.StartTimer()
 	data := &TopRank{}
-	for i := 0; i < nArraySize; i++{
+	for i := 0; i < nArraySize; i++ {
 		data.Value = append(data.Value, nValue)
 	}
-	for i := 0; i < ntimes; i++{
+	for i := 0; i < ntimes; i++ {
 		buff, _ := json.Marshal(data)
 		json.Unmarshal(buff, &TopRank{})
 	}
 	b.StopTimer()
 }
 
-func Benchmark_TestMarshalJsonIter(b *testing.B){
+func Benchmark_TestMarshalJsonIter(b *testing.B) {
 	b.StartTimer()
 	json := jsoniter.ConfigCompatibleWithStandardLibrary
 	data := &TopRank{}
-	for i := 0; i < nArraySize; i++{
+	for i := 0; i < nArraySize; i++ {
 		data.Value = append(data.Value, nValue)
 	}
-	for i := 0; i < ntimes; i++{
+	for i := 0; i < ntimes; i++ {
 		json.Marshal(data)
 	}
 	b.StopTimer()
 }
 
-func Benchmark_TestUMarshalJsonIter(b *testing.B){
+func Benchmark_TestUMarshalJsonIter(b *testing.B) {
 	b.StartTimer()
 	json := jsoniter.ConfigCompatibleWithStandardLibrary
 	data := &TopRank{}
-	for i := 0; i < nArraySize; i++{
+	for i := 0; i < nArraySize; i++ {
 		data.Value = append(data.Value, nValue)
 	}
-	for i := 0; i < ntimes; i++{
+	for i := 0; i < ntimes; i++ {
 		buff, _ := json.Marshal(data)
 		json.Unmarshal(buff, &TopRank{})
 	}
 	b.StopTimer()
 }
 
-func Benchmark_TestMarshalPB(b *testing.B){
+func Benchmark_TestMarshalPB(b *testing.B) {
 	b.StartTimer()
 	aa := []int32{}
-	for i := 0; i < nArraySize; i++{
+	for i := 0; i < nArraySize; i++ {
 		aa = append(aa, int32(nValue))
 	}
-	for i := 0; i < ntimes; i++{
-		proto.Marshal(&message.W_C_Test{Recv:aa})
+	for i := 0; i < ntimes; i++ {
+		proto.Marshal(&cmessage.W_C_Test{Recv: aa})
 	}
 	b.StopTimer()
 }
 
-func Benchmark_TestUMarshalPB(b *testing.B){
+func Benchmark_TestUMarshalPB(b *testing.B) {
 	b.StartTimer()
 	aa := []int32{}
-	for i := 0; i < nArraySize; i++{
+	for i := 0; i < nArraySize; i++ {
 		aa = append(aa, int32(nValue))
 	}
-	for i := 0; i < ntimes; i++{
-		buff, _ := proto.Marshal(&message.W_C_Test{Recv:aa})
-		proto.Unmarshal(buff, &message.W_C_Test{})
+	for i := 0; i < ntimes; i++ {
+		buff, _ := proto.Marshal(&cmessage.W_C_Test{Recv: aa})
+		proto.Unmarshal(buff, &cmessage.W_C_Test{})
 	}
 	b.StopTimer()
 }
 
-func Benchmark_TestMarshalGob(b *testing.B){
+func Benchmark_TestMarshalGob(b *testing.B) {
 	b.StartTimer()
 	data := &TopRank{}
-	for i := 0; i < nArraySize; i++{
+	for i := 0; i < nArraySize; i++ {
 		data.Value = append(data.Value, nValue)
 	}
-	for i := 0; i < ntimes; i++{
+	for i := 0; i < ntimes; i++ {
 		//enc.Encode(int(0))
 		buf := &bytes.Buffer{}
 		enc := gob.NewEncoder(buf)
@@ -103,15 +103,15 @@ func Benchmark_TestMarshalGob(b *testing.B){
 	b.StopTimer()
 }
 
-func Benchmark_TestUMarshalGob(b *testing.B){
+func Benchmark_TestUMarshalGob(b *testing.B) {
 	b.StartTimer()
 	data := &TopRank{}
-	for i := 0; i < nArraySize; i++{
+	for i := 0; i < nArraySize; i++ {
 		data.Value = append(data.Value, nValue)
 	}
 
 	//fmt.Println(buf.Bytes(), len(buf.Bytes()))
-	for i := 0; i < ntimes; i++{
+	for i := 0; i < ntimes; i++ {
 		buf := bytes.NewBuffer([]byte{})
 		enc := gob.NewEncoder(buf)
 		dec := gob.NewDecoder(buf)
@@ -122,26 +122,26 @@ func Benchmark_TestUMarshalGob(b *testing.B){
 	b.StopTimer()
 }
 
-func Benchmark_TestMarshalRpc(b *testing.B){
+func Benchmark_TestMarshalRpc(b *testing.B) {
 	b.StartTimer()
 	aa := []int32{}
-	for i := 0; i < nArraySize; i++{
+	for i := 0; i < nArraySize; i++ {
 		aa = append(aa, int32(nValue))
 	}
-	for i := 0; i < ntimes; i++{
-		rpc.Marshal(rpc.RpcHead{},"test", aa)
+	for i := 0; i < ntimes; i++ {
+		grpc.Marshal(rpc.RpcHead{}, "test", aa)
 	}
 	b.StopTimer()
 }
 
-func Benchmark_TestUMarshalRpc(b *testing.B){
+func Benchmark_TestUMarshalRpc(b *testing.B) {
 	b.StartTimer()
 	aa := []int32{}
-	for i := 0; i < nArraySize; i++{
+	for i := 0; i < nArraySize; i++ {
 		aa = append(aa, int32(nValue))
 	}
-	for i := 0; i < ntimes; i++{
-		buff := rpc.Marshal(rpc.RpcHead{}, "test", aa)
+	for i := 0; i < ntimes; i++ {
+		buff := grpc.Marshal(rpc.RpcHead{}, "test", aa)
 		parse(buff)
 	}
 	b.StopTimer()

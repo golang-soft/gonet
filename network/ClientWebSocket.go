@@ -4,7 +4,8 @@ import (
 	"fmt"
 	"github.com/gorilla/websocket"
 	"gonet/base"
-	"gonet/rpc"
+	"gonet/grpc"
+	"gonet/server/rpc"
 	"io"
 	"net/url"
 )
@@ -45,7 +46,7 @@ func (this *ClientWebSocket) Start() bool {
 }
 
 func (this *ClientWebSocket) SendMsg(head rpc.RpcHead, funcName string, params ...interface{}) {
-	buff := rpc.Marshal(head, funcName, params...)
+	buff := grpc.Marshal(head, funcName, params...)
 	this.Send(head, buff)
 }
 

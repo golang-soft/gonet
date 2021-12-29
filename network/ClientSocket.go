@@ -3,7 +3,8 @@ package network
 import (
 	"fmt"
 	"gonet/base"
-	"gonet/rpc"
+	"gonet/grpc"
+	"gonet/server/rpc"
 	"io"
 	"log"
 	"net"
@@ -47,7 +48,7 @@ func (this *ClientSocket) Start() bool {
 }
 
 func (this *ClientSocket) SendMsg(head rpc.RpcHead, funcName string, params ...interface{}) {
-	buff := rpc.Marshal(head, funcName, params...)
+	buff := grpc.Marshal(head, funcName, params...)
 	this.Send(head, buff)
 }
 

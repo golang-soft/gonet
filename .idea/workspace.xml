@@ -25,50 +25,104 @@
     </select>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="48577825-a92d-4c0c-b73f-4177e3909d59" name="Default Changelist" comment="调整框架，增加部分逻辑">
-      <change afterPath="$PROJECT_DIR$/server/message/basic.proto" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/message/chat.proto" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/message/error.proto" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/message/global.proto" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/message/msgid.proto" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/message/player.proto" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/message/pub.proto" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/message/room.proto" afterDir="false" />
+    <list default="true" id="48577825-a92d-4c0c-b73f-4177e3909d59" name="Default Changelist" comment="调整消息结构">
+      <change afterPath="$PROJECT_DIR$/server/cmessage/basic.pb.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/cmessage/basic.proto" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/cmessage/global.pb.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/cmessage/global.proto" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/cmessage/msgid.pb.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/cmessage/msgid.proto" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/cmessage/player.pb.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/cmessage/player.proto" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/cmessage/room.pb.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/cmessage/room.proto" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db/db_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/db/db_test.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db/model/test.go" beforeDir="false" afterPath="$PROJECT_DIR$/db/model/test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/actor/Actor.go" beforeDir="false" afterPath="$PROJECT_DIR$/actor/Actor.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/actor/ActorMgr.go" beforeDir="false" afterPath="$PROJECT_DIR$/actor/ActorMgr.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/actor/ActorPool.go" beforeDir="false" afterPath="$PROJECT_DIR$/actor/ActorPool.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/Common.go" beforeDir="false" afterPath="$PROJECT_DIR$/common/Common.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/FileMonitor.go" beforeDir="false" afterPath="$PROJECT_DIR$/common/FileMonitor.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/cluster/Cluster.go" beforeDir="false" afterPath="$PROJECT_DIR$/common/cluster/Cluster.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/cluster/ClusterCommon.go" beforeDir="false" afterPath="$PROJECT_DIR$/common/cluster/ClusterCommon.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/cluster/et/master.go" beforeDir="false" afterPath="$PROJECT_DIR$/common/cluster/et/master.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/cluster/et/palyerraft.go" beforeDir="false" afterPath="$PROJECT_DIR$/common/cluster/et/palyerraft.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/cluster/etv3/master.go" beforeDir="false" afterPath="$PROJECT_DIR$/common/cluster/etv3/master.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/cluster/etv3/palyerraft.go" beforeDir="false" afterPath="$PROJECT_DIR$/common/cluster/etv3/palyerraft.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/cluster/rpc/Cluster.go" beforeDir="false" afterPath="$PROJECT_DIR$/common/cluster/rpc/Cluster.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/cluster/rpc/ClusterServer.go" beforeDir="false" afterPath="$PROJECT_DIR$/common/cluster/rpc/ClusterServer.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/console.go" beforeDir="false" afterPath="$PROJECT_DIR$/common/console.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/network/ClientSocket.go" beforeDir="false" afterPath="$PROJECT_DIR$/network/ClientSocket.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/network/ClientWebSocket.go" beforeDir="false" afterPath="$PROJECT_DIR$/network/ClientWebSocket.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/network/ClientWebSocket2.go" beforeDir="false" afterPath="$PROJECT_DIR$/network/ClientWebSocket2.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/network/Isocket.go" beforeDir="false" afterPath="$PROJECT_DIR$/network/Isocket.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/network/Isocket_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/network/Isocket_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/network/ServerSocket.go" beforeDir="false" afterPath="$PROJECT_DIR$/network/ServerSocket.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/network/ServerSocketClient.go" beforeDir="false" afterPath="$PROJECT_DIR$/network/ServerSocketClient.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/network/WebSocket.go" beforeDir="false" afterPath="$PROJECT_DIR$/network/WebSocket.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/network/WebSocketClient.go" beforeDir="false" afterPath="$PROJECT_DIR$/network/WebSocketClient.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rpc/SyncRpc.go" beforeDir="false" afterPath="$PROJECT_DIR$/grpc/SyncRpc.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rpc/decode.go" beforeDir="false" afterPath="$PROJECT_DIR$/grpc/decode.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rpc/encode.go" beforeDir="false" afterPath="$PROJECT_DIR$/grpc/encode.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rpc/proto.pb.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/rpc/proto.proto" beforeDir="false" afterPath="$PROJECT_DIR$/server/rpc/proto.proto" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rpc/rpc3.pb.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/rpc/rpc3.proto" beforeDir="false" afterPath="$PROJECT_DIR$/server/rpc/rpc3.proto" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rpc/rpc_benchmark_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/grpc/rpc_benchmark_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rpc/rpc_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/grpc/rpc_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rpc/type.go" beforeDir="false" afterPath="$PROJECT_DIR$/grpc/type.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/account/AccountMgr.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/account/AccountMgr.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/account/AccountServer.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/account/AccountServer.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/account/EventProcess.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/account/EventProcess.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/bin/proto.bat" beforeDir="false" afterPath="$PROJECT_DIR$/server/bin/proto.bat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/bin/protorpc.bat" beforeDir="false" afterPath="$PROJECT_DIR$/server/bin/protorpc.bat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/center/CenterServer.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/center/CenterServer.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/center/EventProcess.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/center/EventProcess.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/center/GrpcServer.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/center/GrpcServer.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/center/ServerManager.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/center/ServerManager.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/client/EventProcess.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/client/EventProcess.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/client/client.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/client/client.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/client/cmd.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/client/cmd.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/game/GrpcClient.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/game/GrpcClient.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/common/Ipacket.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/common/Ipacket.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/grpcserver/EventProcess.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/grpcserver/EventProcess.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/grpcserver/GrpcServer.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/grpcserver/GrpcServer.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/login/GrpcInterface.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/login/GrpcInterface.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/login/LoginServer.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/login/LoginServer.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/login/NetGateSender.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/login/NetGateSender.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/message/Ipacket.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/common/Ipacket.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/message/center.pb.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/smessage/center.pb.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/message/center.proto" beforeDir="false" afterPath="$PROJECT_DIR$/server/smessage/center.proto" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/message/client.pb.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/message/client.pb.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/message/client.proto" beforeDir="false" afterPath="$PROJECT_DIR$/server/message/client.proto" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/message/game.pb.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/message/game.pb.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/message/game.proto" beforeDir="false" afterPath="$PROJECT_DIR$/server/message/game.proto" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/message/message.pb.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/smessage/message.pb.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/message/message.proto" beforeDir="false" afterPath="$PROJECT_DIR$/server/smessage/message.proto" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/message/server.proto" beforeDir="false" afterPath="$PROJECT_DIR$/server/smessage/server.proto" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/message/basic.pb.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/message/basic.proto" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/message/chat.pb.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/cmessage/chat.pb.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/message/chat.proto" beforeDir="false" afterPath="$PROJECT_DIR$/server/cmessage/chat.proto" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/message/client.pb.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/cmessage/client.pb.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/message/client.proto" beforeDir="false" afterPath="$PROJECT_DIR$/server/cmessage/client.proto" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/message/error.pb.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/cmessage/error.pb.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/message/error.proto" beforeDir="false" afterPath="$PROJECT_DIR$/server/cmessage/error.proto" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/message/game.pb.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/cmessage/game.pb.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/message/game.proto" beforeDir="false" afterPath="$PROJECT_DIR$/server/cmessage/game.proto" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/message/global.pb.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/message/global.proto" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/message/msgid.pb.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/message/msgid.proto" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/message/player.pb.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/message/player.proto" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/message/pub.pb.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/cmessage/pub.pb.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/message/pub.proto" beforeDir="false" afterPath="$PROJECT_DIR$/server/cmessage/pub.proto" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/message/room.pb.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/message/room.proto" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/server/netgate/DispatchPacket.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/netgate/DispatchPacket.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/netgate/EventPrcoess.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/netgate/EventPrcoess.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/netgate/NetGateServer.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/netgate/NetGateServer.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/netgate/PlayerMgr.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/netgate/PlayerMgr.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/netgate/UserProcess.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/netgate/UserProcess.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/world/CenterClient.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/world/CenterClient.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/world/WorldServer.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/world/WorldServer.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/world/chat/channelmgr.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/world/chat/channelmgr.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/world/chat/chat.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/world/chat/chat.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/world/cmd/CmdProcess.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/world/cmd/CmdProcess.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/world/player/Player.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/world/player/Player.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/world/player/PlayerData.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/world/player/PlayerData.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/world/player/PlayerMgr.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/world/player/PlayerMgr.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/worlddb/DdServer.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/worlddb/DdServer.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/worlddb/EventProcess.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/worlddb/EventProcess.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/worlddb/PlayerMgr.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/worlddb/PlayerMgr.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/zone/EventProcess.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/zone/EventProcess.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/zone/MapServer.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/zone/MapServer.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -125,7 +179,7 @@
     <property name="go.gopath.indexing.explicitly.defined" value="true" />
     <property name="go.import.settings.migrated" value="true" />
     <property name="go.sdk.automatically.set" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/server/message" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/rpc" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -134,25 +188,43 @@
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
-    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
+    <property name="settings.editor.selected.configurable" value="vcs.Subversion" />
   </component>
   <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="D:\workspace-go\gonet\server\common" />
-      <recent name="D:\workspace-go\gonet\server\smessage" />
-      <recent name="D:\workspace-go\gonet\server\worlddb\data" />
-      <recent name="D:\workspace-go\gonet\server\game" />
-      <recent name="D:\workspace-go\gonet\server\world\table" />
-    </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\workspace-go\gonet\rpc" />
       <recent name="D:\workspace-go\gonet\server\message" />
       <recent name="D:\workspace-go\gonet\server\client" />
       <recent name="D:\workspace-go\gonet\server\model" />
       <recent name="D:\workspace-go\gonet\server\worlddb\model" />
-      <recent name="D:\workspace-go\gonet\server\worlddb" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\workspace-go\gonet\server\rpc" />
+      <recent name="D:\workspace-go\gonet\server\common" />
+      <recent name="D:\workspace-go\gonet\server\smessage" />
+      <recent name="D:\workspace-go\gonet\server\worlddb\data" />
+      <recent name="D:\workspace-go\gonet\server\game" />
     </key>
   </component>
   <component name="RunManager" selected="Go Build.client">
+    <configuration name="proto" type="BatchConfigurationType" factoryName="Batch" temporary="true">
+      <module name="gonet" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="WORKING_DIRECTORY" value="D:\workspace-go\gonet\server\bin" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SCRIPT_NAME" value="proto.bat" />
+      <option name="PARAMETERS" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="protorpc" type="BatchConfigurationType" factoryName="Batch" temporary="true">
+      <module name="gonet" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="WORKING_DIRECTORY" value="D:\workspace-go\gonet\server\bin" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SCRIPT_NAME" value="protorpc.bat" />
+      <option name="PARAMETERS" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="account (1)" type="GoApplicationRunConfiguration" factoryName="Go Application">
       <module name="gonet" />
       <working_directory value="$PROJECT_DIR$" />
@@ -197,29 +269,11 @@
       <directory value="$PROJECT_DIR$" />
       <method v="2" />
     </configuration>
-    <configuration name="go build gonet/tool/json" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
-      <module name="gonet" />
-      <working_directory value="$PROJECT_DIR$" />
-      <kind value="PACKAGE" />
-      <filePath value="$PROJECT_DIR$/tool/json/test_json.go" />
-      <package value="gonet/tool/json" />
-      <directory value="$PROJECT_DIR$" />
-      <method v="2" />
-    </configuration>
     <configuration name="go build test1.go" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
       <module name="gonet" />
       <working_directory value="$PROJECT_DIR$" />
       <kind value="FILE" />
       <filePath value="$PROJECT_DIR$/main/test1.go" />
-      <package value="gonet" />
-      <directory value="$PROJECT_DIR$" />
-      <method v="2" />
-    </configuration>
-    <configuration name="go build testdata.go" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
-      <module name="gonet" />
-      <working_directory value="$PROJECT_DIR$" />
-      <kind value="FILE" />
-      <filePath value="$PROJECT_DIR$/tool/json/testdata.go" />
       <package value="gonet" />
       <directory value="$PROJECT_DIR$" />
       <method v="2" />
@@ -337,22 +391,25 @@
       <item itemvalue="Go Build.zone" />
       <item itemvalue="Go Build.client" />
       <item itemvalue="Go Build.netgate" />
-      <item itemvalue="Go Build.go build gonet/tool/json" />
-      <item itemvalue="Go Build.go build testdata.go" />
       <item itemvalue="Go Build.go build gonet/main" />
       <item itemvalue="Go Build.go build test1.go" />
+      <item itemvalue="Batch.protorpc" />
+      <item itemvalue="Batch.proto" />
     </list>
     <recent_temporary>
       <list>
         <item itemvalue="Go Build.netgate" />
+        <item itemvalue="Batch.protorpc" />
+        <item itemvalue="Batch.proto" />
         <item itemvalue="Go Build.go build test1.go" />
         <item itemvalue="Go Build.go build gonet/main" />
-        <item itemvalue="Go Build.go build gonet/tool/json" />
-        <item itemvalue="Go Build.go build testdata.go" />
       </list>
     </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="SvnConfiguration">
+    <configuration>C:\Users\admin\AppData\Roaming\Subversion</configuration>
+  </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="48577825-a92d-4c0c-b73f-4177e3909d59" name="Default Changelist" comment="" />
@@ -399,7 +456,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="增加注释" />
     <MESSAGE value="调整配置文件" />
     <MESSAGE value="调整websocket" />
     <MESSAGE value="同步代碼" />
@@ -424,7 +480,8 @@
     <MESSAGE value="同步服务器信息到中央服务器" />
     <MESSAGE value="代码同步一下" />
     <MESSAGE value="调整框架，增加部分逻辑" />
-    <option name="LAST_COMMIT_MESSAGE" value="调整框架，增加部分逻辑" />
+    <MESSAGE value="调整消息结构" />
+    <option name="LAST_COMMIT_MESSAGE" value="调整消息结构" />
   </component>
   <component name="VgoProject">
     <integration-enabled>true</integration-enabled>
@@ -461,11 +518,11 @@
     </state>
     <state x="655" y="133" key="#xdebugger.evaluate/0.0.1920.999/1920.0.1920.1040@0.0.1920.999" timestamp="1640689273561" />
     <state x="655" y="133" key="#xdebugger.evaluate/0.0.1920.999@0.0.1920.999" timestamp="1639138164293" />
-    <state width="1307" height="569" key="DebuggerActiveHint" timestamp="1640694630085">
+    <state width="1307" height="569" key="DebuggerActiveHint" timestamp="1640778820785">
       <screen x="0" y="0" width="1920" height="999" />
     </state>
     <state width="468" height="466" key="DebuggerActiveHint/0.0.1600.819@0.0.1600.819" timestamp="1638608758215" />
-    <state width="1307" height="569" key="DebuggerActiveHint/0.0.1920.999/1920.0.1920.1040@0.0.1920.999" timestamp="1640694630085" />
+    <state width="1307" height="569" key="DebuggerActiveHint/0.0.1920.999/1920.0.1920.1040@0.0.1920.999" timestamp="1640778820785" />
     <state width="1126" height="593" key="DebuggerActiveHint/0.0.1920.999/1920.0.1920.1040@1920.0.1920.1040" timestamp="1640075144689" />
     <state width="1126" height="569" key="DebuggerActiveHint/0.0.1920.999@0.0.1920.999" timestamp="1639366209534" />
     <state x="160" y="195" width="1700" height="775" key="DiffContextDialog" timestamp="1639203450926">
@@ -473,11 +530,11 @@
     </state>
     <state x="133" y="160" width="1416" height="635" key="DiffContextDialog/0.0.1600.819@0.0.1600.819" timestamp="1638633002223" />
     <state x="160" y="195" width="1700" height="775" key="DiffContextDialog/0.0.1920.999@0.0.1920.999" timestamp="1639203450926" />
-    <state x="688" y="196" key="FileChooserDialogImpl" timestamp="1640684787387">
+    <state x="688" y="196" key="FileChooserDialogImpl" timestamp="1640760268765">
       <screen x="0" y="0" width="1920" height="999" />
     </state>
     <state x="573" y="161" key="FileChooserDialogImpl/0.0.1600.819@0.0.1600.819" timestamp="1638677894553" />
-    <state x="688" y="196" key="FileChooserDialogImpl/0.0.1920.999/1920.0.1920.1040@0.0.1920.999" timestamp="1640684787387" />
+    <state x="688" y="196" key="FileChooserDialogImpl/0.0.1920.999/1920.0.1920.1040@0.0.1920.999" timestamp="1640760268765" />
     <state x="2608" y="204" key="FileChooserDialogImpl/0.0.1920.999/1920.0.1920.1040@1920.0.1920.1040" timestamp="1639468116972" />
     <state x="688" y="196" key="FileChooserDialogImpl/0.0.1920.999@0.0.1920.999" timestamp="1639207959052" />
     <state x="917" y="275" key="FileChooserDialogImpl/0.0.2560.1400@0.0.2560.1400" timestamp="1638765514852" />
@@ -486,77 +543,77 @@
       <screen x="0" y="0" width="1920" height="999" />
     </state>
     <state x="738" y="377" key="Github.CreateGistDialog/0.0.1920.999/1920.0.1920.1040@0.0.1920.999" timestamp="1640689378167" />
-    <state width="1867" height="322" key="GridCell.Tab.0.bottom" timestamp="1640756639923">
+    <state width="1867" height="328" key="GridCell.Tab.0.bottom" timestamp="1640779072189">
       <screen x="0" y="0" width="1920" height="999" />
     </state>
     <state width="1557" height="167" key="GridCell.Tab.0.bottom/0.0.1600.819@0.0.1600.819" timestamp="1638692091091" />
-    <state width="1867" height="322" key="GridCell.Tab.0.bottom/0.0.1920.999/1920.0.1920.1040@0.0.1920.999" timestamp="1640756639923" />
+    <state width="1867" height="328" key="GridCell.Tab.0.bottom/0.0.1920.999/1920.0.1920.1040@0.0.1920.999" timestamp="1640779072189" />
     <state width="1330" height="191" key="GridCell.Tab.0.bottom/0.0.1920.999/1920.0.1920.1040@1920.0.1920.1040" timestamp="1640075129033" />
     <state width="1867" height="174" key="GridCell.Tab.0.bottom/0.0.1920.999@0.0.1920.999" timestamp="1639370727786" />
-    <state width="1867" height="322" key="GridCell.Tab.0.center" timestamp="1640756639923">
+    <state width="1867" height="328" key="GridCell.Tab.0.center" timestamp="1640779072188">
       <screen x="0" y="0" width="1920" height="999" />
     </state>
     <state width="1557" height="167" key="GridCell.Tab.0.center/0.0.1600.819@0.0.1600.819" timestamp="1638692091091" />
-    <state width="1867" height="322" key="GridCell.Tab.0.center/0.0.1920.999/1920.0.1920.1040@0.0.1920.999" timestamp="1640756639923" />
+    <state width="1867" height="328" key="GridCell.Tab.0.center/0.0.1920.999/1920.0.1920.1040@0.0.1920.999" timestamp="1640779072188" />
     <state width="1330" height="191" key="GridCell.Tab.0.center/0.0.1920.999/1920.0.1920.1040@1920.0.1920.1040" timestamp="1640075129033" />
     <state width="1867" height="174" key="GridCell.Tab.0.center/0.0.1920.999@0.0.1920.999" timestamp="1639370727786" />
-    <state width="1867" height="322" key="GridCell.Tab.0.left" timestamp="1640756639923">
+    <state width="1867" height="328" key="GridCell.Tab.0.left" timestamp="1640779072188">
       <screen x="0" y="0" width="1920" height="999" />
     </state>
     <state width="1557" height="167" key="GridCell.Tab.0.left/0.0.1600.819@0.0.1600.819" timestamp="1638692091090" />
-    <state width="1867" height="322" key="GridCell.Tab.0.left/0.0.1920.999/1920.0.1920.1040@0.0.1920.999" timestamp="1640756639923" />
+    <state width="1867" height="328" key="GridCell.Tab.0.left/0.0.1920.999/1920.0.1920.1040@0.0.1920.999" timestamp="1640779072188" />
     <state width="1330" height="191" key="GridCell.Tab.0.left/0.0.1920.999/1920.0.1920.1040@1920.0.1920.1040" timestamp="1640075129033" />
     <state width="1867" height="174" key="GridCell.Tab.0.left/0.0.1920.999@0.0.1920.999" timestamp="1639370727786" />
-    <state width="1867" height="322" key="GridCell.Tab.0.right" timestamp="1640756639923">
+    <state width="1867" height="328" key="GridCell.Tab.0.right" timestamp="1640779072188">
       <screen x="0" y="0" width="1920" height="999" />
     </state>
     <state width="1557" height="167" key="GridCell.Tab.0.right/0.0.1600.819@0.0.1600.819" timestamp="1638692091091" />
-    <state width="1867" height="322" key="GridCell.Tab.0.right/0.0.1920.999/1920.0.1920.1040@0.0.1920.999" timestamp="1640756639923" />
+    <state width="1867" height="328" key="GridCell.Tab.0.right/0.0.1920.999/1920.0.1920.1040@0.0.1920.999" timestamp="1640779072188" />
     <state width="1330" height="191" key="GridCell.Tab.0.right/0.0.1920.999/1920.0.1920.1040@1920.0.1920.1040" timestamp="1640075129033" />
     <state width="1867" height="174" key="GridCell.Tab.0.right/0.0.1920.999@0.0.1920.999" timestamp="1639370727786" />
-    <state width="1867" height="322" key="GridCell.Tab.1.bottom" timestamp="1640756639923">
+    <state width="1867" height="328" key="GridCell.Tab.1.bottom" timestamp="1640779072189">
       <screen x="0" y="0" width="1920" height="999" />
     </state>
     <state width="1557" height="167" key="GridCell.Tab.1.bottom/0.0.1600.819@0.0.1600.819" timestamp="1638608800828" />
-    <state width="1867" height="322" key="GridCell.Tab.1.bottom/0.0.1920.999/1920.0.1920.1040@0.0.1920.999" timestamp="1640756639923" />
+    <state width="1867" height="328" key="GridCell.Tab.1.bottom/0.0.1920.999/1920.0.1920.1040@0.0.1920.999" timestamp="1640779072189" />
     <state width="1330" height="191" key="GridCell.Tab.1.bottom/0.0.1920.999/1920.0.1920.1040@1920.0.1920.1040" timestamp="1640075125156" />
     <state width="1867" height="174" key="GridCell.Tab.1.bottom/0.0.1920.999@0.0.1920.999" timestamp="1639370727786" />
-    <state width="1867" height="322" key="GridCell.Tab.1.center" timestamp="1640756639923">
+    <state width="1867" height="328" key="GridCell.Tab.1.center" timestamp="1640779072189">
       <screen x="0" y="0" width="1920" height="999" />
     </state>
     <state width="1557" height="167" key="GridCell.Tab.1.center/0.0.1600.819@0.0.1600.819" timestamp="1638608800828" />
-    <state width="1867" height="322" key="GridCell.Tab.1.center/0.0.1920.999/1920.0.1920.1040@0.0.1920.999" timestamp="1640756639923" />
+    <state width="1867" height="328" key="GridCell.Tab.1.center/0.0.1920.999/1920.0.1920.1040@0.0.1920.999" timestamp="1640779072189" />
     <state width="1330" height="191" key="GridCell.Tab.1.center/0.0.1920.999/1920.0.1920.1040@1920.0.1920.1040" timestamp="1640075125156" />
     <state width="1867" height="174" key="GridCell.Tab.1.center/0.0.1920.999@0.0.1920.999" timestamp="1639370727786" />
-    <state width="1867" height="322" key="GridCell.Tab.1.left" timestamp="1640756639923">
+    <state width="1867" height="328" key="GridCell.Tab.1.left" timestamp="1640779072189">
       <screen x="0" y="0" width="1920" height="999" />
     </state>
     <state width="1557" height="167" key="GridCell.Tab.1.left/0.0.1600.819@0.0.1600.819" timestamp="1638608800828" />
-    <state width="1867" height="322" key="GridCell.Tab.1.left/0.0.1920.999/1920.0.1920.1040@0.0.1920.999" timestamp="1640756639923" />
+    <state width="1867" height="328" key="GridCell.Tab.1.left/0.0.1920.999/1920.0.1920.1040@0.0.1920.999" timestamp="1640779072189" />
     <state width="1330" height="191" key="GridCell.Tab.1.left/0.0.1920.999/1920.0.1920.1040@1920.0.1920.1040" timestamp="1640075125156" />
     <state width="1867" height="174" key="GridCell.Tab.1.left/0.0.1920.999@0.0.1920.999" timestamp="1639370727786" />
-    <state width="1867" height="322" key="GridCell.Tab.1.right" timestamp="1640756639923">
+    <state width="1867" height="328" key="GridCell.Tab.1.right" timestamp="1640779072189">
       <screen x="0" y="0" width="1920" height="999" />
     </state>
     <state width="1557" height="167" key="GridCell.Tab.1.right/0.0.1600.819@0.0.1600.819" timestamp="1638608800828" />
-    <state width="1867" height="322" key="GridCell.Tab.1.right/0.0.1920.999/1920.0.1920.1040@0.0.1920.999" timestamp="1640756639923" />
+    <state width="1867" height="328" key="GridCell.Tab.1.right/0.0.1920.999/1920.0.1920.1040@0.0.1920.999" timestamp="1640779072189" />
     <state width="1330" height="191" key="GridCell.Tab.1.right/0.0.1920.999/1920.0.1920.1040@1920.0.1920.1040" timestamp="1640075125156" />
     <state width="1867" height="174" key="GridCell.Tab.1.right/0.0.1920.999@0.0.1920.999" timestamp="1639370727786" />
     <state x="437" y="171" key="IDE.errors.dialog" timestamp="1639206840766">
       <screen x="0" y="0" width="1920" height="999" />
     </state>
     <state x="437" y="171" key="IDE.errors.dialog/0.0.1920.999@0.0.1920.999" timestamp="1639206840766" />
-    <state x="437" y="116" key="SettingsEditor" timestamp="1640229776564">
+    <state x="437" y="116" key="SettingsEditor" timestamp="1640759795419">
       <screen x="0" y="0" width="1920" height="999" />
     </state>
-    <state x="437" y="116" key="SettingsEditor/0.0.1920.999/1920.0.1920.1040@0.0.1920.999" timestamp="1640229776564" />
+    <state x="437" y="116" key="SettingsEditor/0.0.1920.999/1920.0.1920.1040@0.0.1920.999" timestamp="1640759795419" />
     <state x="437" y="116" key="SettingsEditor/0.0.1920.999@0.0.1920.999" timestamp="1639205731993" />
     <state x="582" y="363" key="SettingsEditor/0.0.2560.1400@0.0.2560.1400" timestamp="1638765564990" />
-    <state x="470" y="173" key="Vcs.Push.Dialog.v2" timestamp="1640698474980">
+    <state x="470" y="173" key="Vcs.Push.Dialog.v2" timestamp="1640756768249">
       <screen x="0" y="0" width="1920" height="999" />
     </state>
     <state x="392" y="142" key="Vcs.Push.Dialog.v2/0.0.1600.819@0.0.1600.819" timestamp="1638630677588" />
-    <state x="470" y="173" key="Vcs.Push.Dialog.v2/0.0.1920.999/1920.0.1920.1040@0.0.1920.999" timestamp="1640698474980" />
+    <state x="470" y="173" key="Vcs.Push.Dialog.v2/0.0.1920.999/1920.0.1920.1040@0.0.1920.999" timestamp="1640756768249" />
     <state x="470" y="173" key="Vcs.Push.Dialog.v2/0.0.1920.999@0.0.1920.999" timestamp="1639208729271" />
     <state x="627" y="236" key="Vcs.Push.Dialog.v2/0.0.2560.1359@0.0.2560.1359" timestamp="1638772609197" />
     <state x="627" y="243" key="Vcs.Push.Dialog.v2/0.0.2560.1400@0.0.2560.1400" timestamp="1638769982908" />
@@ -564,19 +621,20 @@
       <screen x="0" y="0" width="1920" height="999" />
     </state>
     <state width="968" height="507" key="XDebugger.FullValuePopup/0.0.1920.999/1920.0.1920.1040@0.0.1920.999" timestamp="1640604756342" />
-    <state x="1051" y="595" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1638767761287">
-      <screen x="0" y="0" width="2560" height="1400" />
+    <state x="788" y="425" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1640775935644">
+      <screen x="0" y="0" width="1920" height="999" />
     </state>
+    <state x="788" y="425" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1920.999/1920.0.1920.1040@0.0.1920.999" timestamp="1640775935644" />
     <state x="1051" y="595" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.2560.1400@0.0.2560.1400" timestamp="1638767761287" />
     <state x="2114" y="209" width="1136" height="772" key="dock-window-1" timestamp="1639729674860">
       <screen x="1920" y="0" width="1920" height="1040" />
     </state>
     <state x="2114" y="209" width="1136" height="772" key="dock-window-1/0.0.1920.999/1920.0.1920.1040@0.0.1920.999" timestamp="1639729674860" />
-    <state x="756" y="11" width="717" height="975" key="find.popup" timestamp="1640751313012">
+    <state x="1203" y="24" width="717" height="975" key="find.popup" timestamp="1640774973039">
       <screen x="0" y="0" width="1920" height="999" />
     </state>
     <state x="342" y="154" width="932" height="536" key="find.popup/0.0.1600.819@0.0.1600.819" timestamp="1638620022879" />
-    <state x="756" y="11" width="717" height="975" key="find.popup/0.0.1920.999/1920.0.1920.1040@0.0.1920.999" timestamp="1640751313012" />
+    <state x="1203" y="24" width="717" height="975" key="find.popup/0.0.1920.999/1920.0.1920.1040@0.0.1920.999" timestamp="1640774973039" />
     <state x="410" y="24" width="1119" height="975" key="find.popup/0.0.1920.999@0.0.1920.999" timestamp="1639205799754" />
     <state x="547" y="256" width="1492" height="890" key="find.popup/0.0.2560.1359@0.0.2560.1359" timestamp="1638771803616" />
     <state x="764" y="221" key="refactoring.ChangeSignatureDialog" timestamp="1639103498019">
@@ -614,17 +672,17 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DlvLineBreakpoint">
           <url>file://$PROJECT_DIR$/network/ClientWebSocket2.go</url>
-          <line>137</line>
+          <line>138</line>
           <option name="timeStamp" value="18" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DlvLineBreakpoint">
           <url>file://$PROJECT_DIR$/network/WebSocket.go</url>
-          <line>163</line>
+          <line>165</line>
           <option name="timeStamp" value="19" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DlvLineBreakpoint">
           <url>file://$PROJECT_DIR$/server/client/EventProcess.go</url>
-          <line>109</line>
+          <line>110</line>
           <option name="timeStamp" value="20" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DlvLineBreakpoint">
@@ -644,12 +702,12 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DlvLineBreakpoint">
           <url>file://$PROJECT_DIR$/server/client/EventProcess.go</url>
-          <line>120</line>
+          <line>121</line>
           <option name="timeStamp" value="31" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DlvLineBreakpoint">
           <url>file://$PROJECT_DIR$/server/client/EventProcess.go</url>
-          <line>196</line>
+          <line>197</line>
           <option name="timeStamp" value="42" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DlvLineBreakpoint">
@@ -664,22 +722,22 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DlvLineBreakpoint">
           <url>file://$PROJECT_DIR$/common/cluster/Cluster.go</url>
-          <line>95</line>
+          <line>96</line>
           <option name="timeStamp" value="55" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DlvLineBreakpoint">
           <url>file://$PROJECT_DIR$/common/cluster/Cluster.go</url>
-          <line>103</line>
+          <line>104</line>
           <option name="timeStamp" value="57" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DlvLineBreakpoint">
           <url>file://$PROJECT_DIR$/server/netgate/UserProcess.go</url>
-          <line>211</line>
+          <line>212</line>
           <option name="timeStamp" value="62" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DlvLineBreakpoint">
           <url>file://$PROJECT_DIR$/server/netgate/UserProcess.go</url>
-          <line>73</line>
+          <line>74</line>
           <option name="timeStamp" value="66" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DlvLineBreakpoint">
@@ -689,12 +747,12 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DlvLineBreakpoint">
           <url>file://$PROJECT_DIR$/server/client/EventProcess.go</url>
-          <line>163</line>
+          <line>164</line>
           <option name="timeStamp" value="75" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DlvLineBreakpoint">
           <url>file://$PROJECT_DIR$/server/netgate/UserProcess.go</url>
-          <line>61</line>
+          <line>62</line>
           <option name="timeStamp" value="77" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DlvLineBreakpoint">
@@ -709,7 +767,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DlvLineBreakpoint">
           <url>file://$PROJECT_DIR$/server/netgate/UserProcess.go</url>
-          <line>156</line>
+          <line>157</line>
           <option name="timeStamp" value="81" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DlvLineBreakpoint">
@@ -744,7 +802,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DlvLineBreakpoint">
           <url>file://$PROJECT_DIR$/common/cluster/Cluster.go</url>
-          <line>144</line>
+          <line>145</line>
           <option name="timeStamp" value="103" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DlvLineBreakpoint">
@@ -799,7 +857,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DlvLineBreakpoint">
           <url>file://$PROJECT_DIR$/server/client/EventProcess.go</url>
-          <line>95</line>
+          <line>96</line>
           <option name="timeStamp" value="155" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DlvLineBreakpoint">
@@ -814,12 +872,12 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DlvLineBreakpoint">
           <url>file://$PROJECT_DIR$/network/WebSocket.go</url>
-          <line>135</line>
+          <line>137</line>
           <option name="timeStamp" value="167" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DlvLineBreakpoint">
           <url>file://$PROJECT_DIR$/network/WebSocket.go</url>
-          <line>83</line>
+          <line>85</line>
           <option name="timeStamp" value="168" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DlvLineBreakpoint">
@@ -829,7 +887,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DlvLineBreakpoint">
           <url>file://$PROJECT_DIR$/server/netgate/DispatchPacket.go</url>
-          <line>43</line>
+          <line>44</line>
           <option name="timeStamp" value="170" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DlvLineBreakpoint">
@@ -859,12 +917,12 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DlvLineBreakpoint">
           <url>file://$PROJECT_DIR$/server/netgate/DispatchPacket.go</url>
-          <line>30</line>
+          <line>31</line>
           <option name="timeStamp" value="240" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DlvLineBreakpoint">
           <url>file://$PROJECT_DIR$/network/WebSocket.go</url>
-          <line>177</line>
+          <line>179</line>
           <option name="timeStamp" value="250" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DlvLineBreakpoint">
@@ -879,22 +937,22 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DlvLineBreakpoint">
           <url>file://$PROJECT_DIR$/network/WebSocket.go</url>
-          <line>196</line>
+          <line>198</line>
           <option name="timeStamp" value="256" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DlvLineBreakpoint">
           <url>file://$PROJECT_DIR$/network/WebSocket.go</url>
-          <line>209</line>
+          <line>211</line>
           <option name="timeStamp" value="257" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DlvLineBreakpoint">
           <url>file://$PROJECT_DIR$/network/WebSocket.go</url>
-          <line>198</line>
+          <line>200</line>
           <option name="timeStamp" value="258" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DlvLineBreakpoint">
           <url>file://$PROJECT_DIR$/network/WebSocket.go</url>
-          <line>204</line>
+          <line>206</line>
           <option name="timeStamp" value="259" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DlvLineBreakpoint">
@@ -914,7 +972,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DlvLineBreakpoint">
           <url>file://$PROJECT_DIR$/network/WebSocket.go</url>
-          <line>221</line>
+          <line>223</line>
           <option name="timeStamp" value="271" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DlvLineBreakpoint">
@@ -1093,29 +1151,14 @@
           <option name="timeStamp" value="359" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DlvLineBreakpoint">
-          <url>file://$PROJECT_DIR$/network/ServerSocketClient.go</url>
-          <line>155</line>
-          <option name="timeStamp" value="369" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
           <url>file://$PROJECT_DIR$/network/ClientWebSocket.go</url>
-          <line>117</line>
+          <line>118</line>
           <option name="timeStamp" value="371" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DlvLineBreakpoint">
-          <url>file://$PROJECT_DIR$/network/ClientSocket.go</url>
-          <line>128</line>
-          <option name="timeStamp" value="372" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
           <url>file://$PROJECT_DIR$/network/ClientWebSocket2.go</url>
-          <line>112</line>
+          <line>113</line>
           <option name="timeStamp" value="373" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
-          <url>file://$PROJECT_DIR$/network/ServerSocketClient.go</url>
-          <line>150</line>
-          <option name="timeStamp" value="374" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DlvLineBreakpoint">
           <url>file://$PROJECT_DIR$/network/WebSocketClient.go</url>
@@ -1128,9 +1171,19 @@
           <option name="timeStamp" value="377" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DlvLineBreakpoint">
-          <url>file://$PROJECT_DIR$/network/ServerSocketClient.go</url>
-          <line>189</line>
-          <option name="timeStamp" value="378" />
+          <url>file://$PROJECT_DIR$/server/netgate/UserProcess.go</url>
+          <line>185</line>
+          <option name="timeStamp" value="379" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/server/client/EventProcess.go</url>
+          <line>186</line>
+          <option name="timeStamp" value="380" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/network/Isocket.go</url>
+          <line>226</line>
+          <option name="timeStamp" value="381" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

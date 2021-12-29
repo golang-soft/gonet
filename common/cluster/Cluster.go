@@ -8,8 +8,9 @@ import (
 	"gonet/base"
 	"gonet/base/vector"
 	"gonet/common"
+	"gonet/grpc"
 	"gonet/network"
-	"gonet/rpc"
+	"gonet/server/rpc"
 	"log"
 	"reflect"
 	"sync"
@@ -104,7 +105,7 @@ func (this *Cluster) Init(info *common.ClusterInfo, Endpoints []string, natsUrl 
 		this.HandlePacket(rpc.Packet{Buff: msg.Data, Reply: msg.Reply})
 	})
 
-	rpc.GCall = reflect.ValueOf(this.call)
+	grpc.GCall = reflect.ValueOf(this.call)
 	this.Actor.Start()
 }
 
@@ -120,7 +121,7 @@ func (this *Cluster) call(parmas ...interface{}) {
 	} else {
 		parmas[1] = parmas[1].(error).Error()
 	}
-	buff := rpc.Marshal(head, "", parmas[1:]...)
+	buff := grpc.Marshal(head, "", parmas[1:]...)
 	this.m_Conn.Publish(reply, buff)
 }
 
@@ -198,14 +199,14 @@ func (this *Cluster) HandlePacket(packet rpc.Packet) {
 
 func (this *Cluster) SendMsg(head rpc.RpcHead, funcName string, params ...interface{}) {
 	head.SrcClusterId = this.Id()
-	buff := rpc.Marshal(head, funcName, params...)
+	buff := grpc.Marshal(head, funcName, params...)
 	this.Send(head, buff)
 }
 
 func (this *Cluster) Send(head rpc.RpcHead, buff []byte) {
 	switch head.SendType {
 	case rpc.SEND_BALANCE:
-		_, head.ClusterId = this.m_HashRing[head.DestServerType].Get64(head.Id)
+		_, head.ClusterId = this.m_HashRing[head.DestServerType].Get64(int64(head.Id))
 		this.m_Conn.Publish(getRpcChannel(head), buff)
 	case rpc.SEND_POINT:
 		this.m_Conn.Publish(getRpcChannel(head), buff)
@@ -216,17 +217,17 @@ func (this *Cluster) Send(head rpc.RpcHead, buff []byte) {
 
 func (this *Cluster) CallMsg(cb interface{}, head rpc.RpcHead, funcName string, params ...interface{}) error {
 	head.SrcClusterId = this.Id()
-	buff := rpc.Marshal(head, funcName, params...)
+	buff := grpc.Marshal(head, funcName, params...)
 
 	switch head.SendType {
 	case rpc.SEND_POINT:
 	default:
-		_, head.ClusterId = this.m_HashRing[head.DestServerType].Get64(head.Id)
+		_, head.ClusterId = this.m_HashRing[head.DestServerType].Get64(int64(head.Id))
 	}
 
 	reply, err := this.m_Conn.Request(getRpcCallChannel(head), buff, CALL_TIME_OUT)
 	if err == nil {
-		rpcPacket, _ := rpc.Unmarshal(reply.Data)
+		rpcPacket, _ := grpc.Unmarshal(reply.Data)
 		var cf *actor.CallFunc
 		val, bOk := this.m_CallBackMap.Load(funcName)
 		if !bOk {
@@ -237,7 +238,7 @@ func (this *Cluster) CallMsg(cb interface{}, head rpc.RpcHead, funcName string, 
 		}
 		f := cf.FuncVal
 		k := cf.FuncType
-		err, params := rpc.UnmarshalBodyCall(rpcPacket, k)
+		err, params := grpc.UnmarshalBodyCall(rpcPacket, k)
 		if err != nil {
 			return err
 		}
@@ -263,7 +264,7 @@ func (this *Cluster) RandomCluster(head rpc.RpcHead) rpc.RpcHead {
 	if head.Id == 0 {
 		head.Id = int64(uint32(base.RAND.RandI(1, 0xFFFFFFFF)))
 	}
-	_, head.ClusterId = this.m_HashRing[head.DestServerType].Get64(head.Id)
+	_, head.ClusterId = this.m_HashRing[head.DestServerType].Get64(int64(head.Id))
 	pCluster := this.GetCluster(head)
 	if pCluster != nil {
 		head.SocketId = pCluster.SocketId

@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"gonet/actor"
 	"gonet/common"
-	"gonet/rpc"
+	"gonet/server/rpc"
 	"log"
 
 	"go.etcd.io/etcd/clientv3"

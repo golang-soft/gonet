@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"gonet/base"
 	"gonet/common/timer"
-	"gonet/rpc"
+	"gonet/server/rpc"
 	"io"
 	"net/url"
 	"time"

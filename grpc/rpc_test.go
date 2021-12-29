@@ -6,10 +6,9 @@ import (
 	"encoding/gob"
 	"encoding/json"
 	"github.com/golang/protobuf/proto"
-	"github.com/json-iterator/go"
-	"gonet/rpc"
+	"gonet/grpc"
 	"gonet/server/cmessage"
-	"gonet/server/message"
+	"gonet/server/rpc"
 	"reflect"
 	"testing"
 )
@@ -49,7 +48,7 @@ func TestUMarshalJson(t *testing.T) {
 }
 
 func TestMarshalJsonIter(t *testing.T) {
-	json := jsoniter.ConfigCompatibleWithStandardLibrary
+	//jsonstr := jsoniter.ConfigCompatibleWithStandardLibrary
 	data := &TopRank{}
 	for i := 0; i < nArraySize; i++ {
 		data.Value = append(data.Value, nValue)
@@ -60,7 +59,7 @@ func TestMarshalJsonIter(t *testing.T) {
 }
 
 func TestUMarshalJsonIter(t *testing.T) {
-	json := jsoniter.ConfigCompatibleWithStandardLibrary
+	//jsonstr := jsoniter.ConfigCompatibleWithStandardLibrary
 	data := &TopRank{}
 	for i := 0; i < nArraySize; i++ {
 		data.Value = append(data.Value, nValue)

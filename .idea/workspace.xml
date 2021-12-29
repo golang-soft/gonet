@@ -27,8 +27,7 @@
   <component name="ChangeListManager">
     <list default="true" id="48577825-a92d-4c0c-b73f-4177e3909d59" name="Default Changelist" comment="调整协议模块">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/network/Isocket_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/network/Isocket_test.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/account/AccountMgr.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/account/AccountMgr.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/grpc/rpc_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/grpc/rpc_test.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -514,11 +513,11 @@
     <state x="437" y="116" key="SettingsEditor/0.0.1920.999/1920.0.1920.1040@0.0.1920.999" timestamp="1640759795419" />
     <state x="437" y="116" key="SettingsEditor/0.0.1920.999@0.0.1920.999" timestamp="1639205731993" />
     <state x="582" y="363" key="SettingsEditor/0.0.2560.1400@0.0.2560.1400" timestamp="1638765564990" />
-    <state x="470" y="173" key="Vcs.Push.Dialog.v2" timestamp="1640779150240">
+    <state x="470" y="173" key="Vcs.Push.Dialog.v2" timestamp="1640781635215">
       <screen x="0" y="0" width="1920" height="999" />
     </state>
     <state x="392" y="142" key="Vcs.Push.Dialog.v2/0.0.1600.819@0.0.1600.819" timestamp="1638630677588" />
-    <state x="470" y="173" key="Vcs.Push.Dialog.v2/0.0.1920.999/1920.0.1920.1040@0.0.1920.999" timestamp="1640779150240" />
+    <state x="470" y="173" key="Vcs.Push.Dialog.v2/0.0.1920.999/1920.0.1920.1040@0.0.1920.999" timestamp="1640781635215" />
     <state x="470" y="173" key="Vcs.Push.Dialog.v2/0.0.1920.999@0.0.1920.999" timestamp="1639208729271" />
     <state x="627" y="236" key="Vcs.Push.Dialog.v2/0.0.2560.1359@0.0.2560.1359" timestamp="1638772609197" />
     <state x="627" y="243" key="Vcs.Push.Dialog.v2/0.0.2560.1400@0.0.2560.1400" timestamp="1638769982908" />

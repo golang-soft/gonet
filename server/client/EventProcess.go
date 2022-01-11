@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
+	"github.com/golang/protobuf/proto"
 	"gonet/actor"
 	"gonet/base"
 	"gonet/grpc"
@@ -12,9 +13,6 @@ import (
 	"gonet/server/game/lmath"
 	"gonet/server/rpc"
 	"sync/atomic"
-	"time"
-
-	"github.com/golang/protobuf/proto"
 )
 
 type (
@@ -77,7 +75,7 @@ func (this *EventProcess) Init() {
 	this.Actor.Init()
 	this.Pos = lmath.Point3F{1, 1, 1}
 	this.m_Dh.Init()
-	this.RegisterTimer((network.HEART_TIME_OUT/6)*time.Second, this.Update) //定时器
+	//this.RegisterTimer((network.HEART_TIME_OUT/6)*time.Second, this.Update) //定时器
 	this.RegisterCall("W_C_SelectPlayerResponse", func(ctx context.Context, packet *cmessage.W_C_SelectPlayerResponse) {
 		this.AccountId = packet.GetAccountId()
 		nLen := len(packet.GetPlayerData())
@@ -182,8 +180,13 @@ func (this *EventProcess) LoginAccount() {
 }
 
 func (this *EventProcess) LoginGate() {
-	packet := &cmessage.C_G_LoginResquest{PacketHead: common.BuildPacketHead(cmessage.MessageID_MSG_CHECK_VERSION_REQ, rpc.SERVICE_GATESERVER),
+	packet := &cmessage.C_G_LoginResquest{PacketHead: common.BuildPacketHead(0, rpc.SERVICE_GATESERVER),
 		Key: this.m_Dh.PubKey()}
+	this.SendPacket(packet)
+}
+
+func (this *EventProcess) SendAttack() {
+	packet := &cmessage.AttackReq{PacketHead: common.BuildPacketHead(cmessage.MessageID_MSG_AttackReq, rpc.SERVICE_GATESERVER), Round: 1}
 	this.SendPacket(packet)
 }
 

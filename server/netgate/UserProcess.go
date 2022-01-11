@@ -128,7 +128,6 @@ func (this *UserPrcoess) PacketFunc(packet1 rpc.Packet) bool {
 	}
 
 	//获取配置的路由地址
-
 	err := common.UnmarshalText(packet, data)
 	if err != nil {
 		SERVER.GetLog().Printf("包解析错误2  socket=%d", socketid)
@@ -138,7 +137,7 @@ func (this *UserPrcoess) PacketFunc(packet1 rpc.Packet) bool {
 
 	packetHead := packet.(common.Packet).GetPacketHead()
 	//packetHead.DestServerType = destServerType
-	if packetHead == nil || packetHead.Ckx != common.Default_Ipacket_Ckx || packetHead.Stx != common.Default_Ipacket_Stx {
+	if packetHead == nil /*|| packetHead.Ckx != common.Default_Ipacket_Ckx || packetHead.Stx != common.Default_Ipacket_Stx*/ {
 		SERVER.GetLog().Printf("(A)致命的越界包,已经被忽略 socket=%d", socketid)
 		return true
 	}
@@ -218,6 +217,11 @@ func (this *UserPrcoess) Init() {
 
 		this.SwtichSendToWorldDb(head.SocketId, base.ToLower("W_C_Test"), head, grpc.Marshal(head, base.ToLower("W_C_Test"), packet))
 
+	})
+
+	this.RegisterCall("AttackReq", func(ctx context.Context, packet *cmessage.AttackReq) {
+		head := this.GetRpcHead(ctx)
+		SendToClient(head.SocketId, &cmessage.AttackResp{PacketHead: common.BuildPacketHead(cmessage.MessageID_MSG_AttackResp, rpc.SERVICE_NONE)})
 	})
 
 	this.Actor.Start()

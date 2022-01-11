@@ -1,0 +1,27 @@
+syntax = "proto3";
+package smessage;
+import "message.proto";
+
+option go_package = "./;smessage";
+
+message SaveRound {
+    int32 round = 1;
+}
+
+message LoginLogData {
+    string userId = 1;
+    string ip = 2;
+    string mac = 3;
+    int32 lastlogin = 4;
+}
+
+message MatchLogData {
+    string userId = 1;
+    int64 start = 2;
+    int64 end = 3;
+}
+
+message BattleLogData {
+    int32 round = 1;
+    string day = 2;
+}

@@ -6,14 +6,14 @@ import (
 	"log"
 )
 
-type(
-	ItemData struct{
+type (
+	ItemData struct {
 		ItemId int
-		Type int	//类型
-		MaxDie int	//最大叠加数
+		Type   int //类型
+		MaxDie int //最大叠加数
 	}
 
-	ItemDataRes struct{
+	ItemDataRes struct {
 		common.BaseDataRes
 	}
 
@@ -22,25 +22,25 @@ type(
 	}
 )
 
-var(
-	ITEMDATA	ItemDataRes
+var (
+	ITEMDATA ItemDataRes
 )
 
-func (this *ItemData) IsEquip() bool{
+func (this *ItemData) IsEquip() bool {
 	return false
 }
 
-func (this *ItemDataRes) Read() bool{
+func (this *ItemDataRes) Read() bool {
 	this.Init()
 	var file base.CDataFile
 	//lineData := &base.RData{}
 
-	if (!file.ReadDataFile("data/BanWord.dat")) {
+	if !file.ReadDataFile("data/BanWord.dat") {
 		log.Fatalf("read BanWord.dat error")
 		return false
 	}
 
-	for i := 0; i < file.RecordNum; i++{
+	for i := 0; i < file.RecordNum; i++ {
 		pData := ItemData{}
 		this.AddData(pData.ItemId, pData)
 	}
@@ -50,7 +50,7 @@ func (this *ItemDataRes) Read() bool{
 
 func (this *ItemDataRes) GetData(id int) *ItemData {
 	pData := this.BaseDataRes.GetBaseData(id)
-	if pData != nil{
+	if pData != nil {
 		return pData.(*ItemData)
 	}
 

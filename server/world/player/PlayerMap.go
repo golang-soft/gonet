@@ -1,15 +1,15 @@
 package player
 
 import (
-	"gonet/server/world"
+	"gonet/server/world/wcluster"
 )
 
-func (this *Player) SendToZone(funcName string, params  ...interface{}) {
-	world.SendToZone(this.AccountId, this.GetZoneClusterId(), funcName, params...)
+func (this *Player) SendToZone(funcName string, params ...interface{}) {
+	wcluster.SendToZone(this.AccountId, this.GetZoneClusterId(), funcName, params...)
 }
 
 func (this *Player) AddMap() {
-	this.SendToZone("LoginMap", 1, this.AccountId, this.GetGateClusterId(), world.SERVER.GetCluster().Id())
+	this.SendToZone("LoginMap", 1, this.AccountId, this.GetGateClusterId(), wcluster.GetCluster().Id())
 }
 
 func (this *Player) LeaveMap() {
@@ -22,7 +22,7 @@ func (this *Player) ReloginMap() {
 
 //添加buff
 func (this *Player) AddBuff(Orgint int, BuffId int) {
-	if BuffId < 0{
+	if BuffId < 0 {
 		return
 	}
 	this.SendToZone("AddBuff", this.AccountId, Orgint, BuffId)
@@ -30,7 +30,7 @@ func (this *Player) AddBuff(Orgint int, BuffId int) {
 
 //删除buff
 func (this *Player) RemoveBuff(BuffId int) {
-	if BuffId < 0{
+	if BuffId < 0 {
 		return
 	}
 	this.SendToZone("RemoveBuff", this.AccountId, BuffId)
@@ -38,9 +38,9 @@ func (this *Player) RemoveBuff(BuffId int) {
 
 //批量添加buff
 func (this *Player) AddBuffS(Orgint int, BuffId []int) {
-	BuffIds :=  []int{}
-	for i := 0; i < len(BuffId); i++{
-		if BuffId[i] < 0{
+	BuffIds := []int{}
+	for i := 0; i < len(BuffId); i++ {
+		if BuffId[i] < 0 {
 			continue
 		}
 		BuffIds = append(BuffIds, int(BuffId[i]))
@@ -51,9 +51,9 @@ func (this *Player) AddBuffS(Orgint int, BuffId []int) {
 
 //批量删除buff
 func (this *Player) RemoveBuffS(BuffId []int) {
-	BuffIds :=  []int{}
-	for i := 0; i < len(BuffId); i++{
-		if BuffId[i] < 0{
+	BuffIds := []int{}
+	for i := 0; i < len(BuffId); i++ {
+		if BuffId[i] < 0 {
 			continue
 		}
 		BuffIds = append(BuffIds, int(BuffId[i]))

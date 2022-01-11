@@ -4,12 +4,12 @@ type HeroAttrTableCfg struct {
 	ID             int     `json:"ID"`
 	Class          int     `json:"Class"`
 	String_ID      int     `json:"String_ID"`
-	Attack         float32 `json:"Attack"`
-	Defend         float32 `json:"Defend"`
-	HP             int     `json:"HP"`
-	Crit           int     `json:"Crit"`
-	Crit_Damage    int     `json:"Crit_Damage"`
-	Dodge          int     `json:"Dodge"`
+	Attack         float64 `json:"Attack"`
+	Defend         float64 `json:"Defend"`
+	HP             float64 `json:"HP"`
+	Crit           float64 `json:"Crit"`
+	Crit_Damage    float64 `json:"Crit_Damage"`
+	Dodge          float64 `json:"Dodge"`
 	Speed          float32 `json:"Speed"`
 	DMG            int     `json:"DMG"`
 	DEF            int     `json:"DEF"`

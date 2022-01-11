@@ -2,10 +2,12 @@ package etv3
 
 import (
 	"encoding/json"
+	"fmt"
 	"gonet/actor"
 	"gonet/common"
 	"gonet/server/rpc"
 	"log"
+	"time"
 
 	"go.etcd.io/etcd/clientv3"
 
@@ -34,11 +36,13 @@ func (this *Master) Init(info common.IClusterInfo, Endpoints []string, pActor ac
 	this.m_ServiceMap = make(map[uint32]*common.ClusterInfo)
 	this.m_Client = etcdClient
 	this.BindActor(pActor)
+
 	this.Start()
 	this.IClusterInfo = info
 }
 
 func (this *Master) Start() {
+	go this.InitService()
 	go this.Run()
 }
 
@@ -46,7 +50,7 @@ func (this *Master) BindActor(pActor actor.IActor) {
 	this.m_Actor = pActor
 }
 
-func (this *Master) addService(info *common.ClusterInfo) {
+func (this *Master) AddService(info *common.ClusterInfo) {
 	this.m_Actor.SendMsg(rpc.RpcHead{}, "Cluster_Add", info)
 	this.m_ServiceMap[info.Id()] = info
 }
@@ -65,15 +69,22 @@ func NodeToService(val []byte) *common.ClusterInfo {
 	return info
 }
 
+func (this *Master) ListServices() {
+	for key, info := range this.m_ServiceMap {
+		log.Printf("ListServices: key %v >>>> %v", key, info)
+	}
+}
+
 func (this *Master) Run() {
 	wch := this.m_Client.Watch(context.Background(), ETCD_DIR+this.String(), clientv3.WithPrefix(), clientv3.WithPrevKV())
+	//wch := this.m_Client.Watch(context.Background(), ETCD_DIR, clientv3.WithPrefix(), clientv3.WithPrevKV())
 	for v := range wch {
 		for _, v1 := range v.Events {
-			//log.Printf("Run------type:%v kv:%v  prevKey:%v \n ", v1.Type, string(v1.Kv.Key), v1.PrevKv)
+			log.Printf("Run------type:%v kv:%v  prevKey:%v \n ", v1.Type, string(v1.Kv.Key), v1.PrevKv)
 
 			if v1.Type.String() == "PUT" {
 				info := NodeToService(v1.Kv.Value)
-				this.addService(info)
+				this.AddService(info)
 			} else {
 				log.Printf("Warn: delete key: %s", v1.PrevKv.Value)
 				info := NodeToService(v1.PrevKv.Value)
@@ -81,4 +92,25 @@ func (this *Master) Run() {
 			}
 		}
 	}
+}
+func (this *Master) InitService() {
+	kv := clientv3.NewKV(this.m_Client)
+	ctx, _ := context.WithTimeout(context.TODO(), 5*time.Second)
+	getResp, err := kv.Get(ctx, ETCD_DIR, clientv3.WithPrefix())
+	if err != nil {
+		log.Fatalf("get 失败：%s", err.Error())
+	}
+	log.Printf("%v", getResp.Kvs)
+
+	for _, data := range getResp.Kvs {
+		Key := string(data.Key)
+
+		info := NodeToService(data.Value)
+		fmt.Printf("key %s", Key)
+		fmt.Printf("info %v", info)
+
+		this.AddService(info)
+	}
+
+	return
 }

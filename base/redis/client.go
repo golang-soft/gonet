@@ -91,3 +91,15 @@ func (this *Client) HMSet(key string, fields map[string]interface{}) *redis.Stat
 func (this *Client) SADD(key string, users ...interface{}) *redis.IntCmd {
 	return this.redisClient.SAdd(key, users)
 }
+
+func (this *Client) HSetNX(key, field string, value interface{}) *redis.BoolCmd {
+	return this.redisClient.HSetNX(key, field, value)
+}
+
+func (this *Client) ZScore(key, member string) *redis.FloatCmd {
+	return this.redisClient.ZScore(key, member)
+}
+
+func (this *Client) ZAdd(key string, members ...redis.Z) *redis.IntCmd {
+	return this.redisClient.ZAdd(key, members...)
+}

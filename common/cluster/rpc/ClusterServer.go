@@ -5,8 +5,9 @@ import (
 	"gonet/actor"
 	"gonet/base"
 	"gonet/common"
+	"gonet/grpc"
 	"gonet/network"
-	"gonet/rpc"
+	"gonet/server/rpc"
 	"sync"
 )
 
@@ -79,7 +80,7 @@ func (this *ClusterServer) AddCluster(info *common.ClusterInfo) {
 	this.m_HashRing.Add(info.IpString())
 	this.m_pService.SendMsg(rpc.RpcHead{SocketId: info.SocketId}, "COMMON_RegisterResponse")
 	switch info.Type {
-	case grpc.SERVICE_GATESERVER:
+	case rpc.SERVICE_GATESERVER:
 		base.GLOG.Printf("ADD Gate SERVER: [%d]-[%s:%d]", info.SocketId, info.Ip, info.Port)
 	}
 }
@@ -98,7 +99,7 @@ func (this *ClusterServer) DelCluster(info *common.ClusterInfo) {
 	this.m_HashRing.Remove(info.IpString())
 	base.GLOG.Printf("服务器断开连接socketid[%d]", info.SocketId)
 	switch info.Type {
-	case grpc.SERVICE_GATESERVER:
+	case rpc.SERVICE_GATESERVER:
 		base.GLOG.Printf("与Gate服务器断开连接,id[%d]", info.SocketId)
 	}
 }
@@ -163,13 +164,13 @@ func (this *ClusterServer) SendMsg(head rpc.RpcHead, funcName string, params ...
 }
 
 func (this *ClusterServer) Send(head rpc.RpcHead, buff []byte) {
-	if head.DestServerType != grpc.SERVICE_GATESERVER {
+	if head.DestServerType != rpc.SERVICE_GATESERVER {
 		this.balanceSend(head, buff)
 	} else {
 		switch head.SendType {
-		case grpc.SEND_BALANCE:
+		case rpc.SEND_BALANCE:
 			this.balanceSend(head, buff)
-		case grpc.SEND_POINT:
+		case rpc.SEND_POINT:
 			this.sendPoint(head, buff)
 		default:
 			this.boardCastSend(head, buff)

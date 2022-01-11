@@ -10,6 +10,7 @@ import (
 	"gonet/db"
 	"gonet/server/rpc"
 	"gonet/server/world"
+	"gonet/server/world/wcluster"
 )
 
 //********************************************************
@@ -105,7 +106,7 @@ func (this *PlayerMgr) Init() {
 
 		if error == 1 { //创建失败通知accout删除player
 			this.m_Log.Printf("账号[%d]创建玩家[%d]失败", accountId, playerId)
-			world.SendToAccount("W_A_DeletePlayer", accountId, playerId)
+			wcluster.SendToAccount("W_A_DeletePlayer", accountId, playerId)
 		}
 	})
 

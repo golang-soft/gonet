@@ -24,6 +24,7 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.ProtoPackageIsVersion3 // please upgrade the proto package
 
+//服务器基本信息
 type ServerInfo struct {
 	Id                   uint32   `protobuf:"varint,1,opt,name=Id,proto3" json:"Id,omitempty"`
 	Type                 uint32   `protobuf:"varint,2,opt,name=Type,proto3" json:"Type,omitempty"`

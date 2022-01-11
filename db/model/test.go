@@ -1,7 +1,7 @@
 package model
 
 import (
-	"gonet/server/smessage"
+	"gonet/server/cmessage"
 )
 
 type (
@@ -17,7 +17,7 @@ type (
 		Vip            [8]int               `sql:"name:vip"`
 		LastLogoutTime int64                `sql:"datetime;nameg:last_logout_time"`
 		LastLoginTime  int64                `sql:"datetime;name:last_login_time"`
-		PLayerBlob     *smessage.PlayerData `sql:"blob;name:plaeyr_blob"`
+		PLayerBlob     *cmessage.PlayerData `sql:"blob;name:plaeyr_blob"`
 		PLayerBlobJson *AA                  `sql:"json;name:plaeyr_blob_json"`
 	}
 

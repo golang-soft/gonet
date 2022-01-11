@@ -15,14 +15,14 @@ message GameData {
     int64 endTs = 3;
     int64 flagOwner = 4;
     int64 flagUPdateTs = 5;
-    int64 part1Score = 6;
+    double part1Score = 6;
     int64 part1Ts = 7;
     int64 part2Ts = 8;
-    int64 part2Score =9;
+    double part2Score =9;
 }
 message UserData {
     string user = 1;
-    int64 round = 2;
+    int32 round = 2;
     int32 part = 3;
     string hid = 4;
     int32 type = 5;
@@ -81,6 +81,7 @@ message GameEndReq {
 }
 message GameEndResp{
     Ipacket PacketHead = 1;
+    GameData data = 2;
 }
 
 

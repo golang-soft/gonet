@@ -1,0 +1,51 @@
+package gamedata
+
+import (
+	"gonet/actor"
+	"gonet/server/common/data"
+	"gonet/server/world/logger"
+	"time"
+)
+
+type (
+	SOnloadTimer struct {
+		actor.Actor
+	}
+
+	ISOnloadTimer interface {
+		actor.IActor
+	}
+)
+
+var OnloadTimer = &SOnloadTimer{}
+
+func (this *SOnloadTimer) Init() {
+	logger.M_Log.Debugf("数据库初始化 ...................................")
+	this.Actor.Init()
+	this.RegisterTimer(5*time.Second, this.OnloadGameCheckTimer) //定时器
+	this.Actor.Start()
+}
+
+func (this *SOnloadTimer) OnloadGameCheckTimer() {
+	logger.M_Log.Debugf("触发定时器 ...................................")
+
+	GameCtrl.CheckGame()
+	GMatch.CheckMatch()
+	GRoom.CheckRoom()
+
+	//wcluster.GetCluster().DebugService()
+
+	AddRoomTask(data.RoomData{
+		FuncName: "Room_all",
+		User:     "111111",
+	})
+	AddLogTask(data.LogData{
+		Mode:   1,
+		Userid: "11111111",
+		Start:  1,
+		Ip:     "111.00.22.33",
+		Mac:    "111.00.22.33",
+	})
+	SaveCtrl.SaveRound(1)
+	Consume()
+}

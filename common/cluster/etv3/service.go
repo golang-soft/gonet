@@ -178,6 +178,11 @@ func (this *Service) GetKey() string {
 	return key
 }
 
+func (this *Service) GetRootKey() string {
+	key := ETCD_DIR
+	return key
+}
+
 func (this *Service) GetValue(key string) []*mvccpb.KeyValue {
 	getResp, err := this.m_Client.Get(context.TODO(), key)
 	if err != nil {

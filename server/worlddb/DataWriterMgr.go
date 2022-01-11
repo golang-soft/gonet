@@ -6,8 +6,8 @@ import (
 	"gonet/actor"
 	"gonet/db"
 	"gonet/server/common"
+	"gonet/server/common/mredis"
 	"gonet/server/model"
-	"gonet/server/worlddb/mredis"
 	"strconv"
 	"time"
 )
@@ -40,7 +40,7 @@ func (this *DataWriterMgr) Init() {
 	this.m_db = SERVER.GetDB()
 	this.Actor.Init()
 	this.m_DataWriterMap = make(map[int64]*DataWriter)
-	this.RegisterTimer(5*time.Second, this.SaveToDB) //定时器
+	this.RegisterTimer(5*60*time.Second, this.SaveToDB) //定时器
 	this.Actor.Start()
 }
 
@@ -91,12 +91,27 @@ func (this *DataWriterMgr) SaveRound(round int) {
 		return
 	}
 	data.Data = string(databyte)
-	//inserttodb
-	res, err := this.m_db.Exec(db.InsertSql(data))
+	//先查询数据是否存在
+	sql := db.LoadSql(data, db.WithWhere(&model.Settle{Round: int64(round)}), db.WithLimit(10))
+
+	rows, err := this.m_db.Query(sql)
 	if err == nil {
-		SERVER.m_Log.Debugf("插入数据库错误, %v", err)
+		rs := db.Query(rows, err)
+		if rs.Next() {
+			roundId := rs.Row().Int("round")
+			if roundId >= 1 { //创建玩家上限
+				//更新
+				this.m_db.Exec(db.UpdateSql(data))
+			} else {
+				//inserttodb
+				res, err := this.m_db.Exec(db.InsertSql(data))
+				if err == nil {
+					SERVER.m_Log.Debugf("插入数据库错误, %v", err)
+				}
+				SERVER.m_Log.Debugf("插入数据库结果 %v", res)
+			}
+		}
 	}
-	SERVER.m_Log.Debugf("插入数据库结果 %v", res)
 
 	//expiredata
 	for _, key := range keys {

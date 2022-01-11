@@ -7,8 +7,9 @@ import (
 	"gonet/base/vector"
 	"gonet/common"
 	"gonet/common/cluster/etv3"
+	"gonet/grpc"
 	"gonet/network"
-	"gonet/rpc"
+	"gonet/server/rpc"
 	"reflect"
 	"sync"
 )
@@ -202,9 +203,9 @@ func (this *Cluster) SendMsg(head rpc.RpcHead, funcName string, params ...interf
 
 func (this *Cluster) Send(head rpc.RpcHead, buff []byte) {
 	switch head.SendType {
-	case grpc.SEND_BALANCE:
+	case rpc.SEND_BALANCE:
 		this.balanceSend(head, buff)
-	case grpc.SEND_POINT:
+	case rpc.SEND_POINT:
 		this.sendPoint(head, buff)
 	default:
 		this.boardCastSend(head, buff)

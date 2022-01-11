@@ -14,4 +14,4 @@ type MapCfg struct {
 	Duration  int   `json:"Duration"`
 }
 
-type MapData map[string]MapCfg
+type MapData map[int]*MapCfg

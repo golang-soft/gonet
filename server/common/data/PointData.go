@@ -1,6 +1,6 @@
 package data
 
 type PointData struct {
-	x int
-	y int
+	X float64
+	Y float64
 }

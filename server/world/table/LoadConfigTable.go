@@ -35,4 +35,5 @@ func Init() {
 	JsonParse.LoadJsonTableData(config.GetConfigTablePath("StrengthenTable.json"), STRENGTHEN_TABLE_DATA)
 	JsonParse.LoadJsonTableData(config.GetConfigTablePath("StrTable.json"), STR_TABLE_CONFIG)
 	JsonParse.LoadJsonTableData(config.GetConfigTablePath("WorldParamTable.json"), WORLD_CONFIG)
+
 }

@@ -110,9 +110,9 @@ func (this *ServerSocket) AddClinet(conn net.Conn, addr string, connectType int)
 		pClient.SetMaxPacketLen(this.GetMaxPacketLen())
 		pClient.m_ClientId = this.AssignClientId()
 		pClient.m_sIP = addr
+		this.m_ClientLocker.Lock()
 		pClient.SetConnectType(connectType)
 		pClient.SetConn(conn)
-		this.m_ClientLocker.Lock()
 		this.m_ClientList[pClient.m_ClientId] = pClient
 		this.m_ClientLocker.Unlock()
 		pClient.Start()

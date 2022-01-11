@@ -6,8 +6,8 @@ import (
 	"gonet/server/cmessage"
 	"gonet/server/common"
 	"gonet/server/rpc"
-	"gonet/server/world"
 	player2 "gonet/server/world/player"
+	"gonet/server/world/wcluster"
 	"time"
 )
 
@@ -155,7 +155,7 @@ func (this *ChatMgr) SendMessageTo(msg *ChatMessage, playerId int64) {
 }
 
 func SendMessage(msg *ChatMessage, player *player) {
-	world.SendToClient(player.gateClusterId, &cmessage.W_C_ChatMessage{
+	wcluster.SendToClient(player.gateClusterId, &cmessage.W_C_ChatMessage{
 		PacketHead:  common.BuildPacketHead(cmessage.MessageID(player.accountId), rpc.SERVICE_GATESERVER),
 		Sender:      msg.Sender,
 		SenderName:  msg.SenderName,
@@ -167,7 +167,7 @@ func SendMessage(msg *ChatMessage, player *player) {
 }
 
 func (this *ChatMgr) SendMessageToAll(msg *ChatMessage) {
-	world.SERVER.GetCluster().SendMsg(rpc.RpcHead{DestServerType: rpc.SERVICE_GATESERVER, SendType: rpc.SEND_BOARD_CAST},
+	wcluster.GetCluster().SendMsg(rpc.RpcHead{DestServerType: rpc.SERVICE_GATESERVER, SendType: rpc.SEND_BOARD_CAST},
 		"Chat_SendMessageAll", msg)
 }
 

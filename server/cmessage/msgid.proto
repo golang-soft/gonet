@@ -36,7 +36,33 @@ enum MessageID {
     MSG_RewardReq = 100022;    //奖励
     MSG_RewardResp = 100023;    //奖励返回
 
+    MSG_GameStartResp = 100024; //游戏启动
+    MSG_UseItemResp = 100025; //使用道具
+    MSG_GameEndResp = 100026; //游戏结束
+    MSG_JoinRoomQuickReq = 100027; //
+    MSG_JoinRoomQuickResp = 100028; //
+    
+    MSG_LeaveRoomReq = 100029; //
+    MSG_LeaveRoomResp = 100030; //
+    MSG_MatchRoomReq = 100031; //
+    MSG_MatchRoomResp = 100032; // 
+    MSG_RenameRoomReq = 100033; //
+    MSG_RenameRoomResp = 100034; // 
+    MSG_ChangepwdRoomReq = 100035; //
+    MSG_ChangepwdRoomResp = 100036; // 
+    MSG_JoinRoomReq = 100037; //
+    MSG_JoinRoomResp = 100038; // 
 
+    MSG_CreateRoomReq = 100040; // 
+    MSG_CreateRoomResp = 100041; // 
+    MSG_DelRoomReq = 100042; // 
+    MSG_DelRoomResp = 100043; //  
+    
+    MSG_UpdateDevtReq = 100050;
+    MSG_UpdateDevtResp = 100051;
+    MSG_GetRoomAllDataReq = 100052;
+    MSG_GetRoomAllDataResp = 100053;
 
+    MSG_ErrorResp = 999999;    //错误
 }
 

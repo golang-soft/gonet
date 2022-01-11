@@ -1,5 +1,6 @@
 syntax = "proto3";
 import "pub.proto";
+import "basic.proto";
 
 package cmessage;
 option go_package = "./;cmessage";
@@ -13,7 +14,7 @@ message RoleData {
     string user = 1;
     string name = 2;
     int32 role = 3;
-    int32 heroId = 4;
+    string heroId = 4;
     repeated int32 equip = 5;
 }
 message RoomData {
@@ -94,9 +95,44 @@ message MatchRoomResp {
 }
 
 // 房间重命名
+message RenameRoomReq {
+    Ipacket PacketHead = 1;
+    int32 roomId = 2;
+    string user = 3;
+}
+message RenameRoomResp {
+    Ipacket PacketHead = 1;
+    RoomData room = 2;
+}
 // 房间修改密码
+message ChangepwdRoomReq {
+    Ipacket PacketHead = 1;
+    int32 roomId = 2;
+    string user = 3;
+}
+message ChangepwdRoomResp {
+    Ipacket PacketHead = 1;
+    RoomData room = 2;
+}
 // 踢人
+message RoomKickOffReq {
+    Ipacket PacketHead = 1;
+    int32 roomId = 2;
+}
+message RoomKickOffResp {
+    Ipacket PacketHead = 1;
+    RoomData room = 2;
+}
+
 // 删除房间
+message DelRoomReq {
+    Ipacket PacketHead = 1;
+    int64 roomId = 2;
+}
+message DelRoomResp {
+    Ipacket PacketHead = 1;
+    int64 roomId = 2;
+}
 // 改变房间owner
 
 

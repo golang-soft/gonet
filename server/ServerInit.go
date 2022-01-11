@@ -3,7 +3,6 @@ package main
 import (
 	"gonet/actor"
 	"gonet/common"
-	"gonet/server/world"
 	"gonet/server/world/chat"
 	"gonet/server/world/cmd"
 	"gonet/server/world/data"
@@ -11,6 +10,7 @@ import (
 	"gonet/server/world/player"
 	"gonet/server/world/social"
 	"gonet/server/world/toprank"
+	"gonet/server/world/wcluster"
 )
 
 func InitMgr(serverName string) {
@@ -18,7 +18,7 @@ func InitMgr(serverName string) {
 	common.Init()
 	if serverName == "account" {
 	} else if serverName == "netgate" {
-		actor.MGR.InitActorHandle(world.SERVER.GetCluster())
+		actor.MGR.InitActorHandle(wcluster.GetCluster())
 	} else if serverName == "world" {
 		cmd.Init()
 		data.InitRepository()
@@ -28,7 +28,7 @@ func InitMgr(serverName string) {
 		toprank.MGR().Init()
 		player.SIMPLEMGR.Init()
 		social.MGR().Init()
-		actor.MGR.InitActorHandle(world.SERVER.GetCluster())
+		actor.MGR.InitActorHandle(wcluster.GetCluster())
 	}
 }
 

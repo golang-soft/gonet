@@ -8,6 +8,7 @@ import (
 	"gonet/base"
 	"gonet/base/vector"
 	"gonet/common"
+	"gonet/common/cluster/etv3"
 	"gonet/grpc"
 	"gonet/network"
 	"gonet/server/rpc"
@@ -56,6 +57,9 @@ type (
 		RandomCluster(head rpc.RpcHead) rpc.RpcHead //随机分配
 
 		GetService() *Service
+
+		DebugService()
+		GetMaster() *(Master)
 	}
 
 	EmptyClusterInfo struct {
@@ -89,7 +93,7 @@ func (this *Cluster) Init(info *common.ClusterInfo, Endpoints []string, natsUrl 
 		base.GLOG.Fatalln("nats connect error!!!!")
 	}
 	this.m_Conn = conn
-	base.GLOG.Debugf(">>>>>>>>>>>>>>>>>>>>>>>>>>>> 订阅 : %s", getCallChannel(*info))
+	base.GLOG.Debugf(">>>>>>>>>>>>>>>>>>>>>>>>>>>> 订阅 : %s", getChannel(*info))
 	base.GLOG.Debugf(">>>>>>>>>>>>>>>>>>>>>>>>>>>> 订阅 : %s", getTopicChannel(*info))
 	base.GLOG.Debugf(">>>>>>>>>>>>>>>>>>>>>>>>>>>> 订阅 : %s", getCallChannel(*info))
 
@@ -274,4 +278,12 @@ func (this *Cluster) RandomCluster(head rpc.RpcHead) rpc.RpcHead {
 
 func (this *Cluster) GetService() *Service {
 	return this.Service
+}
+
+func (this *Cluster) DebugService() {
+	((*etv3.Master)(this.m_Master)).ListServices()
+}
+
+func (this *Cluster) GetMaster() *(Master) {
+	return this.m_Master
 }

@@ -69,9 +69,10 @@ func RegisterPacket(packet proto.Message) {
 		//packet.Elem().Set(val)
 		return packet.Interface().(proto.Message)
 	}
-	glog.Infof("注册协议 %s", packetName)
+
 	Packet_CreateFactorStringMap[packetName] = packetFunc
 	Packet_CreateFactorMap[base.GetMessageCode1(packetName)] = packetFunc
+	glog.Infof("注册协议 %s %d", packetName, base.GetMessageCode1(packetName))
 }
 
 func GetPakcet(packetId uint32) proto.Message {
@@ -118,6 +119,7 @@ func Init() {
 	//注册消息
 	//PacketHead 中的 DestServerType 决定转发到那个服务器
 	RegisterPacket(&cmessage.C_A_LoginRequest{PacketHead: BuildPacketHead(0, rpc.SERVICE_GATESERVER)})
+	RegisterPacket(&cmessage.AttackReq{PacketHead: BuildPacketHead(0, rpc.SERVICE_GATESERVER)})
 	RegisterPacket(&cmessage.C_G_LoginResquest{PacketHead: BuildPacketHead(0, rpc.SERVICE_GATESERVER)})
 	RegisterPacket(&cmessage.C_A_RegisterRequest{PacketHead: BuildPacketHead(0, rpc.SERVICE_ACCOUNTSERVER)})
 	RegisterPacket(&cmessage.C_G_LogoutResponse{PacketHead: BuildPacketHead(0, rpc.SERVICE_GATESERVER)})

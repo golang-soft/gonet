@@ -81,11 +81,12 @@ func main() {
 	}
 	m_Log.Debugf("链接成功 %s", host)
 
-	PACKET.LoginGate()
+	//PACKET.LoginGate()
+	PACKET.SendAttack()
 	//PACKET.LoginGame()
 	//PACKET.SendTest()
 
-	InitCmd()
+	//InitCmd()
 
 	/*	for i := 0; i < 2; i++ {
 		client := new(network.ClientWebSocket2)

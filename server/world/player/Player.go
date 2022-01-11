@@ -13,6 +13,7 @@ import (
 	common2 "gonet/server/common"
 	"gonet/server/rpc"
 	"gonet/server/world"
+	"gonet/server/world/wcluster"
 	"time"
 
 	"github.com/golang/protobuf/proto"
@@ -86,13 +87,13 @@ func (this *Player) Init() {
 				player_count := rs.Row().Int("player_count")
 				if player_count >= 1 {
 					this.m_Log.Printf("账号[%d]创建玩家上限", this.AccountId)
-					world.SendToClient(this.GetRpcHead(ctx).SrcClusterId, &cmessage.W_C_CreatePlayerResponse{
+					wcluster.SendToClient(this.GetRpcHead(ctx).SrcClusterId, &cmessage.W_C_CreatePlayerResponse{
 						PacketHead: common2.BuildPacketHead(cmessage.MessageID(this.AccountId), 0),
 						Error:      int32(1),
 						PlayerId:   0,
 					})
 				} else {
-					world.SendToAccount("W_A_CreatePlayer", this.AccountId, packet.GetPlayerName(), packet.GetSex(), this.GetRpcHead(ctx).SrcClusterId)
+					wcluster.SendToAccount("W_A_CreatePlayer", this.AccountId, packet.GetPlayerName(), packet.GetSex(), this.GetRpcHead(ctx).SrcClusterId)
 				}
 			}
 		}
@@ -108,7 +109,7 @@ func (this *Player) Init() {
 			this.PlayerIdList = append(this.PlayerIdList, playerId)
 		}
 
-		world.SendToClient(gClusterId, &cmessage.W_C_CreatePlayerResponse{
+		wcluster.SendToClient(gClusterId, &cmessage.W_C_CreatePlayerResponse{
 			PacketHead: common2.BuildPacketHead(cmessage.MessageID(this.AccountId), 0),
 			Error:      int32(err),
 			PlayerId:   playerId,
@@ -135,7 +136,7 @@ func (this *Player) GetLog() *base.CLog {
 }
 
 func (this *Player) SendToClient(packet proto.Message) {
-	world.SendToClient(this.GetGateClusterId(), packet)
+	wcluster.SendToClient(this.GetGateClusterId(), packet)
 }
 
 func (this *Player) UpdateLease() {

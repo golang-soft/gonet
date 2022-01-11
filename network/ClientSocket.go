@@ -99,7 +99,7 @@ func (this *ClientSocket) Connect() bool {
 	}
 
 	fmt.Printf("%s 连接成功，请输入信息！\n", connectStr)
-	this.CallMsg("COMMON_RegisterRequest")
+	//this.CallMsg("COMMON_RegisterRequest")
 	return true
 }
 

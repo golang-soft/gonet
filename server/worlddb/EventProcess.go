@@ -5,6 +5,7 @@ import (
 	"database/sql"
 	"gonet/actor"
 	"gonet/server/cmessage"
+	"gonet/server/smessage"
 )
 
 type (
@@ -26,5 +27,30 @@ func (this *EventProcess) Init() {
 		head := this.GetRpcHead(ctx)
 		SERVER.m_Log.Debugf("head[%v]", head)
 	})
+
+	this.RegisterCall("SaveRound", func(ctx context.Context, packet *smessage.SaveRound) {
+		head := this.GetRpcHead(ctx)
+		SERVER.m_Log.Debugf("head[%v]", head)
+		SERVER.m_pDataWriterMgr.SaveRound(int(packet.Round))
+	})
+
+	this.RegisterCall("LoginLogData", func(ctx context.Context, packet *smessage.LoginLogData) {
+		head := this.GetRpcHead(ctx)
+		SERVER.m_Log.Debugf("head[%v]", head)
+
+	})
+
+	this.RegisterCall("BattleLogData", func(ctx context.Context, packet *smessage.BattleLogData) {
+		head := this.GetRpcHead(ctx)
+		SERVER.m_Log.Debugf("head[%v]", head)
+
+	})
+
+	this.RegisterCall("MatchLogData", func(ctx context.Context, packet *smessage.MatchLogData) {
+		head := this.GetRpcHead(ctx)
+		SERVER.m_Log.Debugf("head[%v]", head)
+
+	})
+
 	this.Actor.Start()
 }

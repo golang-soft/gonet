@@ -154,7 +154,7 @@ if (enqueue_pos_.compare_exchange_weak
 
 (pos, pos + 1, std::memory_order_relaxed))
 
-break;
+break
 
 }
 
@@ -204,7 +204,7 @@ if (dequeue_pos_.compare_exchange_weak
 
 (pos, pos + 1, std::memory_order_relaxed))
 
-break;
+break
 
 }
 

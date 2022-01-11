@@ -19,7 +19,11 @@ message GameTimeResp {
     int64 time = 2;
 }
 
-
+//error
+message ErrorResp {
+    Ipacket PacketHead = 1;
+    int32 code = 2;
+}
 
 
 

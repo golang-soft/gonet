@@ -8,7 +8,6 @@ gonet核心思想是actor模式,消息驱动,采用无锁队列mailbox替换chan
 
 微服务，微服务之间使用分布式消息队列
 
-[WIKI](https://github.com/bobohume/gonet/wiki)
 
 # 交流
 

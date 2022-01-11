@@ -2,7 +2,7 @@ syntax = "proto3";
 package smessage;
 option go_package = "./;smessage";
 
-
+//服务器基本信息
 message ServerInfo {
     uint32 Id = 1;
     uint32 Type = 2;

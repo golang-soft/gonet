@@ -11,4 +11,5 @@ type RoomData struct {
 	Name      string
 	RoomId    int
 	KickUser  string
+	To        string
 }

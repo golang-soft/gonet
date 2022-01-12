@@ -87,7 +87,8 @@ func (this *EventProcess) Init() {
 			this.SendPacket(packet1)
 		} else {
 			this.PlayerId = packet.GetPlayerData()[0].GetPlayerID()
-			this.LoginGame()
+			//this.LoginGame()
+			this.SendAttack()
 		}
 	})
 
@@ -152,6 +153,10 @@ func (this *EventProcess) Init() {
 		}
 	})
 
+	this.RegisterCall("AttackResp", func(ctx context.Context, packet *cmessage.AttackResp) {
+		fmt.Println("AttackResp")
+	})
+
 	//链接断开
 	this.RegisterCall("DISCONNECT", func(ctx context.Context, socketId uint32) {
 		this.Stop()
@@ -180,7 +185,7 @@ func (this *EventProcess) LoginAccount() {
 }
 
 func (this *EventProcess) LoginGate() {
-	packet := &cmessage.C_G_LoginResquest{PacketHead: common.BuildPacketHead(0, rpc.SERVICE_GATESERVER),
+	packet := &cmessage.C_G_LoginResquest{PacketHead: common.BuildPacketHead(cmessage.MessageID_MSG_C_G_LoginResquest, rpc.SERVICE_GATESERVER),
 		Key: this.m_Dh.PubKey()}
 	this.SendPacket(packet)
 }

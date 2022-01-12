@@ -5,6 +5,7 @@ import (
 	"gonet/server/common"
 	"gonet/server/common/data"
 	"gonet/server/world/datafnc"
+	"gonet/server/world/sender"
 	"time"
 )
 
@@ -57,7 +58,7 @@ func (this *ServerMatch) add2TeamMatchQueue(roomId int, userList list.List) {
 		//Userid: userList[0].user,
 		Start: start,
 	}
-	AddLogTask(logData)
+	sender.AddLogTask(logData)
 	this.TeamMatch[roomId] = &GMatchData{roomId, userList, start}
 }
 

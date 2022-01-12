@@ -22,6 +22,7 @@ import (
 	"gonet/server/world/redisInstnace"
 	"gonet/server/world/table"
 	"gonet/server/world/wcluster"
+	"gonet/server/world/wserver"
 	"log"
 	"strconv"
 	"strings"
@@ -189,7 +190,7 @@ func (this *ServerMgr) Init() bool {
 	packet.Init()
 
 	redisInstnace.InitRedis()
-	var io = &gamedata.Server{}
+	var io = &wserver.Server{}
 	io.Start()
 	gamedata.OnloadTimer.Init()
 

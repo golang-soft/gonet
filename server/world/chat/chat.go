@@ -163,7 +163,7 @@ func SendMessage(msg *ChatMessage, player *player) {
 		RecverName:  msg.RecverName,
 		MessageType: int32(msg.MessageType),
 		Message:     msg.Message,
-	})
+	}, 0)
 }
 
 func (this *ChatMgr) SendMessageToAll(msg *ChatMessage) {

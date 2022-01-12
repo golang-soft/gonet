@@ -4,6 +4,7 @@ import (
 	"context"
 	"gonet/actor"
 	"gonet/base"
+	"gonet/base/logger"
 	"gonet/grpc"
 	"gonet/network"
 	"gonet/server/cmessage"
@@ -52,7 +53,7 @@ func (this *UserPrcoess) CheckClientEx(sockId uint32, packetName string, head rp
 
 func (this *UserPrcoess) CheckClient(sockId uint32, packetName string, head rpc.RpcHead) *AccountInfo {
 	pAccountInfo := SERVER.GetPlayerMgr().GetAccountInfo(sockId)
-	if pAccountInfo != nil && (pAccountInfo.AccountId <= 0 || pAccountInfo.AccountId != int64(head.Id)) {
+	if pAccountInfo != nil && (pAccountInfo.AccountId <= 0) {
 		SERVER.GetLog().Fatalf("Old socket communication or viciousness[%d].", sockId)
 		return nil
 	}
@@ -149,7 +150,7 @@ func (this *UserPrcoess) PacketFunc(packet1 rpc.Packet) bool {
 	} else if packetName == C_A_RegisterRequest {
 		head.ClusterId = socketid
 	}
-
+	head.SocketId = socketid
 	//解析整个包
 	//if packetHead.DestServerType == smessage.SERVICE_WORLDSERVER {
 	//	this.SwtichSendToWorld(socketid, packetName, head, rpc.Marshal(head, packetName, packet))
@@ -160,7 +161,18 @@ func (this *UserPrcoess) PacketFunc(packet1 rpc.Packet) bool {
 	//} else {
 	//	this.Actor.PacketFunc(rpc.Packet{Id: socketid, Buff: rpc.Marshal(head, packetName, packet)})
 	//}
-	this.Actor.PacketFunc(rpc.Packet{Id: socketid, Buff: grpc.Marshal(head, packetName, packet)})
+	switch packetName {
+	case base.ToLower("C_W_Game_LoginRequset"):
+		{
+			this.SwtichSendToWorld(socketid, packetName, head, grpc.Marshal(head, packetName, packet))
+		}
+		break
+	default:
+		{
+			this.Actor.PacketFunc(rpc.Packet{Id: socketid, Buff: grpc.Marshal(head, packetName, packet)})
+		}
+	}
+
 	return true
 }
 
@@ -201,6 +213,8 @@ func (this *UserPrcoess) Init() {
 			} else {
 				SERVER.GetLog().Println("client key cheat", dh.ShareKey(), packet.GetKey())
 			}
+		} else {
+			logger.Debug("找不到對應的客戶端 socketid : %d", head.SocketId)
 		}
 	})
 
@@ -222,6 +236,7 @@ func (this *UserPrcoess) Init() {
 	this.RegisterCall("AttackReq", func(ctx context.Context, packet *cmessage.AttackReq) {
 		head := this.GetRpcHead(ctx)
 		SendToClient(head.SocketId, &cmessage.AttackResp{PacketHead: common.BuildPacketHead(cmessage.MessageID_MSG_AttackResp, rpc.SERVICE_NONE)})
+		this.SwtichSendToWorld(head.SocketId, base.ToLower("AttackReq"), head, grpc.Marshal(head, base.ToLower("AttackReq"), packet))
 	})
 
 	this.Actor.Start()

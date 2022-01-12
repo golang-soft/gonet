@@ -4,6 +4,7 @@ import (
 	"gonet/actor"
 	"gonet/server/common/data"
 	"gonet/server/world/logger"
+	"gonet/server/world/sender"
 	"time"
 )
 
@@ -22,7 +23,7 @@ var OnloadTimer = &SOnloadTimer{}
 func (this *SOnloadTimer) Init() {
 	logger.M_Log.Debugf("数据库初始化 ...................................")
 	this.Actor.Init()
-	this.RegisterTimer(5*time.Second, this.OnloadGameCheckTimer) //定时器
+	this.RegisterTimer(100*time.Second, this.OnloadGameCheckTimer) //定时器
 	this.Actor.Start()
 }
 
@@ -35,11 +36,11 @@ func (this *SOnloadTimer) OnloadGameCheckTimer() {
 
 	//wcluster.GetCluster().DebugService()
 
-	AddRoomTask(data.RoomData{
+	sender.AddRoomTask(data.RoomData{
 		FuncName: "Room_all",
 		User:     "111111",
 	})
-	AddLogTask(data.LogData{
+	sender.AddLogTask(data.LogData{
 		Mode:   1,
 		Userid: "11111111",
 		Start:  1,

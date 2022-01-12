@@ -171,7 +171,7 @@ func (this *Actor) RegisterCall(funcName string, call interface{}) {
 }
 
 func (this *Actor) SendMsg(head rpc.RpcHead, funcName string, params ...interface{}) {
-	head.SocketId = 0
+	//head.SocketId = head.SocketId
 	this.Send(head, grpc.Marshal(head, funcName, params...))
 }
 

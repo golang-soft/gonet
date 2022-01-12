@@ -43,6 +43,8 @@ func (this *Player) Init() {
 
 	//玩家登录
 	this.RegisterCall("Login", func(ctx context.Context, gateClusterId uint32, clusterInfo rpc.PlayerClusterInfo) {
+		head := this.GetRpcHead(ctx)
+
 		PlayerSimpleList := LoadSimplePlayerDatas(this.AccountId)
 		this.PlayerSimpleDataList = PlayerSimpleList
 
@@ -53,10 +55,10 @@ func (this *Player) Init() {
 			this.PlayerIdList = append(this.PlayerIdList, v.PlayerId)
 		}
 
-		this.m_Log.Println("玩家登录成功")
+		this.m_Log.Println("玩家[%d]登录成功", this.AccountId)
 		this.SetGateClusterId(gateClusterId)
 		this.m_PlayerRaft = clusterInfo
-		this.SendToClient(&cmessage.W_C_SelectPlayerResponse{PacketHead: common2.BuildPacketHead(cmessage.MessageID(this.AccountId), rpc.SERVICE_GATESERVER),
+		this.SendToClient(head.SocketId, &cmessage.W_C_SelectPlayerResponse{PacketHead: common2.BuildPacketHead(cmessage.MessageID_MSG_W_C_SelectPlayerResponse, rpc.SERVICE_GATESERVER),
 			AccountId:  this.AccountId,
 			PlayerData: PlayerDataList,
 		})
@@ -88,10 +90,10 @@ func (this *Player) Init() {
 				if player_count >= 1 {
 					this.m_Log.Printf("账号[%d]创建玩家上限", this.AccountId)
 					wcluster.SendToClient(this.GetRpcHead(ctx).SrcClusterId, &cmessage.W_C_CreatePlayerResponse{
-						PacketHead: common2.BuildPacketHead(cmessage.MessageID(this.AccountId), 0),
+						PacketHead: common2.BuildPacketHead(cmessage.MessageID_MSG_W_C_CreatePlayerResponse, 0),
 						Error:      int32(1),
 						PlayerId:   0,
-					})
+					}, this.GetRpcHead(ctx).SocketId)
 				} else {
 					wcluster.SendToAccount("W_A_CreatePlayer", this.AccountId, packet.GetPlayerName(), packet.GetSex(), this.GetRpcHead(ctx).SrcClusterId)
 				}
@@ -113,7 +115,7 @@ func (this *Player) Init() {
 			PacketHead: common2.BuildPacketHead(cmessage.MessageID(this.AccountId), 0),
 			Error:      int32(err),
 			PlayerId:   playerId,
-		})
+		}, 0)
 	})
 
 	//玩家断开链接
@@ -135,8 +137,8 @@ func (this *Player) GetLog() *base.CLog {
 	return this.m_Log
 }
 
-func (this *Player) SendToClient(packet proto.Message) {
-	wcluster.SendToClient(this.GetGateClusterId(), packet)
+func (this *Player) SendToClient(socketId uint32, packet proto.Message) {
+	wcluster.SendToClient(this.GetGateClusterId(), packet, socketId)
 }
 
 func (this *Player) UpdateLease() {

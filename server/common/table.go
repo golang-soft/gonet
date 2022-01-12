@@ -5,12 +5,14 @@ const (
 	tables_mail        = "mail"
 	Tables_item        = "item"
 	Tables_equip       = "equip"
+	Tables_equityitem  = "equityitems"
 	tables_task        = "task"
 	Tables_hero        = "heroes"
 	tables_nonce       = "nonce"
 	tables_token       = "token"
 	tables_leaderboard = "leaderboard"
 	tables_contract    = "contract"
+	Tables_battle      = "battle"
 
 	Redis_Prefix_Item = "items"
 )

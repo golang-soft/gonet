@@ -147,6 +147,8 @@ func (this *ServerSocket) Send(head rpc.RpcHead, buff []byte) int {
 	pClient := this.GetClientById(head.SocketId)
 	if pClient != nil {
 		pClient.Send(head, buff)
+	} else {
+		log.Printf("沒有找到客戶端 %d", head.SocketId)
 	}
 	return 0
 }

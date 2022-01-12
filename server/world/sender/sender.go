@@ -1,4 +1,4 @@
-package gamedata
+package sender
 
 import (
 	"github.com/nickalie/go-queue"
@@ -8,7 +8,7 @@ import (
 //hero
 var taskAttack = "taskAttack"
 
-func addAttackTask(message data.AttackData) {
+func AddAttackTask(message data.AttackData) {
 	queue.Put(taskAttack, message)
 }
 

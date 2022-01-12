@@ -494,7 +494,7 @@ func (this *ServerGame) setSpeed(round int, id string, percent int, time0 int) {
 }
 
 //恢复速度
-func (this *ServerGame) recoverSpeed(round int, id string, speed int64, time0 int) {
+func (this *ServerGame) recoverSpeed(round int, id string, speed float32, time0 int) {
 	if this.Game[round].user[id] != nil {
 		this.Game[round].user[id].Speed = speed
 		this.Game[round].user[id].ReduceSpeedTs = int64(time0)
@@ -591,9 +591,9 @@ func (this *ServerGame) reduceDef(round int, uuid string, def int, time0 int) {
 }
 
 //扣速度
-func (this *ServerGame) reduceSpeed(round int, uuid string, speed int, time0 int) {
+func (this *ServerGame) reduceSpeed(round int, uuid string, speed float32, time0 int) {
 	if this.Game[round].user[uuid] != nil {
-		this.Game[round].user[uuid].Speed -= int64(speed)
+		this.Game[round].user[uuid].Speed -= speed
 	}
 }
 

@@ -1,4 +1,4 @@
-package data
+package param
 
 import (
 	"gonet/base"
@@ -6,12 +6,12 @@ import (
 	"sync"
 )
 
-var(
+var (
 	waitGroup sync.WaitGroup
 )
 
 //异步读取ata
-func ansyReadData(res common.IBaseDataRes){
+func ansyReadData(res common.IBaseDataRes) {
 	waitGroup.Add(1)
 	go func() {
 		res.Read()
@@ -19,7 +19,7 @@ func ansyReadData(res common.IBaseDataRes){
 	}()
 }
 
-func InitRepository(){
+func InitRepository() {
 	base.GLOG.Println("----read data begin-----")
 	//ansyReadData(&BANDATA)
 	waitGroup.Wait()

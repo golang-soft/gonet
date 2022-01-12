@@ -81,8 +81,8 @@ func main() {
 	}
 	m_Log.Debugf("链接成功 %s", host)
 
-	//PACKET.LoginGate()
-	PACKET.SendAttack()
+	PACKET.LoginGate()
+	//PACKET.SendAttack()
 	//PACKET.LoginGame()
 	//PACKET.SendTest()
 

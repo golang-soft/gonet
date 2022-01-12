@@ -38,6 +38,14 @@ func (this *SGameCache) getEquipkey(uuid string) string {
 	return fmt.Sprintf("%s:%s", common.Tables_equip, uuid)
 }
 
+func (this *SGameCache) getEquityitemKey(uuid string) string {
+	return fmt.Sprintf("%s:%s", common.Tables_equityitem, uuid)
+}
+
+func (this *SGameCache) getBattleInfoKey(uuid string) string {
+	return fmt.Sprintf("%s:%s", common.Tables_battle, uuid)
+}
+
 type PlayerInfo struct {
 	Id       string
 	NickName string
@@ -82,6 +90,20 @@ type PlayerData struct {
 	item   []ItemInfo
 	Hero   map[string]*HeroInfo
 	equip  []EquipInfo
+	equity []EquityItem
+	battle []BattleInfo
+}
+
+type EquityItem struct {
+	uuid   int
+	itemId int
+	heroId string
+}
+
+type BattleInfo struct {
+	uuid   int
+	itemId int
+	heroId string
 }
 
 func (this *SGameCache) CeratePlayer(uuid string) *PlayerData {
@@ -182,6 +204,8 @@ func (this *SGameCache) GetPlayer(uuid string) *PlayerData {
 	itemKeyStr := this.getItemkey(uuid)
 	heroKeyStr := this.getHerokey(uuid)
 	equipKeyStr := this.getEquipkey(uuid)
+	equityitemStr := this.getEquityitemKey(uuid) //equity
+	battleInfoStr := this.getBattleInfoKey(uuid) //battleInfo
 
 	playerKey := redisInstnace.M_pRedisClient.Get(playerKeyStr)
 	var player PlayerInfo
@@ -207,7 +231,23 @@ func (this *SGameCache) GetPlayer(uuid string) *PlayerData {
 		equips = append(equips, vequipData)
 	}
 
-	return &PlayerData{Player: &player, item: item, Hero: heros, equip: equips}
+	equityitemKey := redisInstnace.M_pRedisClient.HGetAll(equityitemStr)
+	var equityitems = []EquityItem{}
+	for _, data := range equityitemKey.Val() {
+		var vequipData EquityItem
+		json.Unmarshal([]byte(data), vequipData)
+		equityitems = append(equityitems, vequipData)
+	}
+
+	battleInfoKey := redisInstnace.M_pRedisClient.HGetAll(battleInfoStr)
+	var battles = []BattleInfo{}
+	for _, data := range battleInfoKey.Val() {
+		var vequipData BattleInfo
+		json.Unmarshal([]byte(data), vequipData)
+		battles = append(battles, vequipData)
+	}
+
+	return &PlayerData{Player: &player, item: item, Hero: heros, equip: equips, equity: equityitems, battle: battles}
 }
 
 //加全属性

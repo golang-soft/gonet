@@ -1,4 +1,4 @@
-package data
+package param
 
 type TmpRoomPlayerData struct {
 	User    string

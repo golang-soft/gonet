@@ -5,6 +5,7 @@ import (
 	"gonet/server/common/data"
 	"gonet/server/common/mredis"
 	"gonet/server/world/redisInstnace"
+	"gonet/server/world/socket"
 	"math"
 	"time"
 )
@@ -19,7 +20,7 @@ type (
 var PositionCtrl = &SPositionCtrl{}
 
 func (this *SPositionCtrl) onlineUserMsg(round int) []string {
-	roundUser := GetOnlineUsers()
+	roundUser := socket.GetOnlineUsers()
 	var users []string
 	for _, user := range roundUser {
 		keyUser := mredis.REDIS_KEYS[mredis.KEYS_user_round_basic] + common.GetRoundKey(user, round)
@@ -112,7 +113,7 @@ func (this *SPositionCtrl) GetPos(round int, user string) *data.UserPositionData
 
 		pos.X = (posArr.Val()[0]).(float64)
 		pos.Y = (posArr.Val()[1]).(float64)
-		pos.Speed = (posArr.Val()[2]).(int64)
+		pos.Speed = (posArr.Val()[2]).(float32)
 		pos.Direction = (posArr.Val()[3]).(float64)
 		pos.Barrier = (posArr.Val()[4]).(int32)
 		pos.Dizzy = (posArr.Val()[5]).(int32)
@@ -131,7 +132,7 @@ func (this *SPositionCtrl) updataPos(round int, user string, newPos data.UserPos
 
 func (this *SPositionCtrl) calPos(obj *data.UserPositionData) *data.UserPositionData {
 	//let { x, y, speed, reduceSpeedTs, direction, posUpdateTs, barrier, dizzy, dizzyTs, stopmove, stopmoveTs } = obj
-	var speed int64
+	var speed float32
 	if obj.Speed < POSITION_CONFIG.SPEED.Min {
 		speed = POSITION_CONFIG.SPEED.Min
 	}
@@ -168,7 +169,7 @@ func (this *SPositionCtrl) calPos(obj *data.UserPositionData) *data.UserPosition
 }
 
 func (this *SPositionCtrl) skillPos(obj data.UserPositionData) *data.UserPositionData {
-	var speed int64
+	var speed float32
 	if obj.Speed < POSITION_CONFIG.SPEED.Min {
 		speed = POSITION_CONFIG.SPEED.Min
 	}
@@ -237,7 +238,7 @@ func (this *SPositionCtrl) updatePosition(user string, round int, obj data.UserP
 	return newPos
 }
 
-func (this *SPositionCtrl) newUpdatePosition(user string, round int, obj data.UserPositionData) *data.UserPositionData {
+func (this *SPositionCtrl) NewUpdatePosition(user string, round int, obj data.UserPositionData) *data.UserPositionData {
 	pos := this.GetPos(round, user)
 	if pos == nil {
 		return nil

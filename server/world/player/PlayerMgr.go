@@ -23,10 +23,10 @@ var (
 type (
 	PlayerMgr struct {
 		actor.ActorPool //玩家actor线城池
-
-		m_db        *sql.DB
-		m_Log       *base.CLog
-		m_PingTimer common.ISimpleTimer
+		SocketId        int32
+		m_db            *sql.DB
+		m_Log           *base.CLog
+		m_PingTimer     common.ISimpleTimer
 	}
 
 	IPlayerMgr interface {
@@ -48,7 +48,8 @@ func (this *PlayerMgr) Init() {
 	actor.MGR.AddActor(this)
 
 	//玩家登录
-	this.RegisterCall("G_W_CLoginRequest", func(ctx context.Context, accountId int64, gateClusterId uint32, clusterInfo rpc.PlayerClusterInfo) {
+	this.RegisterCall("G_W_CLoginRequest", func(ctx context.Context, accountId int64, gateClusterId uint32, clusterInfo rpc.PlayerClusterInfo, socketId uint32) {
+		//head := this.GetRpcHead(ctx)
 		pPlayer := this.GetPlayer(accountId)
 		if pPlayer != nil {
 			pPlayer.SendMsg(rpc.RpcHead{}, "Logout", accountId)
@@ -56,7 +57,7 @@ func (this *PlayerMgr) Init() {
 		}
 
 		pPlayer = this.AddPlayer(accountId)
-		pPlayer.SendMsg(rpc.RpcHead{}, "Login", gateClusterId, clusterInfo)
+		pPlayer.SendMsg(rpc.RpcHead{SocketId: socketId}, "Login", gateClusterId, clusterInfo)
 	})
 
 	//玩家断开链接

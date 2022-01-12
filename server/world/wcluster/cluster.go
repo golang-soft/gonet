@@ -23,10 +23,11 @@ func SendToAccount(funcName string, params ...interface{}) {
 }
 
 //发送给客户端
-func SendToClient(clusterId uint32, packet proto.Message) {
+func SendToClient(clusterId uint32, packet proto.Message, socketId uint32) {
 	pakcetHead := packet.(common.Packet).GetPacketHead()
 	if pakcetHead != nil {
-		GetCluster().SendMsg(rpc.RpcHead{DestServerType: rpc.SERVICE_GATESERVER, ClusterId: clusterId, Id: int64(pakcetHead.Id)}, "", proto.MessageName(packet), packet)
+		GetCluster().SendMsg(rpc.RpcHead{DestServerType: rpc.SERVICE_GATESERVER, ClusterId: clusterId, Id: int64(pakcetHead.Id), SocketId: socketId},
+			"", proto.MessageName(packet), packet)
 	}
 }
 

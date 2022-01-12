@@ -7,9 +7,9 @@ import (
 	"gonet/server/common"
 	"gonet/server/common/data"
 	"gonet/server/common/mredis"
-	data2 "gonet/server/world/data"
 	"gonet/server/world/datafnc"
 	"gonet/server/world/helper"
+	"gonet/server/world/param"
 	"gonet/server/world/redisInstnace"
 	"gonet/server/world/socket"
 	"math"
@@ -247,7 +247,7 @@ func (this *SGameCtrl) checkIsEnd(round int) {
 		return
 	}
 
-	onlineUser := GetOnlineUsers()
+	onlineUser := socket.GetOnlineUsers()
 	partUserHP := make(map[int][]int)
 	var isEnd = false
 	if len(onlineUser) == 0 {
@@ -327,7 +327,7 @@ func (this *SGameCtrl) matchGameStart(red list.List, blue list.List) bool {
 	var userPart map[string]int32 = make(map[string]int32)
 	//red
 	for rede := red.Front(); rede != nil; rede = rede.Next() {
-		redData := rede.Value.(*data2.TmpRoomPlayerData)
+		redData := rede.Value.(*param.TmpRoomPlayerData)
 		userBasic := this.newRoundPlayer(iround, redData, common.Part.Part_1, 0)
 		users = append(users, redData.User)
 		userBasic.Hid = redData.Hero_id
@@ -338,7 +338,7 @@ func (this *SGameCtrl) matchGameStart(red list.List, blue list.List) bool {
 	}
 	//blue
 	for rede := blue.Front(); rede != nil; rede = rede.Next() {
-		blueData := rede.Value.(*data2.TmpRoomPlayerData)
+		blueData := rede.Value.(*param.TmpRoomPlayerData)
 		userBasic := this.newRoundPlayer(iround, blueData, common.Part.Part_2, 0)
 		users = append(users, blueData.User)
 		userBasic.Hid = blueData.Hero_id
@@ -477,7 +477,7 @@ func (this *SGameCtrl) getRoundGame(round int) *GameData {
 }
 
 //TODO:新建回合玩家数据
-func (this *SGameCtrl) newRoundPlayer(round int, userInfo *data2.TmpRoomPlayerData, part int32, attrAll int) *data.UserGameAttrData {
+func (this *SGameCtrl) newRoundPlayer(round int, userInfo *param.TmpRoomPlayerData, part int32, attrAll int) *data.UserGameAttrData {
 	userBasic := InitUserBasic(round, userInfo.User, userInfo.Hero_id, userInfo.Role, part, userInfo.Equips, attrAll, 1)
 	return userBasic
 }

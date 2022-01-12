@@ -44,7 +44,7 @@ func DispatchPacket(packet rpc.Packet) bool {
 		} else if messageName == W_C_Test {
 			SERVER.GetEventProcess().SendMsg(rpc.RpcHead{SocketId: head.SocketId}, "W_C_Test")
 		} else {
-			socketId := SERVER.GetPlayerMgr().GetSocket(head.Id)
+			socketId := head.SocketId //SERVER.GetPlayerMgr().GetSocket(head.Id)
 			SERVER.GetServer().Send(rpc.RpcHead{SocketId: socketId}, buff)
 		}
 	default:

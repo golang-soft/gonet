@@ -9,8 +9,17 @@ enum MessageID {
     //============================================================================================
     //                 一般消息定义
     //============================================================================================
-    //    MSG_NORMAL_MSGID_BEGIN           = 100000;
-    //
+    MSG_NORMAL_MSGID_BEGIN           = 100000;
+    MSG_C_G_LoginResquest     = 101001; //请求登录
+
+    MSG_W_C_CreatePlayerResponse = 101002; //响应创建角色
+    MSG_W_C_SelectPlayerResponse = 101003; //请求选择角色响应
+    MSG_A_C_RegisterResponse = 101004; //请求注册响应
+    
+    MSG_GameTimeReq  = 109001; //请求时间
+    MSG_GameTimeResp  = 109002; //请求时间
+
+
     MSG_CHECK_VERSION_REQ = 100001;    //版本验证
     MSG_CHECK_VERSION_ACK = 100002;    //版本验证返回
     MSG_MovingReq = 100003;    //移动请求

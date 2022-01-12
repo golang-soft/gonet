@@ -2,7 +2,6 @@ package etv3
 
 import (
 	"encoding/json"
-	"fmt"
 	"gonet/actor"
 	"gonet/common"
 	"gonet/server/rpc"
@@ -103,11 +102,11 @@ func (this *Master) InitService() {
 	log.Printf("%v", getResp.Kvs)
 
 	for _, data := range getResp.Kvs {
-		Key := string(data.Key)
+		//Key := string(data.Key)
 
 		info := NodeToService(data.Value)
-		fmt.Printf("key %s", Key)
-		fmt.Printf("info %v", info)
+		//fmt.Printf("key %s", Key)
+		//fmt.Printf("info %v", info)
 
 		this.AddService(info)
 	}

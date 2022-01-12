@@ -61,7 +61,7 @@ func (this *EventProcess) Init() {
 		}
 		if nError != 0 {
 			SendToClient(rpc.RpcHead{ClusterId: this.GetRpcHead(ctx).SrcClusterId, SocketId: socketId}, &cmessage.A_C_RegisterResponse{
-				PacketHead: common.BuildPacketHead(cmessage.MessageID(accountId), 0),
+				PacketHead: common.BuildPacketHead(cmessage.MessageID_MSG_A_C_RegisterResponse, 0),
 				Error:      int32(nError),
 			})
 		}

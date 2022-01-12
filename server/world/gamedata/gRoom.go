@@ -5,8 +5,8 @@ import (
 	"gonet/server/cmessage"
 	"gonet/server/common"
 	"gonet/server/world/cache"
-	"gonet/server/world/data"
 	"gonet/server/world/datafnc"
+	"gonet/server/world/param"
 	"math/rand"
 	"time"
 )
@@ -22,10 +22,11 @@ type RoomData struct {
 	battle_id  int64
 	room_id    int64
 	owner_id   string
-	list       []*data.TmpRoomPlayerData
+	List       []*param.TmpRoomPlayerData
 	Code       int32
 	user_count int32
 	max        int32
+	OwnerId    string
 }
 type (
 	ServerRoom struct {
@@ -71,7 +72,7 @@ func (this *ServerRoom) room_all() map[int]*RoomData {
 	return nil
 }
 
-func (this *ServerRoom) get_room(roomId int) interface{} {
+func (this *ServerRoom) get_room(roomId int) *RoomData {
 	if this.Room != nil && this.Room[roomId] != nil {
 		return this.Room[roomId]
 	}
@@ -103,7 +104,7 @@ func (this *ServerRoom) creatRoom() *RoomData {
 		room_name: "",
 		pwd:       "",
 		status:    0,
-		list:      make([]*data.TmpRoomPlayerData, 0),
+		List:      make([]*param.TmpRoomPlayerData, 0),
 	}
 }
 
@@ -111,7 +112,7 @@ func (this *ServerRoom) CheckRoom() {
 	var delList = make([]int, 0)
 	for key, data := range this.Room {
 		if data != nil {
-			userList := data.list
+			userList := data.List
 			//判断有没有用户在线
 			online := CheckRoomOnline(data.room_id, userList)
 			if !online {
@@ -136,7 +137,7 @@ func (this *ServerRoom) addNewRoom(room *RoomData) {
 	// this.next_room_id += 1
 }
 
-func (this *ServerRoom) newRoomPlayer(fromUser *cache.PlayerData, hero_id string, role int32) *data.TmpRoomPlayerData {
+func (this *ServerRoom) newRoomPlayer(fromUser *cache.PlayerData, hero_id string, role int32) *param.TmpRoomPlayerData {
 	name := fromUser.Player.NickName
 	user := fromUser.Player.Id
 	//更具heroid 获取英雄属性和装备
@@ -161,7 +162,7 @@ func (this *ServerRoom) newRoomPlayer(fromUser *cache.PlayerData, hero_id string
 	//equipList.PushBack(2004)
 	//equipList.PushBack(2021)
 
-	return &data.TmpRoomPlayerData{
+	return &param.TmpRoomPlayerData{
 		User:    user,
 		Name:    name,
 		Role:    heroRole,
@@ -207,7 +208,7 @@ func (this *ServerRoom) Room_create(user string, battle_id int64, name string, p
 	newRoom.pwd = pwd
 	newRoom.battle_id = battle_id
 	newRoom.owner_id = user
-	newRoom.list = append(newRoom.list, this.newRoomPlayer(fromUser, hero_id, role))
+	newRoom.List = append(newRoom.List, this.newRoomPlayer(fromUser, hero_id, role))
 
 	this.addNewRoom(newRoom)
 	//TODO
@@ -215,7 +216,7 @@ func (this *ServerRoom) Room_create(user string, battle_id int64, name string, p
 	return newRoom
 }
 
-func (this *ServerRoom) isPlayerInRoom(list []*data.TmpRoomPlayerData, user string) bool {
+func (this *ServerRoom) isPlayerInRoom(list []*param.TmpRoomPlayerData, user string) bool {
 	for _, player := range list {
 		if player.User == user {
 			return true
@@ -251,7 +252,7 @@ func (this *ServerRoom) room_join(room_id int, user string, hero_id string, pwd 
 		return &ReturnData{code: common.ErrorCode.Pwd_error}
 	}
 
-	if this.isPlayerInRoom(this.Room[room_id].list, user) {
+	if this.isPlayerInRoom(this.Room[room_id].List, user) {
 		//人已在房间
 		return &ReturnData{
 			code: common.ErrorCode.Already_in,
@@ -260,7 +261,7 @@ func (this *ServerRoom) room_join(room_id int, user string, hero_id string, pwd 
 
 	// let userList = Object.keys(this.Room[room_id].user)
 
-	if len(this.Room[room_id].list) >= datafnc.Camp_Player_Amount {
+	if len(this.Room[room_id].List) >= datafnc.Camp_Player_Amount {
 		//人数上限
 		return &ReturnData{
 			code: common.ErrorCode.Play_max_limit,
@@ -292,7 +293,7 @@ func (this *ServerRoom) room_join_quick(user string, hero_id string, role int32)
 		if roomData.pwd != "" {
 			continue
 		}
-		if len(roomData.list) >= datafnc.Camp_Player_Amount {
+		if len(roomData.List) >= datafnc.Camp_Player_Amount {
 			continue
 		}
 		room_id = key
@@ -313,16 +314,16 @@ func (this *ServerRoom) room_join_quick(user string, hero_id string, role int32)
 	return &ReturnData{data: this.Room[room_id]}
 }
 
-func (this *ServerRoom) userJoinRoom(roomId int, play *cache.PlayerData, hero_id string, role int32) *data.TmpRoomPlayerData {
+func (this *ServerRoom) userJoinRoom(roomId int, play *cache.PlayerData, hero_id string, role int32) *param.TmpRoomPlayerData {
 	newUser := this.newRoomPlayer(play, hero_id, role)
-	this.Room[roomId].list = append(this.Room[roomId].list, newUser)
+	this.Room[roomId].List = append(this.Room[roomId].List, newUser)
 	return newUser
 }
 
 //移除房间用户
 func (this *ServerRoom) removeUser(roomId int, user string) *RoomData {
 	var index int = 0
-	for _, data := range this.Room[roomId].list {
+	for _, data := range this.Room[roomId].List {
 		if data.User == user {
 			break
 		}
@@ -330,7 +331,7 @@ func (this *ServerRoom) removeUser(roomId int, user string) *RoomData {
 	}
 
 	if index != -1 {
-		this.Room[roomId].list = append(this.Room[roomId].list[:index], this.Room[roomId].list[index+1:]...)
+		this.Room[roomId].List = append(this.Room[roomId].List[:index], this.Room[roomId].List[index+1:]...)
 	}
 
 	return this.Room[roomId]
@@ -347,16 +348,16 @@ func (this *ServerRoom) room_leave(room_id int, user string) *ReturnData {
 		//房间不存在
 		return &ReturnData{code: common.ErrorCode.No_room}
 	}
-	if len(this.Room[room_id].list) == 0 {
+	if len(this.Room[room_id].List) == 0 {
 		//人不在房间
 		return &ReturnData{code: common.ErrorCode.No_player}
 	}
 
 	//删除用户
 	this.removeUser(room_id, user)
-	if len(this.Room[room_id].list) > 0 {
+	if len(this.Room[room_id].List) > 0 {
 		if this.Room[room_id].owner_id == user {
-			next_id := this.Room[room_id].list[0].User
+			next_id := this.Room[room_id].List[0].User
 			this.Room[room_id].owner_id = next_id
 		}
 		SocketLeaveGvgRoom([]string{user}, room_id)
@@ -399,7 +400,7 @@ func (this *ServerRoom) room_kick_off(room_id int, user string, kick_user string
 
 	//删除用户
 	this.removeUser(room_id, kick_user)
-	userList := this.Room[room_id].list
+	userList := this.Room[room_id].List
 	if len(userList) > 0 {
 		if this.Room[room_id].owner_id == user {
 			//房主转移
@@ -420,7 +421,7 @@ func (this *ServerRoom) room_kick_off(room_id int, user string, kick_user string
 	return nil
 }
 
-func Shuffle(slice []*data.TmpRoomPlayerData) {
+func Shuffle(slice []*param.TmpRoomPlayerData) {
 	r := rand.New(rand.NewSource(time.Now().Unix()))
 	for len(slice) > 0 {
 		n := len(slice)
@@ -442,7 +443,7 @@ func (this *ServerRoom) room_match(room_id int, user string) *ReturnData {
 	if this.Room[room_id].owner_id != user {
 		return &ReturnData{code: common.ErrorCode.Not_owner}
 	}
-	if len(this.Room[room_id].list) != datafnc.Camp_Player_Amount {
+	if len(this.Room[room_id].List) != datafnc.Camp_Player_Amount {
 		return &ReturnData{code: common.ErrorCode.Not_owner}
 	}
 	if this.Room[room_id].status == common.RoomSatus.Room_wait {
@@ -452,7 +453,7 @@ func (this *ServerRoom) room_match(room_id int, user string) *ReturnData {
 	this.startGame(room_id)
 	var userList list.List
 
-	for _, data := range this.Room[room_id].list {
+	for _, data := range this.Room[room_id].List {
 		userList.PushBack(data)
 	}
 

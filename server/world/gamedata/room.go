@@ -21,7 +21,7 @@ var (
 	RoomCtrl *SRoomCtrl = &SRoomCtrl{}
 )
 
-func (this *SRoomCtrl) getRoomById(roomId int) interface{} {
+func (this *SRoomCtrl) GetRoomById(roomId int) *RoomData {
 	return GRoom.get_room(roomId)
 }
 
@@ -32,7 +32,7 @@ func (this *SRoomCtrl) Room_all(message data.RoomData) []*RoomData {
 	rooms := GRoom.room_all()
 	var resData []*RoomData
 	for key, room := range rooms {
-		userLen := len(room.list)
+		userLen := len(room.List)
 		pwd := "false"
 		if room.pwd != "" {
 			pwd = "true"
@@ -51,7 +51,7 @@ func (this *SRoomCtrl) Room_all(message data.RoomData) []*RoomData {
 	var roomdatas []*cmessage.RoomData = make([]*cmessage.RoomData, 0)
 	for _, data := range resData {
 		var list = make([]*cmessage.RoleData, 0)
-		for _, dd := range data.list {
+		for _, dd := range data.List {
 			var equips = make([]int32, 0)
 			for _, id := range dd.Equips {
 				equips = append(equips, int32(id))
@@ -110,7 +110,7 @@ func (this *SRoomCtrl) room_create(message data.RoomData) *RoomData {
 	roomData := this.forMartRoomData(room)
 
 	roledatas := make([]*cmessage.RoleData, 0)
-	for _, data := range roomData.list {
+	for _, data := range roomData.List {
 		list := make([]int32, 0)
 		for _, id := range data.Equips {
 			list = append(list, int32(id))
@@ -168,7 +168,7 @@ func (this *SRoomCtrl) room_join(message data.RoomData) *ReturnData {
 	roomData := this.forMartRoomData(room.data)
 
 	roledatas := make([]*cmessage.RoleData, 0)
-	for _, data := range roomData.list {
+	for _, data := range roomData.List {
 		list := make([]int32, 0)
 		for _, id := range data.Equips {
 			list = append(list, int32(id))
@@ -223,7 +223,7 @@ func (this *SRoomCtrl) room_join_quick(message data.RoomData) {
 	roomData := this.forMartRoomData(room.data)
 
 	roledatas := make([]*cmessage.RoleData, 0)
-	for _, data := range roomData.list {
+	for _, data := range roomData.List {
 		list := make([]int32, 0)
 		for _, id := range data.Equips {
 			list = append(list, int32(id))
@@ -277,7 +277,7 @@ func (this *SRoomCtrl) room_leave(message data.RoomData) {
 	roomData := this.forMartRoomData(room.data)
 
 	roledatas := make([]*cmessage.RoleData, 0)
-	for _, data := range roomData.list {
+	for _, data := range roomData.List {
 		list := make([]int32, 0)
 		for _, id := range data.Equips {
 			list = append(list, int32(id))
@@ -316,7 +316,7 @@ func (this *SRoomCtrl) searchRoom() int {
 	roomId := 0
 	for index, room := range rooms {
 		//人数小于阵营最大值
-		if len(room.list) < datafnc.Camp_Player_Amount {
+		if len(room.List) < datafnc.Camp_Player_Amount {
 			roomId = index
 		}
 	}
@@ -347,7 +347,7 @@ func (this *SRoomCtrl) room_match(message data.RoomData) {
 	roomData := this.forMartRoomData(room.data)
 
 	roledatas := make([]*cmessage.RoleData, 0)
-	for _, data := range roomData.list {
+	for _, data := range roomData.List {
 		list := make([]int32, 0)
 		for _, id := range data.Equips {
 			list = append(list, int32(id))
@@ -403,7 +403,7 @@ func (this *SRoomCtrl) room_rename(message data.RoomData) {
 	roomData := this.forMartRoomData(room.data)
 
 	roledatas := make([]*cmessage.RoleData, 0)
-	for _, data := range roomData.list {
+	for _, data := range roomData.List {
 		list := make([]int32, 0)
 		for _, id := range data.Equips {
 			list = append(list, int32(id))
@@ -459,7 +459,7 @@ func (this *SRoomCtrl) room_change_pwd(message data.RoomData) {
 	roomData := this.forMartRoomData(room.data)
 
 	roledatas := make([]*cmessage.RoleData, 0)
-	for _, data := range roomData.list {
+	for _, data := range roomData.List {
 		list := make([]int32, 0)
 		for _, id := range data.Equips {
 			list = append(list, int32(id))
@@ -513,7 +513,7 @@ func (this *SRoomCtrl) room_kick_off(message data.RoomData) {
 	roomData := this.forMartRoomData(room.data)
 	//gvgRoomBroadcastAll(USER_EVENT.ROOM.ROOM_KICK_OFF, room_id, { room: this.forMartRoomData(room) })
 	roledatas := make([]*cmessage.RoleData, 0)
-	for _, data := range roomData.list {
+	for _, data := range roomData.List {
 		list := make([]int32, 0)
 		for _, id := range data.Equips {
 			list = append(list, int32(id))

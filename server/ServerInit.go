@@ -5,8 +5,8 @@ import (
 	"gonet/common"
 	"gonet/server/world/chat"
 	"gonet/server/world/cmd"
-	"gonet/server/world/data"
 	"gonet/server/world/mail"
+	"gonet/server/world/param"
 	"gonet/server/world/player"
 	"gonet/server/world/social"
 	"gonet/server/world/toprank"
@@ -21,7 +21,7 @@ func InitMgr(serverName string) {
 		actor.MGR.InitActorHandle(wcluster.GetCluster())
 	} else if serverName == "world" {
 		cmd.Init()
-		data.InitRepository()
+		param.InitRepository()
 		player.MGR.Init()
 		chat.MGR.Init()
 		mail.MGR.Init()

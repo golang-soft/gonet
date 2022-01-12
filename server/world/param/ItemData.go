@@ -1,4 +1,4 @@
-package data
+package param
 
 import (
 	"gonet/base"

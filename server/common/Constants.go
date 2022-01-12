@@ -8,7 +8,7 @@ type SMode struct {
 	User  int
 	Skill int
 	Item  int
-	room  int
+	Room  int
 	Timer int
 }
 
@@ -19,7 +19,7 @@ var Mode = &SMode{
 	User:  3,
 	Skill: 4,
 	Item:  5,
-	room:  6,
+	Room:  6,
 	Timer: 999,
 }
 
@@ -41,10 +41,10 @@ type SErrorCode struct {
 	dvt_not_enough int
 	No_room        int
 	Not_owner      int
-	not_hero       int
+	Not_hero       int
 	Play_max_limit int
 	No_empty_room  int
-	error_name     int
+	Error_name     int
 }
 
 var ErrorCode = &SErrorCode{
@@ -55,10 +55,10 @@ var ErrorCode = &SErrorCode{
 	dvt_not_enough: 5005,
 	No_room:        5006,
 	Not_owner:      5007,
-	not_hero:       5008,
+	Not_hero:       5008,
 	Play_max_limit: 5009,
 	No_empty_room:  5010,
-	error_name:     5011,
+	Error_name:     5011,
 }
 
 type SItem struct {

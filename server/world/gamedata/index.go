@@ -6,9 +6,9 @@ import (
 	"github.com/goinggo/mapstructure"
 	"github.com/golang/protobuf/proto"
 	"gonet/server/common/data"
-	data2 "gonet/server/world/data"
 	"gonet/server/world/datafnc"
 	"gonet/server/world/helper"
+	"gonet/server/world/param"
 	"gonet/server/world/socket"
 	"math"
 	"reflect"
@@ -21,8 +21,8 @@ var (
 )
 
 type Position struct {
-	Min int64
-	Max int64
+	Min float32
+	Max float32
 }
 type PositionConfig struct {
 	SPEED Position
@@ -39,27 +39,17 @@ func handleUnknownError(err error) {
 	fmt.Sprintf("%v", unknonw_err)
 }
 
-func GetOnlineUsers() []string {
-	var list []string = make([]string, 0)
-	sockets := FetchSockets()
-
-	for _, socket := range sockets {
-		list = append(list, socket.Data.User)
-	}
-	return list
-}
-
 //获取房间用户
 func getRoomUsers(round int) []string {
 	var userList []string = make([]string, 0)
-	sockets := FetchSockets()
+	sockets := socket.FetchSockets()
 	for _, socket := range sockets {
 		userList = append(userList, socket.Data.User)
 	}
 	return userList
 }
 
-func Includes(user []*data2.TmpRoomPlayerData, u string) bool {
+func Includes(user []*param.TmpRoomPlayerData, u string) bool {
 	for _, data := range user {
 		if u == data.User {
 			return true
@@ -78,9 +68,9 @@ func IncludeUsers(user []string, u string) bool {
 }
 
 //获取同阵营在线用户
-func CheckRoomOnline(roomId int64, users []*data2.TmpRoomPlayerData) bool {
+func CheckRoomOnline(roomId int64, users []*param.TmpRoomPlayerData) bool {
 	var online = false
-	sockets := FetchSockets()
+	sockets := socket.FetchSockets()
 	for _, socket := range sockets {
 		if Includes(users, socket.Data.User) && socket.Data.RoomId == roomId {
 			online = true
@@ -92,7 +82,7 @@ func CheckRoomOnline(roomId int64, users []*data2.TmpRoomPlayerData) bool {
 
 func GetRoomUsersByPart(round int, part int32) []string {
 	userList := make([]string, 0)
-	sockets := FetchSockets()
+	sockets := socket.FetchSockets()
 	for _, socket := range sockets {
 		if socket.Data.Round == round && socket.Data.Part == part {
 			userList = append(userList, socket.Data.User)
@@ -103,16 +93,16 @@ func GetRoomUsersByPart(round int, part int32) []string {
 }
 
 func getConnSockets() map[int]*socket.Socket {
-	return FetchSockets()
+	return socket.FetchSockets()
 }
 
 func BroadcastAll(env string, data proto.Message) {
-	Emit(env, data)
+	socket.Emit(env, data)
 }
 
 func BroadcastToSelf(env string, user string, message proto.Message) {
 
-	sockets := FetchSockets()
+	sockets := socket.FetchSockets()
 	for _, socket := range sockets {
 		if socket.Data.User == user {
 			socket.Emit(env, message)
@@ -122,7 +112,7 @@ func BroadcastToSelf(env string, user string, message proto.Message) {
 
 //加入战场
 func SocketJoin2BattleRoom(users []string, round int64, userPart map[string]int32) {
-	sockets := FetchSockets()
+	sockets := socket.FetchSockets()
 	for _, socket := range sockets {
 		if IncludeUsers(users, socket.Data.User) {
 			//添加战场round
@@ -137,7 +127,7 @@ func SocketJoin2BattleRoom(users []string, round int64, userPart map[string]int3
 }
 
 func SocketLeaveBattleRoom(users []string, round int) {
-	sockets := FetchSockets()
+	sockets := socket.FetchSockets()
 	var delId int
 	for _, socket := range sockets {
 		if socket.Data.Round == round {
@@ -164,7 +154,7 @@ func In(sockets map[int]*socket.Socket, battleName string) *socket.Socket {
 
 //战场房间广播，所有房间内
 func GvgBattleBroadcastAll(env string, round int, data proto.Message) {
-	sockets := FetchSockets()
+	sockets := socket.FetchSockets()
 	if sockets != nil {
 		battleName := fmt.Sprintf("Battle%d", round)
 		socket := In(sockets, battleName)
@@ -175,7 +165,7 @@ func GvgBattleBroadcastAll(env string, round int, data proto.Message) {
 }
 
 func SocketJoin2GvgRoom(users []string, roomId int) {
-	sockets := FetchSockets()
+	sockets := socket.FetchSockets()
 	if sockets != nil {
 		for _, socket := range sockets {
 			if IncludeUsers(users, socket.Data.User) {
@@ -188,7 +178,7 @@ func SocketJoin2GvgRoom(users []string, roomId int) {
 }
 
 func GvgRoomBroadcastAll(env string, roomId int, data proto.Message) {
-	sockets := FetchSockets()
+	sockets := socket.FetchSockets()
 	if sockets != nil {
 		battleName := fmt.Sprintf("room%d", roomId)
 		socket := In(sockets, battleName)
@@ -200,7 +190,7 @@ func GvgRoomBroadcastAll(env string, roomId int, data proto.Message) {
 
 //房间广播，自己
 func gvgRoomBroadcastToSelf(env string, roomId int64, user string, data proto.Message) {
-	sockets := FetchSockets()
+	sockets := socket.FetchSockets()
 	if sockets != nil {
 		for _, socket := range sockets {
 			if socket.Data.User == user && socket.Data.RoomId == roomId {
@@ -212,7 +202,7 @@ func gvgRoomBroadcastToSelf(env string, roomId int64, user string, data proto.Me
 
 func SocketLeaveGvgRoom(users []string, roomId int) {
 	var delId int = 0
-	sockets := FetchSockets()
+	sockets := socket.FetchSockets()
 	if sockets != nil {
 		for _, socket := range sockets {
 			if IncludeUsers(users, socket.Data.User) {
@@ -227,7 +217,7 @@ func SocketLeaveGvgRoom(users []string, roomId int) {
 
 //房间广播，自己
 func roomBroadcastToSelf(env string, round int, user string, data proto.Message) {
-	sockets := FetchSockets()
+	sockets := socket.FetchSockets()
 	if sockets != nil {
 		for _, socket := range sockets {
 			if socket.Data.User == user && socket.Data.Round == round {

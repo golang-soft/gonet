@@ -7,7 +7,6 @@ import (
 	"gonet/actor"
 	"gonet/base"
 	"gonet/grpc"
-	"gonet/network"
 	"gonet/server/cmessage"
 	"gonet/server/common"
 	"gonet/server/game/lmath"
@@ -19,7 +18,8 @@ type (
 	EventProcess struct {
 		actor.Actor
 
-		Client      *network.ClientSocket
+		//Client      *network.ClientSocket
+		Robot       *Robot
 		AccountId   int64
 		PlayerId    int64
 		AccountName string
@@ -46,14 +46,9 @@ func ToCrc(accountName string, pwd string, buildNo string, nKey int64) uint32 {
 	return base.GetMessageCode1(fmt.Sprintf("%s_%s_%s_%d", accountName, pwd, buildNo, nKey))
 }
 
-func SendPacket(packet proto.Message) {
-	buff := common.Encode(packet)
-	CLIENT.Send(rpc.RpcHead{}, buff)
-}
-
 func (this *EventProcess) SendPacket(packet proto.Message) {
 	buff := common.Encode(packet)
-	this.Client.Send(rpc.RpcHead{}, buff)
+	this.Robot.Send(rpc.RpcHead{}, buff)
 }
 
 func (this *EventProcess) PacketFunc(packet1 rpc.Packet) bool {
@@ -81,7 +76,7 @@ func (this *EventProcess) Init() {
 		nLen := len(packet.GetPlayerData())
 		//fmt.Println(len(packet.PlayerData), this.AccountId, packet.PlayerData)
 		if nLen == 0 {
-			packet1 := &cmessage.C_W_CreatePlayerRequest{PacketHead: common.BuildPacketHead(cmessage.MessageID(this.AccountId), rpc.SERVICE_GATESERVER),
+			packet1 := &cmessage.C_W_CreatePlayerRequest{PacketHead: common.BuildPacketHead(cmessage.MessageID_MSG_C_W_CreatePlayerRequest, rpc.SERVICE_GATESERVER),
 				PlayerName: "我是大坏蛋",
 				Sex:        int32(0)}
 			this.SendPacket(packet1)
@@ -165,7 +160,7 @@ func (this *EventProcess) Init() {
 }
 
 func (this *EventProcess) LoginGame() {
-	packet1 := &cmessage.C_W_Game_LoginRequset{PacketHead: common.BuildPacketHead(cmessage.MessageID(this.AccountId), rpc.SERVICE_GATESERVER),
+	packet1 := &cmessage.C_W_Game_LoginRequset{PacketHead: common.BuildPacketHead(cmessage.MessageID_MSG_C_W_Game_LoginRequset, rpc.SERVICE_GATESERVER),
 		PlayerId: this.PlayerId}
 	this.SendPacket(packet1)
 }
@@ -179,7 +174,7 @@ func (this *EventProcess) LoginAccount() {
 	this.AccountName = fmt.Sprintf("test321%d", id)
 	this.PassWd = base.MD5(ToSlat(this.AccountName, "123456"))
 	//this.AccountName = fmt.Sprintf("test%d", base.RAND.RandI(0, 7000))
-	packet1 := &cmessage.C_A_LoginRequest{PacketHead: common.BuildPacketHead(0, rpc.SERVICE_GATESERVER),
+	packet1 := &cmessage.C_A_LoginRequest{PacketHead: common.BuildPacketHead(cmessage.MessageID_MSG_C_A_LoginRequest, rpc.SERVICE_GATESERVER),
 		AccountName: this.AccountName, Password: this.PassWd, BuildNo: base.BUILD_NO, Key: this.m_Dh.ShareKey()}
 	this.SendPacket(packet1)
 }
@@ -207,11 +202,11 @@ func (this *EventProcess) SendTest() {
 }
 
 var (
-	PACKET *EventProcess
+//PACKET *EventProcess
 )
 
 func (this *EventProcess) Move(yaw float32, time float32) {
-	packet1 := &cmessage.C_Z_Move{PacketHead: common.BuildPacketHead(cmessage.MessageID(this.AccountId), rpc.SERVICE_GATESERVER),
+	packet1 := &cmessage.C_Z_Move{PacketHead: common.BuildPacketHead(cmessage.MessageID_MSG_C_Z_Move, rpc.SERVICE_GATESERVER),
 		Move: &cmessage.C_Z_Move_Move{Mode: 0, Normal: &cmessage.C_Z_Move_Move_Normal{Pos: &cmessage.Point3F{X: this.Pos.X, Y: this.Pos.Y, Z: this.Pos.Z}, Yaw: yaw, Duration: time}}}
 	this.SendPacket(packet1)
 }

@@ -7,13 +7,13 @@ import (
 	"gonet/base/system"
 	"gonet/common"
 	"gonet/common/cluster/etv3"
-	"gonet/network"
 	common2 "gonet/server/common"
 	"gonet/server/rpc"
 	"os"
 	"os/signal"
 	"strconv"
 	"strings"
+	"time"
 )
 
 type (
@@ -28,7 +28,7 @@ var (
 
 	CONF Config
 	//CLIENT *network.ClientWebSocket2
-	CLIENT *network.ClientSocket
+	//CLIENT *network.ClientSocket
 )
 
 func main() {
@@ -39,7 +39,7 @@ func main() {
 	//base.ReadConf("D:\\workspace-go\\gonet\\server\\client\\gonet.yaml", &CONF)
 	config.Init(system.Args.Env, &CONF)
 
-	CLIENT = new(network.ClientSocket)
+	//CLIENT = new(network.ClientSocket)
 
 	service := &etv3.Service{}
 	thisip := "127.0.0.1"
@@ -60,11 +60,11 @@ func main() {
 		}
 	}
 
-	CLIENT.Init(thisip, thisport)
-	PACKET = new(EventProcess)
-	PACKET.Init()
-	CLIENT.BindPacketFunc(PACKET.PacketFunc)
-	PACKET.Client = CLIENT
+	//CLIENT.Init(thisip, thisport)
+	//PACKET = new(EventProcess)
+	//PACKET.Init()
+	//CLIENT.BindPacketFunc(PACKET.PacketFunc)
+	//PACKET.Client = CLIENT
 
 	ShowMessage := func() {
 		m_Log.Println("**********************************************************")
@@ -74,14 +74,24 @@ func main() {
 	}
 	ShowMessage()
 
-	host := fmt.Sprintf("%s:%d", thisip, thisport)
-	if !CLIENT.Start() {
-		m_Log.Debugf("链接失败")
-		return
-	}
-	m_Log.Debugf("链接成功 %s", host)
+	//host := fmt.Sprintf("%s:%d", thisip, thisport)
+	//if !CLIENT.Start() {
+	//	m_Log.Debugf("链接失败")
+	//	return
+	//}
+	//m_Log.Debugf("链接成功 %s", host)
 
-	PACKET.LoginGate()
+	num := 1
+
+	robotManager := NewRobotManager()
+	robotManager.Add(num, thisip, thisport)
+
+	for {
+		robotManager.Do()
+		time.Sleep(30)
+	}
+
+	//PACKET.LoginGate()
 	//PACKET.SendAttack()
 	//PACKET.LoginGame()
 	//PACKET.SendTest()

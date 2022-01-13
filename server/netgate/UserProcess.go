@@ -163,8 +163,14 @@ func (this *UserPrcoess) PacketFunc(packet1 rpc.Packet) bool {
 	//}
 	switch packetName {
 	case base.ToLower("C_W_Game_LoginRequset"):
+	case base.ToLower("C_W_CreatePlayerRequest"):
 		{
 			this.SwtichSendToWorld(socketid, packetName, head, grpc.Marshal(head, packetName, packet))
+		}
+		break
+	case base.ToLower("C_A_RegisterRequest"):
+		{
+			this.SwtichSendToAccount(socketid, packetName, head, grpc.Marshal(head, packetName, packet))
 		}
 		break
 	default:

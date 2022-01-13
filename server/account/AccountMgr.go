@@ -48,6 +48,8 @@ func (this *AccountMgr) Init() {
 			if info.WClusterId != 0 {
 				if SERVER.GetPlayerRaft().Publish(info) {
 					pPlayer = info
+					SERVER.GetLog().Printf("帐号[%s]返回登录OK", accountName)
+					SERVER.GetCluster().SendMsg(rpc.RpcHead{ClusterId: id, DestServerType: rpc.SERVICE_GATESERVER}, "A_G_Account_Login", socketId, *pPlayer)
 				}
 			} else {
 				SERVER.GetLog().Println("没有可用的集群")

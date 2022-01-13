@@ -40,6 +40,7 @@ func (this *Player) Init() {
 	this.m_Log = world.SERVER.GetLog()
 	this.m_ItemMgr = &ItemMgr{}
 	this.m_ItemMgr.Init(this)
+	actor.MGR.BindActor(this)
 
 	//玩家登录
 	this.RegisterCall("Login", func(ctx context.Context, gateClusterId uint32, clusterInfo rpc.PlayerClusterInfo) {
@@ -82,6 +83,8 @@ func (this *Player) Init() {
 
 	//创建玩家
 	this.RegisterCall("C_W_CreatePlayerRequest", func(ctx context.Context, packet *cmessage.C_W_CreatePlayerRequest) {
+		head := this.GetRpcHead(ctx)
+		fmt.Sprintf("%d", head.SocketId)
 		rows, err := this.m_db.Query(fmt.Sprintf("select count(player_id) as player_count from tbl_player where account_id = %d", this.AccountId))
 		if err == nil {
 			rs := db.Query(rows, err)
@@ -112,7 +115,7 @@ func (this *Player) Init() {
 		}
 
 		wcluster.SendToClient(gClusterId, &cmessage.W_C_CreatePlayerResponse{
-			PacketHead: common2.BuildPacketHead(cmessage.MessageID(this.AccountId), 0),
+			PacketHead: common2.BuildPacketHead(cmessage.MessageID_MSG_W_C_CreatePlayerResponse, 0),
 			Error:      int32(err),
 			PlayerId:   playerId,
 		}, 0)

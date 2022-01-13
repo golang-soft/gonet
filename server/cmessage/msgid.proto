@@ -15,6 +15,10 @@ enum MessageID {
     MSG_W_C_CreatePlayerResponse = 101002; //响应创建角色
     MSG_W_C_SelectPlayerResponse = 101003; //请求选择角色响应
     MSG_A_C_RegisterResponse = 101004; //请求注册响应
+    MSG_C_W_CreatePlayerRequest = 101005; //请求创建角色
+    MSG_C_W_Game_LoginRequset = 101006; //请求登录游戏服
+    MSG_C_Z_Move            = 101007; //请求移动
+    MSG_C_A_LoginRequest    = 101008; //请求登录
     
     MSG_GameTimeReq  = 109001; //请求时间
     MSG_GameTimeResp  = 109002; //请求时间

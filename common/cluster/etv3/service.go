@@ -42,10 +42,10 @@ func (this *Service) Run() {
 	if this.isRun {
 		this.Grant()
 		this.Put()
-		for {
-			this.Lease()
-			time.Sleep(time.Second * 1)
-		}
+		//for {
+		this.Lease()
+		time.Sleep(time.Second * 1)
+		//}
 	} else {
 		log.Printf("is not run !!!!!")
 	}
@@ -70,34 +70,34 @@ func (this *Service) Lease() {
 	if this.m_LeaseId > 0 {
 
 		//监听租约
-		//go func() {
-		//	for {
-		ctx, _ := context.WithCancel(context.Background())
-		leaseRespChan, err := this.m_Lease.KeepAlive(ctx, this.m_LeaseId)
-		if err != nil {
-			log.Fatal("Error: Service KeepAlive error :", err.Error())
-		}
+		go func() {
+			for {
+				ctx, _ := context.WithCancel(context.Background())
+				leaseRespChan, err := this.m_Lease.KeepAlive(ctx, this.m_LeaseId)
+				if err != nil {
+					log.Fatal("Error: Service KeepAlive error :", err.Error())
+				}
 
-		select {
-		case resp := <-leaseRespChan:
-			if resp == nil {
-				//log.Println("租约已经到期关闭")
-				goto LEASE_OVER
-			} else {
-				//log.Println("续租成功")
-				goto END
+				select {
+				case resp := <-leaseRespChan:
+					if resp == nil {
+						//log.Println("租约已经到期关闭")
+						goto LEASE_OVER
+					} else {
+						//log.Println("续租成功")
+						goto END
+					}
+				}
+			LEASE_OVER:
+				//log.Println("lease 监听结束")
+				this.Grant()
+				this.KeepAlive()
+				this.Put()
+				//break
+			END:
+				time.Sleep(1000 * time.Millisecond)
 			}
-		}
-	LEASE_OVER:
-		//log.Println("lease 监听结束")
-		this.Grant()
-		this.KeepAlive()
-		this.Put()
-		//break
-	END:
-		time.Sleep(1000 * time.Millisecond)
-		//}
-		//}()
+		}()
 	}
 }
 
@@ -169,7 +169,7 @@ func (this *Service) Start() bool {
 		return false
 	}
 	this.isRun = true
-	go this.Run()
+	this.Run()
 	return true
 }
 

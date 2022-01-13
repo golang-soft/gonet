@@ -268,7 +268,7 @@ func (this *Cluster) RandomCluster(head rpc.RpcHead) rpc.RpcHead {
 	if head.Id == 0 {
 		head.Id = int64(uint32(base.RAND.RandI(1, 0xFFFFFFFF)))
 	}
-	_, head.ClusterId = this.m_HashRing[head.DestServerType].Get64(int64(head.Id))
+	_, head.ClusterId = this.m_HashRing[head.DestServerType].Get64(head.Id)
 	pCluster := this.GetCluster(head)
 	if pCluster != nil {
 		head.SocketId = pCluster.SocketId

@@ -13,6 +13,7 @@ import (
 type (
 	ActorMgr struct {
 		m_ActorMap map[string]IActor
+		pCluster   ICluster
 	}
 
 	IActorMgr interface {
@@ -58,9 +59,17 @@ func (this *ActorMgr) GetActor(name string) IActor {
 }
 
 func (this *ActorMgr) InitActorHandle(pCluster ICluster) {
+	if this.pCluster == nil {
+		this.pCluster = pCluster
+	}
 	for _, v := range this.m_ActorMap {
 		pCluster.BindPacketFunc(v.PacketFunc)
 	}
+}
+
+func (this *ActorMgr) BindActor(pActor IActor, names ...string) {
+	this.AddActor(pActor, names...)
+	this.pCluster.BindPacketFunc(pActor.PacketFunc)
 }
 
 func (this *ActorMgr) SendMsg(head rpc.RpcHead, funcName string, params ...interface{}) {

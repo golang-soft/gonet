@@ -1,13 +1,8 @@
 package main
 
 import (
-	"context"
 	"gonet/actor"
 	"gonet/common"
-	"gonet/server/cmessage"
-	common2 "gonet/server/common"
-	"gonet/server/rpc"
-	"strconv"
 )
 
 type (
@@ -22,20 +17,20 @@ type (
 
 func (this *CmdProcess) Init() {
 	this.Actor.Init()
-	this.RegisterCall("msg", func(ctx context.Context, args string) {
-		packet1 := &cmessage.C_W_ChatMessage{PacketHead: common2.BuildPacketHead(cmessage.MessageID(PACKET.AccountId), rpc.SERVICE_GATESERVER),
-			Sender:      PACKET.PlayerId,
-			Recver:      0,
-			MessageType: int32(cmessage.CHAT_MSG_TYPE_WORLD),
-			Message:     (args),
-		}
-		SendPacket(packet1)
-	})
+	//this.RegisterCall("msg", func(ctx context.Context, args string) {
+	//	packet1 := &cmessage.C_W_ChatMessage{PacketHead: common2.BuildPacketHead(cmessage.MessageID(PACKET.AccountId), rpc.SERVICE_GATESERVER),
+	//		Sender:      PACKET.PlayerId,
+	//		Recver:      0,
+	//		MessageType: int32(cmessage.CHAT_MSG_TYPE_WORLD),
+	//		Message:     (args),
+	//	}
+	//	SendPacket(packet1)
+	//})
 
-	this.RegisterCall("move", func(ctx context.Context, yaw string) {
-		ya, _ := strconv.ParseFloat(yaw, 32)
-		PACKET.Move(float32(ya), 100.0)
-	})
+	//this.RegisterCall("move", func(ctx context.Context, yaw string) {
+	//	ya, _ := strconv.ParseFloat(yaw, 32)
+	//	PACKET.Move(float32(ya), 100.0)
+	//})
 
 	this.Actor.Start()
 }

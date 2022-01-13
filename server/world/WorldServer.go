@@ -186,8 +186,8 @@ func (this *ServerMgr) Init() bool {
 	m_pCluster.Init(&common.ClusterInfo{Type: rpc.SERVICE_WORLDSERVER, Ip: thisip, Port: int32(thisport)}, CONF.Etcd.Endpoints, CONF.Nats.Endpoints)
 	wcluster.SetCluster(m_pCluster)
 
-	var packet EventProcess
-	packet.Init()
+	var eventProcess EventProcess
+	eventProcess.Init()
 
 	redisInstnace.InitRedis()
 	var io = &wserver.Server{}
@@ -197,9 +197,9 @@ func (this *ServerMgr) Init() bool {
 	var centerProcess CenterProcess
 	centerProcess.Init()
 
-	//this.m_pCluster.BindPacketFunc(packet.PacketFunc)
+	//this.m_pCluster.BindPacketFunc(eventProcess.PacketFunc)
 	//this.m_pCluster.BindPacketFunc(centerProcess.PacketFunc)
-	m_pCluster.BindPacketFunc(packet.PacketFunc)
+	m_pCluster.BindPacketFunc(eventProcess.PacketFunc)
 	m_pCluster.BindPacketFunc(centerProcess.PacketFunc)
 
 	ShowMessage := func() {

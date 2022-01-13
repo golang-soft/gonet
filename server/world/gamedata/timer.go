@@ -5,6 +5,7 @@ import (
 	"gonet/server/common/data"
 	"gonet/server/world/logger"
 	"gonet/server/world/sender"
+	"gonet/server/world/wcluster"
 	"time"
 )
 
@@ -34,7 +35,7 @@ func (this *SOnloadTimer) OnloadGameCheckTimer() {
 	GMatch.CheckMatch()
 	GRoom.CheckRoom()
 
-	//wcluster.GetCluster().DebugService()
+	wcluster.GetCluster().DebugService()
 
 	sender.AddRoomTask(data.RoomData{
 		FuncName: "Room_all",

@@ -14,12 +14,15 @@ import (
 
 type IClientSocket interface {
 	ISocket
+	OnConnected()
 }
 
 type ClientSocket struct {
 	Socket
 	m_nMaxClients int
 	m_nMinClients int
+
+	Derived IClientSocket
 }
 
 func (this *ClientSocket) Init(ip string, port int, params ...OpOption) bool {
@@ -41,6 +44,10 @@ func (this *ClientSocket) Start() bool {
 
 	if this.Connect() {
 		go this.Run()
+
+		if this.Derived != nil {
+			this.Derived.OnConnected()
+		}
 	}
 	//延迟，监听关闭
 	//defer ln.Close()

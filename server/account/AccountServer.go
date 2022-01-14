@@ -85,7 +85,7 @@ func (this *ServerMgr) VerifyServer(thisip string, thisport int) {
 
 //--------------发送给中央服----------------------//
 func (this *ServerMgr) SendToCenter(Id int64, ClusterId uint32, funcName string, params ...interface{}) {
-	head := rpc.RpcHead{Id: Id, ClusterId: ClusterId, DestServerType: rpc.SERVICE_CENTERSERVER, SrcClusterId: SERVER.GetCluster().Id(), SendType: rpc.SEND_BOARD_CAST}
+	head := rpc.RpcHead{Id: Id, DestClusterId: ClusterId, DestServerType: rpc.SERVICE_CENTERSERVER, SrcClusterId: SERVER.GetCluster().Id(), SendType: rpc.SEND_BOARD_CAST}
 	SERVER.GetCluster().SendMsg(head, funcName, params...)
 }
 
@@ -202,7 +202,7 @@ func KickWorldPlayer(accountId int64) {
 
 //发送world
 func SendToWorld(ClusterId uint32, funcName string, params ...interface{}) {
-	head := rpc.RpcHead{ClusterId: ClusterId, DestServerType: rpc.SERVICE_WORLDSERVER, SrcClusterId: SERVER.GetCluster().Id()}
+	head := rpc.RpcHead{DestClusterId: ClusterId, DestServerType: rpc.SERVICE_WORLDSERVER, SrcClusterId: SERVER.GetCluster().Id()}
 	SERVER.GetCluster().SendMsg(head, funcName, params...)
 }
 

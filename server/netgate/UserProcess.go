@@ -63,7 +63,7 @@ func (this *UserPrcoess) CheckClient(sockId uint32, packetName string, head rpc.
 func (this *UserPrcoess) SwtichSendToWorld(socketId uint32, packetName string, head rpc.RpcHead, buff []byte) {
 	pAccountInfo := this.CheckClient(socketId, packetName, head)
 	if pAccountInfo != nil {
-		head.ClusterId = pAccountInfo.WClusterId
+		head.DestClusterId = pAccountInfo.WClusterId
 		head.DestServerType = rpc.SERVICE_WORLDSERVER
 		SERVER.GetCluster().Send(head, buff)
 	}
@@ -90,7 +90,7 @@ func (this *UserPrcoess) SwtichSendToAccount(socketId uint32, packetName string,
 func (this *UserPrcoess) SwtichSendToZone(socketId uint32, packetName string, head rpc.RpcHead, buff []byte) {
 	pAccountInfo := this.CheckClient(socketId, packetName, head)
 	if pAccountInfo != nil {
-		head.ClusterId = pAccountInfo.ZClusterId
+		head.DestClusterId = pAccountInfo.ZClusterId
 		head.DestServerType = rpc.SERVICE_ZONESERVER
 		SERVER.GetCluster().Send(head, buff)
 	}
@@ -146,9 +146,9 @@ func (this *UserPrcoess) PacketFunc(packet1 rpc.Packet) bool {
 	packetName := common.GetMessageName(packet)
 	head := rpc.RpcHead{Id: int64(packetHead.Id), SrcClusterId: SERVER.GetCluster().Id()}
 	if packetName == C_A_LoginRequest {
-		head.ClusterId = socketid
+		head.DestClusterId = socketid
 	} else if packetName == C_A_RegisterRequest {
-		head.ClusterId = socketid
+		head.DestClusterId = socketid
 	}
 	head.SocketId = socketid
 	//解析整个包
@@ -205,7 +205,7 @@ func (this *UserPrcoess) Init() {
 		dh.Init()
 		dh.ExchangePubk(packet.GetKey())
 		this.addKey(head.SocketId, &dh)
-		SendToClient(head.SocketId, &cmessage.G_C_LoginResponse{PacketHead: common.BuildPacketHead(0, 0), Key: dh.PubKey()})
+		SendToClient(head.SocketId, &cmessage.G_C_LoginResponse{PacketHead: common.BuildPacketHead(cmessage.MessageID_MSG_G_C_LoginResponse, 0), Key: dh.PubKey()})
 	})
 
 	this.RegisterCall("C_A_LoginRequest", func(ctx context.Context, packet *cmessage.C_A_LoginRequest) {
@@ -215,7 +215,7 @@ func (this *UserPrcoess) Init() {
 			if dh.ShareKey() == packet.GetKey() {
 				this.delKey(head.SocketId)
 				//head.Id = int64(base.ToHash(packet.AccountName))
-				this.SwtichSendToAccount(head.SocketId, base.ToLower("C_A_LoginRequest"), head, grpc.Marshal(head, base.ToLower("C_A_LoginRequest"), packet))
+				this.SwtichSendToAccount(head.SocketId, "C_A_LoginRequest", head, grpc.Marshal(head, base.ToLower("C_A_LoginRequest"), packet))
 			} else {
 				SERVER.GetLog().Println("client key cheat", dh.ShareKey(), packet.GetKey())
 			}

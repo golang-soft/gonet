@@ -107,7 +107,7 @@ func (this *ClusterServer) DelCluster(info *common.ClusterInfo) {
 func (this *ClusterServer) GetCluster(head rpc.RpcHead) *common.ClusterInfo {
 	this.m_ClusterLocker.RLock()
 	defer this.m_ClusterLocker.RUnlock()
-	pClient, bEx := this.m_ClusterMap[head.ClusterId]
+	pClient, bEx := this.m_ClusterMap[head.DestClusterId]
 	if bEx {
 		return pClient
 	}
@@ -137,7 +137,7 @@ func (this *ClusterServer) sendPoint(head rpc.RpcHead, buff []byte) {
 }
 
 func (this *ClusterServer) balanceSend(head rpc.RpcHead, buff []byte) {
-	_, head.ClusterId = this.m_HashRing.Get64(head.Id)
+	_, head.DestClusterId = this.m_HashRing.Get64(head.Id)
 	pCluster := this.GetCluster(head)
 	if pCluster != nil {
 		head.SocketId = pCluster.SocketId
@@ -182,7 +182,7 @@ func (this *ClusterServer) RandomCluster(head rpc.RpcHead) rpc.RpcHead {
 	if head.Id == 0 {
 		head.Id = int64(uint32(base.RAND.RandI(1, 0xFFFFFFFF)))
 	}
-	_, head.ClusterId = this.m_HashRing.Get64(head.Id)
+	_, head.DestClusterId = this.m_HashRing.Get64(head.Id)
 	pCluster := this.GetCluster(head)
 	if pCluster != nil {
 		head.SocketId = pCluster.SocketId

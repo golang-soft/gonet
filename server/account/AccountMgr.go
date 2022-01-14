@@ -43,13 +43,13 @@ func (this *AccountMgr) Init() {
 		if pPlayer == nil {
 			info := &rpc.PlayerClusterInfo{}
 			info.Id = accountId
-			info.WClusterId = SERVER.GetCluster().RandomCluster(rpc.RpcHead{Id: accountId, DestServerType: rpc.SERVICE_WORLDSERVER}).ClusterId
-			info.ZClusterId = SERVER.GetCluster().RandomCluster(rpc.RpcHead{Id: accountId, DestServerType: rpc.SERVICE_ZONESERVER}).ClusterId
+			info.WClusterId = SERVER.GetCluster().RandomCluster(rpc.RpcHead{Id: accountId, DestServerType: rpc.SERVICE_WORLDSERVER}).DestClusterId
+			info.ZClusterId = SERVER.GetCluster().RandomCluster(rpc.RpcHead{Id: accountId, DestServerType: rpc.SERVICE_ZONESERVER}).DestClusterId
 			if info.WClusterId != 0 {
 				if SERVER.GetPlayerRaft().Publish(info) {
 					pPlayer = info
 					SERVER.GetLog().Printf("帐号[%s]返回登录OK", accountName)
-					SERVER.GetCluster().SendMsg(rpc.RpcHead{ClusterId: id, DestServerType: rpc.SERVICE_GATESERVER}, "A_G_Account_Login", socketId, *pPlayer)
+					SERVER.GetCluster().SendMsg(rpc.RpcHead{DestClusterId: id, DestServerType: rpc.SERVICE_GATESERVER, SocketId: socketId, SrcClusterId: SERVER.GetCluster().Id()}, "A_G_Account_Login", *pPlayer)
 				}
 			} else {
 				SERVER.GetLog().Println("没有可用的集群")
@@ -63,7 +63,7 @@ func (this *AccountMgr) Init() {
 			pAccount := this.AddAccount(accountId)
 			if pAccount != nil {
 				SERVER.GetLog().Printf("帐号[%s]返回登录OK", accountName)
-				SERVER.GetCluster().SendMsg(rpc.RpcHead{ClusterId: id, DestServerType: rpc.SERVICE_GATESERVER}, "A_G_Account_Login", socketId, *pPlayer)
+				SERVER.GetCluster().SendMsg(rpc.RpcHead{DestClusterId: id, DestServerType: rpc.SERVICE_GATESERVER, SocketId: socketId, SrcClusterId: SERVER.GetCluster().Id()}, "A_G_Account_Login", *pPlayer)
 			}
 		}
 	})

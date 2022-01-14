@@ -2,25 +2,25 @@ syntax = "proto3";
 package smessage;
 option go_package = "./;smessage";
 
-//服务器类型
-enum SERVICE{
-//    NONE= 0;
-//    CLIENT= 1;
-//    GATESERVER= 2;//网关,转发服务
-//    ACCOUNTSERVER=3;//账号
-//    WORLDSERVER=4;//世界
-//    ZONESERVER=5;//地图
-//    CENTERSERVER=6;//中央
-//    WORLDDBSERVER=7;//db
-    NONE           = 0;
-    CLIENT         = 1;
-    GATESERVER     = 2;
-    ACCOUNTSERVER  = 3;
-    WORLDSERVER    = 4;
-    ZONESERVER     = 5;
-    CENTERSERVER   = 6;
-    LOGINSERVER    = 7;
-    GRPCSERVER     = 8;
-    WORLDDBSERVER  = 9;
-};
-
+////服务器类型
+//enum SERVICE{
+////    NONE= 0;
+////    CLIENT= 1;
+////    GATESERVER= 2;//网关,转发服务
+////    ACCOUNTSERVER=3;//账号
+////    WORLDSERVER=4;//世界
+////    ZONESERVER=5;//地图
+////    CENTERSERVER=6;//中央
+////    WORLDDBSERVER=7;//db
+//    NONE           = 0;
+//    CLIENT         = 1;
+//    GATESERVER     = 2;
+//    ACCOUNTSERVER  = 3;
+//    WORLDSERVER    = 4;
+//    ZONESERVER     = 5;
+//    CENTERSERVER   = 6;
+//    LOGINSERVER    = 7;
+//    GRPCSERVER     = 8;
+//    WORLDDBSERVER  = 9;
+//};
+//

@@ -196,7 +196,7 @@ func (this *Actor) PacketFunc(packet rpc.Packet) bool {
 	rpcPacket, head := grpc.UnmarshalHead(packet.Buff)
 	if this.FindCall(rpcPacket.FuncName) != nil {
 		log.Printf("PacketFunc [%s] 处理消息", rpcPacket.FuncName)
-		head.SocketId = packet.Id
+		//head.SocketId = packet.Id
 		head.Reply = packet.Reply
 		this.Send(head, packet.Buff)
 		return true
@@ -218,6 +218,7 @@ func (this *Actor) call(io CallIO) {
 	if pFunc != nil {
 		f := pFunc.FuncVal
 		k := pFunc.FuncType
+		rpcPacket.RpcHead = &head
 		rpcPacket.RpcHead.SocketId = io.SocketId
 		params := grpc.UnmarshalBody(rpcPacket, k)
 

@@ -119,7 +119,7 @@ func (this *Cluster) call(parmas ...interface{}) {
 	head := *parmas[0].(*rpc.RpcHead)
 	reply := head.Reply
 	head.Reply = ""
-	head.ClusterId = head.SrcClusterId
+	head.DestClusterId = head.SrcClusterId
 	if parmas[1] == nil {
 		parmas[1] = ""
 	} else {
@@ -180,7 +180,7 @@ func (this *Cluster) DelCluster(info *common.ClusterInfo) {
 func (this *Cluster) GetCluster(head rpc.RpcHead) *common.ClusterInfo {
 	this.m_ClusterLocker[head.DestServerType].RLock()
 	defer this.m_ClusterLocker[head.DestServerType].RUnlock()
-	pClient, bEx := this.m_ClusterMap[head.DestServerType][head.ClusterId]
+	pClient, bEx := this.m_ClusterMap[head.DestServerType][head.DestClusterId]
 	if bEx {
 		return pClient
 	}
@@ -210,7 +210,7 @@ func (this *Cluster) SendMsg(head rpc.RpcHead, funcName string, params ...interf
 func (this *Cluster) Send(head rpc.RpcHead, buff []byte) {
 	switch head.SendType {
 	case rpc.SEND_BALANCE:
-		_, head.ClusterId = this.m_HashRing[head.DestServerType].Get64(int64(head.Id))
+		_, head.DestClusterId = this.m_HashRing[head.DestServerType].Get64(int64(head.Id))
 		this.m_Conn.Publish(getRpcChannel(head), buff)
 	case rpc.SEND_POINT:
 		this.m_Conn.Publish(getRpcChannel(head), buff)
@@ -226,7 +226,7 @@ func (this *Cluster) CallMsg(cb interface{}, head rpc.RpcHead, funcName string, 
 	switch head.SendType {
 	case rpc.SEND_POINT:
 	default:
-		_, head.ClusterId = this.m_HashRing[head.DestServerType].Get64(int64(head.Id))
+		_, head.DestClusterId = this.m_HashRing[head.DestServerType].Get64(int64(head.Id))
 	}
 
 	reply, err := this.m_Conn.Request(getRpcCallChannel(head), buff, CALL_TIME_OUT)
@@ -268,7 +268,7 @@ func (this *Cluster) RandomCluster(head rpc.RpcHead) rpc.RpcHead {
 	if head.Id == 0 {
 		head.Id = int64(uint32(base.RAND.RandI(1, 0xFFFFFFFF)))
 	}
-	_, head.ClusterId = this.m_HashRing[head.DestServerType].Get64(head.Id)
+	_, head.DestClusterId = this.m_HashRing[head.DestServerType].Get64(head.Id)
 	pCluster := this.GetCluster(head)
 	if pCluster != nil {
 		head.SocketId = pCluster.SocketId

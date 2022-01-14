@@ -26,20 +26,20 @@ func SendToAccount(funcName string, params ...interface{}) {
 func SendToClient(clusterId uint32, packet proto.Message, socketId uint32) {
 	pakcetHead := packet.(common.Packet).GetPacketHead()
 	if pakcetHead != nil {
-		GetCluster().SendMsg(rpc.RpcHead{DestServerType: rpc.SERVICE_GATESERVER, ClusterId: clusterId, Id: int64(pakcetHead.Id), SocketId: socketId},
+		GetCluster().SendMsg(rpc.RpcHead{DestServerType: rpc.SERVICE_GATESERVER, DestClusterId: clusterId, Id: int64(pakcetHead.Id), SocketId: socketId},
 			"", proto.MessageName(packet), packet)
 	}
 }
 
 //--------------发送给地图----------------------//
 func SendToZone(Id int64, ClusterId uint32, funcName string, params ...interface{}) {
-	head := rpc.RpcHead{Id: Id, ClusterId: ClusterId, DestServerType: rpc.SERVICE_ZONESERVER, SrcClusterId: GetCluster().Id()}
+	head := rpc.RpcHead{Id: Id, DestClusterId: ClusterId, DestServerType: rpc.SERVICE_ZONESERVER, SrcClusterId: GetCluster().Id()}
 	GetCluster().SendMsg(head, funcName, params...)
 }
 
 //--------------发送给中央服----------------------//
 func SendToCenter(Id int64, ClusterId uint32, funcName string, params ...interface{}) {
-	head := rpc.RpcHead{Id: Id, ClusterId: ClusterId, DestServerType: rpc.SERVICE_CENTERSERVER, SrcClusterId: GetCluster().Id(), SendType: rpc.SEND_BOARD_CAST}
+	head := rpc.RpcHead{Id: Id, DestClusterId: ClusterId, DestServerType: rpc.SERVICE_CENTERSERVER, SrcClusterId: GetCluster().Id(), SendType: rpc.SEND_BOARD_CAST}
 	GetCluster().SendMsg(head, funcName, params...)
 }
 

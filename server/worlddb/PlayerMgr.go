@@ -57,7 +57,7 @@ func (this *PlayerMgr) Init() {
 		}
 
 		//发送人物数据
-		SERVER.GetServer().SendMsg(rpc.RpcHead{ClusterId: this.GetRpcHead(ctx).SrcClusterId}, "Load_Player_Finish", accountId, pPlayer.PlayerBlob)
+		SERVER.GetServer().SendMsg(rpc.RpcHead{DestClusterId: this.GetRpcHead(ctx).SrcClusterId}, "Load_Player_Finish", accountId, pPlayer.PlayerBlob)
 	})
 
 	//save blob

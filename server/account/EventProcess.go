@@ -39,7 +39,7 @@ func (this *EventProcess) Init() {
 	this.RegisterCall("C_A_RegisterRequest", func(ctx context.Context, packet *cmessage.C_A_RegisterRequest) {
 		accountName := packet.GetAccountName()
 		password := packet.GetPassword()
-		socketId := uint32(this.GetRpcHead(ctx).ClusterId)
+		socketId := uint32(this.GetRpcHead(ctx).DestClusterId)
 		nError := 1
 		accountId := base.UUID.UUID()
 		//查找账号存在
@@ -60,7 +60,7 @@ func (this *EventProcess) Init() {
 			}
 		}
 		if nError != 0 {
-			SendToClient(rpc.RpcHead{ClusterId: this.GetRpcHead(ctx).SrcClusterId, SocketId: socketId}, &cmessage.A_C_RegisterResponse{
+			SendToClient(rpc.RpcHead{DestClusterId: this.GetRpcHead(ctx).SrcClusterId, SocketId: socketId}, &cmessage.A_C_RegisterResponse{
 				PacketHead: common.BuildPacketHead(cmessage.MessageID_MSG_A_C_RegisterResponse, 0),
 				Error:      int32(nError),
 			})
@@ -72,7 +72,7 @@ func (this *EventProcess) Init() {
 		accountName := packet.GetAccountName()
 		password := packet.GetPassword()
 		buildVersion := packet.GetBuildNo()
-		socketId := uint32(this.GetRpcHead(ctx).ClusterId)
+		socketId := uint32(this.GetRpcHead(ctx).DestClusterId)
 		nError := base.NONE_ERROR
 
 		if accountName == "" {
@@ -101,7 +101,7 @@ func (this *EventProcess) Init() {
 		}
 
 		if nError != base.NONE_ERROR {
-			SendToClient(rpc.RpcHead{ClusterId: this.GetRpcHead(ctx).SrcClusterId, SocketId: socketId}, &cmessage.A_C_LoginResponse{
+			SendToClient(rpc.RpcHead{DestClusterId: this.GetRpcHead(ctx).SrcClusterId, SocketId: socketId}, &cmessage.A_C_LoginResponse{
 				PacketHead:  common.BuildPacketHead(0, 0),
 				Error:       int32(nError),
 				AccountName: packet.AccountName,

@@ -70,7 +70,7 @@ func (this *PlayerManager) AddAccountMap(socketId uint32, clusterInfo rpc.Player
 	this.m_SocketMap[socketId] = accountId
 	SERVER.m_Log.Debugf("AddAccountMap>>>>> accountId: %d socketId: %d", accountId, socketId)
 	this.m_Locker.Unlock()
-	SERVER.GetCluster().SendMsg(rpc.RpcHead{ClusterId: accountInfo.WClusterId, DestServerType: rpc.SERVICE_WORLDSERVER, SocketId: socketId}, "G_W_CLoginRequest", accountId, SERVER.GetCluster().Id(), clusterInfo, socketId)
+	SERVER.GetCluster().SendMsg(rpc.RpcHead{DestClusterId: accountInfo.WClusterId, DestServerType: rpc.SERVICE_WORLDSERVER, SocketId: socketId}, "G_W_CLoginRequest", accountId, SERVER.GetCluster().Id(), clusterInfo, socketId)
 	return base.NONE_ERROR
 }
 

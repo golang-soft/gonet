@@ -79,6 +79,24 @@ func (this *UserPrcoess) SwtichSendToWorldDb(socketId uint32, packetName string,
 	//}
 }
 
+func (this *UserPrcoess) SwtichSendToCenter(socketId uint32, packetName string, head rpc.RpcHead, buff []byte) {
+	head.SendType = rpc.SEND_POINT
+	head.DestServerType = rpc.SERVICE_CENTERSERVER
+	SERVER.GetCluster().Send(head, buff)
+}
+
+func (this *UserPrcoess) SwtichSendToLogin(socketId uint32, packetName string, head rpc.RpcHead, buff []byte) {
+	head.SendType = rpc.SEND_BALANCE
+	head.DestServerType = rpc.SERVICE_LOGINSERVER
+	SERVER.GetCluster().Send(head, buff)
+}
+
+func (this *UserPrcoess) SwtichSendToGrpc(socketId uint32, packetName string, head rpc.RpcHead, buff []byte) {
+	head.SendType = rpc.SEND_BALANCE
+	head.DestServerType = rpc.SERVICE_GRPCSERVER
+	SERVER.GetCluster().Send(head, buff)
+}
+
 func (this *UserPrcoess) SwtichSendToAccount(socketId uint32, packetName string, head rpc.RpcHead, buff []byte) {
 	if this.CheckClientEx(socketId, packetName, head) == true {
 		head.SendType = rpc.SEND_BALANCE
@@ -161,23 +179,70 @@ func (this *UserPrcoess) PacketFunc(packet1 rpc.Packet) bool {
 	//} else {
 	//	this.Actor.PacketFunc(rpc.Packet{Id: socketid, Buff: rpc.Marshal(head, packetName, packet)})
 	//}
-	switch packetName {
-	case base.ToLower("C_W_Game_LoginRequset"):
-	case base.ToLower("C_W_CreatePlayerRequest"):
+	dest := common.GetPacketByName(packetName)
+	switch dest {
+	case rpc.SERVICE_NONE:
 		{
-			this.SwtichSendToWorld(socketid, packetName, head, grpc.Marshal(head, packetName, packet))
+			this.Actor.PacketFunc(rpc.Packet{Id: socketid, Buff: grpc.Marshal(head, packetName, packet)})
 		}
-		break
-	case base.ToLower("C_A_RegisterRequest"):
+	case rpc.SERVICE_CLIENT:
+		{
+
+		}
+	case rpc.SERVICE_GATESERVER:
+		{
+			this.Actor.PacketFunc(rpc.Packet{Id: socketid, Buff: grpc.Marshal(head, packetName, packet)})
+		}
+	case rpc.SERVICE_ACCOUNTSERVER:
 		{
 			this.SwtichSendToAccount(socketid, packetName, head, grpc.Marshal(head, packetName, packet))
 		}
-		break
+	case rpc.SERVICE_WORLDSERVER:
+		{
+			this.SwtichSendToWorld(socketid, packetName, head, grpc.Marshal(head, packetName, packet))
+		}
+	case rpc.SERVICE_ZONESERVER:
+		{
+			this.SwtichSendToZone(socketid, packetName, head, grpc.Marshal(head, packetName, packet))
+		}
+	case rpc.SERVICE_CENTERSERVER:
+		{
+			this.SwtichSendToCenter(socketid, packetName, head, grpc.Marshal(head, packetName, packet))
+		}
+	case rpc.SERVICE_LOGINSERVER:
+		{
+			this.SwtichSendToLogin(socketid, packetName, head, grpc.Marshal(head, packetName, packet))
+		}
+	case rpc.SERVICE_GRPCSERVER:
+		{
+			this.SwtichSendToGrpc(socketid, packetName, head, grpc.Marshal(head, packetName, packet))
+		}
+	case rpc.SERVICE_WORLDDBSERVER:
+		{
+			//无
+		}
 	default:
 		{
 			this.Actor.PacketFunc(rpc.Packet{Id: socketid, Buff: grpc.Marshal(head, packetName, packet)})
 		}
 	}
+	//switch packetName {
+	//case base.ToLower("C_W_Game_LoginRequset"):
+	//case base.ToLower("C_W_CreatePlayerRequest"):
+	//	{
+	//		this.SwtichSendToWorld(socketid, packetName, head, grpc.Marshal(head, packetName, packet))
+	//	}
+	//	break
+	//case base.ToLower("C_A_RegisterRequest"):
+	//	{
+	//		this.SwtichSendToAccount(socketid, packetName, head, grpc.Marshal(head, packetName, packet))
+	//	}
+	//	break
+	//default:
+	//	{
+	//		this.Actor.PacketFunc(rpc.Packet{Id: socketid, Buff: grpc.Marshal(head, packetName, packet)})
+	//	}
+	//}
 
 	return true
 }

@@ -63,7 +63,7 @@ snowflake:
 
 raft:
   endpoints:
-    - http://127.0.0.1:2379
+    - http://127.0.0.1:2381
 # nats
 nats:
   endpoints: 127.0.0.1:4222

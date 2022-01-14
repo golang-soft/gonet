@@ -10,6 +10,7 @@ import (
 const (
 	ROBOT_LOGIN   = 1
 	ROBOT_GATEWAY = 2
+	ROBOT_PLAYING = 3
 )
 
 type Robot struct {
@@ -88,13 +89,22 @@ func (robot *Robot) OnConnected() {
 
 	} else if robot.status == ROBOT_GATEWAY {
 
-		log.Println("请求网关验证")
+		log.Println("登录完毕")
+
+	} else if robot.status == ROBOT_PLAYING {
+
+		robot.PACKET.SendAttack()
 	}
+
 }
 
 func (robot *Robot) Do() {
 
-	//robot.msgQueue.Do(robot.msgHandler.Process)
+	if robot.status == ROBOT_PLAYING {
+		//time.Sleep(time.Duration(100 * time.Millisecond))
+
+		robot.PACKET.SendAttack()
+	}
 
 }
 

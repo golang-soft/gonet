@@ -7,6 +7,7 @@ import (
 	"golang.org/x/net/context"
 	"gonet/common"
 	"log"
+	"sync"
 	"time"
 )
 
@@ -21,6 +22,7 @@ type (
 		m_Client  *clientv3.Client
 		m_Lease   clientv3.Lease
 		m_LeaseId clientv3.LeaseID
+		mutex     sync.Mutex
 		isRun     bool
 	}
 
@@ -68,20 +70,20 @@ func (this *Service) Put() {
 
 func (this *Service) Lease() {
 	if this.m_LeaseId > 0 {
+		ctx, _ := context.WithCancel(context.Background())
+		leaseRespChan, err := this.m_Lease.KeepAlive(ctx, this.m_LeaseId)
+		if err != nil {
+			log.Fatal("Error: Service KeepAlive error :", err.Error())
+		}
 
 		//监听租约
 		go func() {
 			for {
-				ctx, _ := context.WithCancel(context.Background())
-				leaseRespChan, err := this.m_Lease.KeepAlive(ctx, this.m_LeaseId)
-				if err != nil {
-					log.Fatal("Error: Service KeepAlive error :", err.Error())
-				}
 
 				select {
 				case resp := <-leaseRespChan:
 					if resp == nil {
-						//log.Println("租约已经到期关闭")
+						log.Println("租约已经到期关闭")
 						goto LEASE_OVER
 					} else {
 						//log.Println("续租成功")
@@ -90,26 +92,30 @@ func (this *Service) Lease() {
 				}
 			LEASE_OVER:
 				//log.Println("lease 监听结束")
+				this.mutex.Lock()
 				this.Grant()
-				this.KeepAlive()
 				this.Put()
+				leaseRespChan = this.KeepAlive()
+				this.mutex.Unlock()
 				//break
 			END:
-				time.Sleep(1000 * time.Millisecond)
+				time.Sleep(100 * time.Millisecond)
 			}
 		}()
 	}
 }
 
 //续租
-func (this *Service) KeepAlive() {
+func (this *Service) KeepAlive() <-chan *clientv3.LeaseKeepAliveResponse {
 	if this.m_LeaseId > 0 {
 		ctx, _ := context.WithCancel(context.Background())
-		_, err := this.m_Lease.KeepAlive(ctx, this.m_LeaseId)
+		leaseRespChan, err := this.m_Lease.KeepAlive(ctx, this.m_LeaseId)
 		if err != nil {
 			log.Fatal("Error: Service KeepAlive error :", err.Error())
 		}
+		return leaseRespChan
 	}
+	return nil
 }
 
 func (this *Service) Revoke() {
@@ -169,7 +175,7 @@ func (this *Service) Start() bool {
 		return false
 	}
 	this.isRun = true
-	this.Run()
+	go this.Run()
 	return true
 }
 
@@ -184,10 +190,14 @@ func (this *Service) GetRootKey() string {
 }
 
 func (this *Service) GetValue(key string) []*mvccpb.KeyValue {
+	//this.mutex.Lock()
+	//defer this.mutex.Unlock()
+
 	getResp, err := this.m_Client.Get(context.TODO(), key)
+
 	if err != nil {
 		log.Fatalf("get 失败：%s", err.Error())
 	}
-	log.Printf("%v", getResp.Kvs)
+	log.Printf("获得的key %v", getResp.Kvs)
 	return getResp.Kvs
 }

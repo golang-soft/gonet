@@ -6,6 +6,7 @@ import (
 	"gonet/common"
 	"gonet/server/rpc"
 	"log"
+	"sync"
 	"time"
 
 	"go.etcd.io/etcd/clientv3"
@@ -19,6 +20,7 @@ type Master struct {
 	m_Client     *clientv3.Client
 	m_Actor      actor.IActor
 	common.IClusterInfo
+	mutex sync.Mutex
 }
 
 //监控服务器
@@ -69,6 +71,9 @@ func NodeToService(val []byte) *common.ClusterInfo {
 }
 
 func (this *Master) ListServices() {
+	this.mutex.Lock()
+	defer this.mutex.Unlock()
+
 	for key, info := range this.m_ServiceMap {
 		log.Printf("ListServices: key %v >>>> %v", key, info)
 	}

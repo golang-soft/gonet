@@ -88,7 +88,7 @@ func main() {
 
 	for {
 		robotManager.Do()
-		time.Sleep(30)
+		time.Sleep(10 * time.Millisecond)
 	}
 
 	//PACKET.LoginGate()

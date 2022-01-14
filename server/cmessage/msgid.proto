@@ -19,6 +19,7 @@ enum MessageID {
     MSG_C_W_Game_LoginRequset = 101007; //请求登录游戏服
     MSG_C_Z_Move            = 101008; //请求移动
     MSG_C_A_LoginRequest    = 101009; //请求登录
+    MSG_C_W_Game_LoginResponse = 101010; //请求登录返回
 
     MSG_GameTimeReq  = 109001; //请求时间
     MSG_GameTimeResp  = 109002; //请求时间

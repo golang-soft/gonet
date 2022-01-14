@@ -65,6 +65,12 @@ message C_W_Game_LoginRequset{
     int64	PlayerId =2;
 }
 
+//登录游戏返回
+message C_W_Game_LoginResponse{
+    Ipacket PacketHead = 1;
+    int64	PlayerId =2;
+}
+
 //选角反馈
 message W_C_SelectPlayerResponse{
     Ipacket PacketHead = 1;

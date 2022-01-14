@@ -10,7 +10,10 @@ var (
 
 func IsCheckClient(msg string) bool {
 	//if !s_clientCheckFilterInit{
-	s_clientCheckFilters = make(map[string]bool)
+	if s_clientCheckFilters == nil {
+		s_clientCheckFilters = make(map[string]bool)
+	}
+
 	s_clientCheckFilters[base.ToLower("C_A_LoginRequest")] = true
 	s_clientCheckFilters[base.ToLower("C_A_RegisterRequest")] = true
 	//s_clientCheckFilterInit = true

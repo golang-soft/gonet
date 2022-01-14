@@ -67,6 +67,8 @@ func (this *Player) Init() {
 
 	//玩家登录到游戏
 	this.RegisterCall("C_W_Game_LoginRequset", func(ctx context.Context, packet *cmessage.C_W_Game_LoginRequset) {
+		head := this.GetRpcHead(ctx)
+
 		nPlayerId := packet.GetPlayerId()
 		if !this.SetPlayerId(nPlayerId) {
 			this.m_Log.Printf("帐号[%d]登入的玩家[%d]不存在", this.AccountId, nPlayerId)
@@ -79,6 +81,11 @@ func (this *Player) Init() {
 		this.AddMap()
 		//添加到世界频道
 		actor.MGR.SendMsg(rpc.RpcHead{ActorName: "chatmgr"}, "AddPlayerToChannel", this.AccountId, this.GetPlayerId(), int64(-3000), this.GetPlayerName(), this.GetGateClusterId())
+
+		//返回客户端
+		this.SendToClient(head.SocketId, &cmessage.C_W_Game_LoginResponse{PacketHead: common2.BuildPacketHead(cmessage.MessageID_MSG_C_W_Game_LoginResponse, rpc.SERVICE_GATESERVER),
+			PlayerId: nPlayerId,
+		})
 	})
 
 	//创建玩家
@@ -106,6 +113,7 @@ func (this *Player) Init() {
 
 	//account创建玩家反馈
 	this.RegisterCall("CreatePlayer", func(ctx context.Context, playerId int64, gClusterId uint32, err int) {
+		head := this.GetRpcHead(ctx)
 		//创建成功
 		if err == 0 {
 			this.PlayerIdList = []int64{}
@@ -118,7 +126,7 @@ func (this *Player) Init() {
 			PacketHead: common2.BuildPacketHead(cmessage.MessageID_MSG_W_C_CreatePlayerResponse, 0),
 			Error:      int32(err),
 			PlayerId:   playerId,
-		}, 0)
+		}, head.SocketId)
 	})
 
 	//玩家断开链接

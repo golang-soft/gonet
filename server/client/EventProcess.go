@@ -6,7 +6,6 @@ import (
 	"github.com/golang/protobuf/proto"
 	"gonet/actor"
 	"gonet/base"
-	"gonet/grpc"
 	"gonet/server/cmessage"
 	"gonet/server/common"
 	"gonet/server/game/lmath"
@@ -16,8 +15,7 @@ import (
 
 type (
 	EventProcess struct {
-		actor.Actor
-
+		SuperEventProcess
 		//Client      *network.ClientSocket
 		Robot       *Robot
 		AccountId   int64
@@ -38,32 +36,16 @@ type (
 	}
 )
 
+var (
+	id int32
+)
+
 func ToSlat(accountName string, pwd string) string {
 	return fmt.Sprintf("%s__%s", accountName, pwd)
 }
 
 func ToCrc(accountName string, pwd string, buildNo string, nKey int64) uint32 {
 	return base.GetMessageCode1(fmt.Sprintf("%s_%s_%s_%d", accountName, pwd, buildNo, nKey))
-}
-
-func (this *EventProcess) SendPacket(packet proto.Message) {
-	buff := common.Encode(packet)
-	this.Robot.Send(rpc.RpcHead{}, buff)
-}
-
-func (this *EventProcess) PacketFunc(packet1 rpc.Packet) bool {
-	packetId, data := common.Decode(packet1.Buff)
-	packet := common.GetPakcet(packetId)
-	if packet == nil {
-		return true
-	}
-	err := common.UnmarshalText(packet, data)
-	if err == nil {
-		this.Send(rpc.RpcHead{}, grpc.Marshal(rpc.RpcHead{}, common.GetMessageName(packet), packet))
-		return true
-	}
-
-	return true
 }
 
 func (this *EventProcess) Init() {
@@ -82,22 +64,31 @@ func (this *EventProcess) Init() {
 			this.SendPacket(packet1)
 		} else {
 			this.PlayerId = packet.GetPlayerData()[0].GetPlayerID()
-			//this.LoginGame()
-			this.SendAttack()
+			this.LoginGame()
 		}
 	})
 
 	this.RegisterCall("W_C_CreatePlayerResponse", func(ctx context.Context, packet *cmessage.W_C_CreatePlayerResponse) {
 		if packet.GetError() == 0 {
 			this.PlayerId = packet.GetPlayerId()
+			m_Log.Debugf("玩家 %d 登录游戏", this.PlayerId)
 			this.LoginGame()
 		} else { //创建失败
 
 		}
 	})
 
+	this.RegisterCall("C_W_Game_LoginResponse", func(ctx context.Context, packet *cmessage.C_W_Game_LoginResponse) {
+		this.PlayerId = packet.GetPlayerId()
+		if this.Robot != nil {
+			this.Robot.status = ROBOT_PLAYING
+			m_Log.Debugf("玩家 %d 的状态改变 %d", this.PlayerId, ROBOT_PLAYING)
+		}
+	})
+
 	this.RegisterCall("G_C_LoginResponse", func(ctx context.Context, packet *cmessage.G_C_LoginResponse) {
 		this.m_Dh.ExchangePubk(packet.GetKey())
+
 		this.LoginAccount()
 	})
 
@@ -165,10 +156,6 @@ func (this *EventProcess) LoginGame() {
 	this.SendPacket(packet1)
 }
 
-var (
-	id int32
-)
-
 func (this *EventProcess) LoginAccount() {
 	id := atomic.AddInt32(&id, 1)
 	this.AccountName = fmt.Sprintf("test321%d", id)
@@ -177,6 +164,7 @@ func (this *EventProcess) LoginAccount() {
 	packet1 := &cmessage.C_A_LoginRequest{PacketHead: common.BuildPacketHead(cmessage.MessageID_MSG_C_A_LoginRequest, rpc.SERVICE_GATESERVER),
 		AccountName: this.AccountName, Password: this.PassWd, BuildNo: base.BUILD_NO, Key: this.m_Dh.ShareKey()}
 	this.SendPacket(packet1)
+	m_Log.Debugf("玩家 %d 登录账号 %s", this.PlayerId, this.AccountName)
 }
 
 func (this *EventProcess) LoginGate() {
@@ -188,6 +176,7 @@ func (this *EventProcess) LoginGate() {
 func (this *EventProcess) SendAttack() {
 	packet := &cmessage.AttackReq{PacketHead: common.BuildPacketHead(cmessage.MessageID_MSG_AttackReq, rpc.SERVICE_GATESERVER), Round: 1}
 	this.SendPacket(packet)
+	m_Log.Debugf("玩家 %d 攻击", this.PlayerId)
 }
 
 func (this *EventProcess) SendTest() {
@@ -200,10 +189,6 @@ func (this *EventProcess) SendTest() {
 		Recv: aa}
 	this.SendPacket(packet1)
 }
-
-var (
-//PACKET *EventProcess
-)
 
 func (this *EventProcess) Move(yaw float32, time float32) {
 	packet1 := &cmessage.C_Z_Move{PacketHead: common.BuildPacketHead(cmessage.MessageID_MSG_C_Z_Move, rpc.SERVICE_GATESERVER),

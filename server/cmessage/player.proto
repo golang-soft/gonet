@@ -213,12 +213,7 @@ message UseItemResp {
     string msg = 5;
     double hp = 6;
 }
-//加血
-message AddHpResp {
-    Ipacket PacketHead = 1;
-    double hp = 2;
-    double add = 3;
-}
+
 //使用道具1003
 message UseItem1003Resp{
     Ipacket PacketHead = 1;
@@ -250,16 +245,18 @@ message RewardResp {
     double shareDvt = 5;
 }
 
-// //ITEM_ADD_HP
-// message AddHpReq{
-//     Ipacket PacketHead = 1;
-// }
+//加血
+message AddHpReq{
+    Ipacket PacketHead = 1;
+}
 
-// message AddHpResp{
-//     Ipacket PacketHead = 1;
-// }
+message AddHpResp {
+    Ipacket PacketHead = 1;
+    double hp = 2;
+    double add = 3;
+}
 
-
+//更新devt
 message UpdateDevtReq {
     Ipacket PacketHead = 1;
 }

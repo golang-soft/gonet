@@ -192,9 +192,9 @@ func (this *Cluster) BindPacketFunc(callfunc network.PacketFunc) {
 }
 
 func (this *Cluster) HandlePacket(packet rpc.Packet) {
-	log.Printf("HandlePacket .......")
+	//log.Printf("HandlePacket .......")
 	for _, v := range this.m_PacketFuncList.Values() {
-		log.Printf("HandlePacket funcName.......[%v]", v.(network.PacketFunc))
+		//log.Printf("HandlePacket funcName.......[%v]", v.(network.PacketFunc))
 		if v.(network.PacketFunc)(packet) {
 			break
 		}

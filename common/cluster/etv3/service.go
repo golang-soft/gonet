@@ -46,7 +46,7 @@ func (this *Service) Run() {
 		this.Put()
 		//for {
 		this.Lease()
-		time.Sleep(time.Second * 1)
+		//time.Sleep(time.Second * 1)
 		//}
 	} else {
 		log.Printf("is not run !!!!!")

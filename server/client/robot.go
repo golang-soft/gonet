@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"gonet/base/utils"
 	"gonet/network"
 	"log"
 	"time"
@@ -100,7 +101,14 @@ func (robot *Robot) OnConnected() {
 
 func (robot *Robot) Do() {
 
+	rander := &utils.Rander{}
+	rander.Init()
+	num := rander.RandInt(1, 100)
+	log.Printf("随机数 : %d", num)
+	log.Printf("事件ID : %d", num/10)
+	robot.PACKET.SendAttack()
 	if robot.status == ROBOT_PLAYING {
+
 		//time.Sleep(time.Duration(100 * time.Millisecond))
 
 		robot.PACKET.SendAttack()

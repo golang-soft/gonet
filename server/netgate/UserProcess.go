@@ -310,5 +310,10 @@ func (this *UserPrcoess) Init() {
 		this.SwtichSendToWorld(head.SocketId, base.ToLower("AttackReq"), head, grpc.Marshal(head, base.ToLower("AttackReq"), packet))
 	})
 
+	this.RegisterCall("GameTimeReq", func(ctx context.Context, packet *cmessage.GameTimeReq) {
+		head := this.GetRpcHead(ctx)
+		SendToClient(head.SocketId, &cmessage.GameTimeResp{PacketHead: common.BuildPacketHead(cmessage.MessageID_MSG_GameTimeResp, rpc.SERVICE_NONE)})
+	})
+
 	this.Actor.Start()
 }

@@ -196,11 +196,13 @@ func (this *ServerMgr) Init() bool {
 
 	var centerProcess CenterProcess
 	centerProcess.Init()
-
+	var gameprocess GameProcess
+	gameprocess.Init()
 	//this.m_pCluster.BindPacketFunc(eventProcess.PacketFunc)
 	//this.m_pCluster.BindPacketFunc(centerProcess.PacketFunc)
 	m_pCluster.BindPacketFunc(eventProcess.PacketFunc)
 	m_pCluster.BindPacketFunc(centerProcess.PacketFunc)
+	m_pCluster.BindPacketFunc(gameprocess.PacketFunc)
 
 	ShowMessage := func() {
 		this.M_Log.Println("**********************************************************")

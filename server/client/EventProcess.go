@@ -17,7 +17,7 @@ type (
 	EventProcess struct {
 		SuperEventProcess
 		//Client      *network.ClientSocket
-		Robot       *Robot
+
 		AccountId   int64
 		PlayerId    int64
 		AccountName string
@@ -173,11 +173,11 @@ func (this *EventProcess) LoginGate() {
 	this.SendPacket(packet)
 }
 
-func (this *EventProcess) SendAttack() {
-	packet := &cmessage.AttackReq{PacketHead: common.BuildPacketHead(cmessage.MessageID_MSG_AttackReq, rpc.SERVICE_GATESERVER), Round: 1}
-	this.SendPacket(packet)
-	m_Log.Debugf("玩家 %d 攻击", this.PlayerId)
-}
+//func (this *EventProcess) SendAttack() {
+//	packet := &cmessage.AttackReq{PacketHead: common.BuildPacketHead(cmessage.MessageID_MSG_AttackReq, rpc.SERVICE_GATESERVER), Round: 1}
+//	this.SendPacket(packet)
+//	m_Log.Debugf("玩家 %d 攻击", this.PlayerId)
+//}
 
 func (this *EventProcess) SendTest() {
 	aa := []int32{}

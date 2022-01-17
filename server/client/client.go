@@ -31,7 +31,7 @@ var (
 	//CLIENT *network.ClientSocket
 )
 
-func main() {
+func main00() {
 	common2.InitClient()
 
 	m_Log.Init("client")

@@ -10,14 +10,16 @@ import (
 
 type SuperEventProcess struct {
 	actor.Actor
+
+	Robot *Robot
 }
 
-func (this *EventProcess) SendPacket(packet proto.Message) {
+func (this *SuperEventProcess) SendPacket(packet proto.Message) {
 	buff := common.Encode(packet)
 	this.Robot.Send(rpc.RpcHead{}, buff)
 }
 
-func (this *EventProcess) PacketFunc(packet1 rpc.Packet) bool {
+func (this *SuperEventProcess) PacketFunc(packet1 rpc.Packet) bool {
 	packetId, data := common.Decode(packet1.Buff)
 	packet := common.GetPakcet(packetId)
 	if packet == nil {

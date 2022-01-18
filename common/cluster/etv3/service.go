@@ -98,7 +98,7 @@ func (this *Service) Lease() {
 			this.mutex.Unlock()
 			//break
 		END:
-			time.Sleep(100 * time.Millisecond)
+			time.Sleep(500 * time.Millisecond)
 		}
 		log.Println("lease 监听结束")
 		//}()

@@ -13,7 +13,8 @@ message Ipacket{
 }
 
 //心跳包
-message HeardPacket{ 
+message HeartPacket{
+    int64 time = 1;
 }
 
 message PlayerData{

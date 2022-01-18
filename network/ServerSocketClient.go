@@ -20,7 +20,7 @@ const (
 
 var (
 	DISCONNECTINT = crc32.ChecksumIEEE([]byte("DISCONNECT"))
-	HEART_PACKET  = crc32.ChecksumIEEE([]byte("heardpacket"))
+	HEART_PACKET  = crc32.ChecksumIEEE([]byte("heartpacket"))
 )
 
 type IServerSocketClient interface {

@@ -10,6 +10,7 @@ import (
 	"gonet/server/common"
 	"gonet/server/game/lmath"
 	"gonet/server/rpc"
+	"time"
 )
 
 type (
@@ -172,7 +173,7 @@ func (this *EventProcess) Move(yaw float32, time float32) {
 }
 
 func (this *EventProcess) Update() {
-	packet1 := &cmessage.HeardPacket{}
+	packet1 := &cmessage.HeartPacket{Time: time.Now().Unix()}
 	this.SendPacket(this, packet1)
 	m_Log.Debugf("发送心跳包.........")
 }

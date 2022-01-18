@@ -1,11 +1,11 @@
 package main
 
 import (
-	"fmt"
 	"github.com/golang/protobuf/proto"
 	"gonet/server/cmessage"
 	"gonet/server/common"
 	"gonet/server/rpc"
+	"log"
 )
 
 type (
@@ -24,11 +24,11 @@ func NewAttackEvent() *AttackEvent {
 func (this *AttackEvent) SendAttack(process *EventProcess) {
 	packet := &cmessage.AttackReq{PacketHead: common.BuildPacketHead(cmessage.MessageID_MSG_AttackReq, rpc.SERVICE_GATESERVER), Round: 1}
 	this.SendPacket(process, packet)
-	//m_Log.Debugf("玩家 %d 攻击", this.PlayerId)
+	m_Log.Debugf("玩家 %d 攻击", process.PlayerId)
 }
 
 func (this *AttackEvent) DoEvent(process *EventProcess) {
-	fmt.Printf("AttackEvent doEvent.......")
+	log.Printf("AttackEvent doEvent.......")
 	//(*event).DoEvent(event)
 	this.SendAttack(process)
 }

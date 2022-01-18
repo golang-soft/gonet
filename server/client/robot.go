@@ -98,14 +98,16 @@ func (robot *Robot) Do() {
 	if robot.status == ROBOT_PLAYING {
 		rander := &utils.Rander{}
 		rander.Init()
-		num := rander.RandInt(1, 100)
-		log.Printf("随机数 : %d", num)
-		log.Printf("事件ID : %d", num/10)
+
+		randId := rander.RandInt(0, eventmanager.Count())
+		//log.Printf("随机数 : %d", randId)
 
 		time.Sleep(time.Duration(600 * time.Millisecond))
-		var e *IBaseEvent = eventmanager.GetEvent("AttackEvent")
-		(*e).SendEvent(e, robot.eventProcess)
-		//robot.PACKET.SendAttack()
+		//var e *IBaseEvent = eventmanager.GetEvent("AttackEvent")
+		var e *IBaseEvent = eventmanager.GetEventById(randId)
+		if e != nil {
+			(*e).SendEvent(e, robot.eventProcess)
+		}
 	}
 }
 

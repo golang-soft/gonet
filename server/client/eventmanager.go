@@ -23,11 +23,11 @@ func (this *EventManager) Init() {
 	this.AddById(2, NewAttackEvent())
 
 	this.Add("LoginEvent", NewLoginEvent())
-	this.AddById(3, NewLoginEvent())
+	//this.AddById(3, NewLoginEvent())
 	this.Add("LoginAccountEvent", NewLoginAccountEvent())
-	this.AddById(4, NewLoginAccountEvent())
+	//this.AddById(4, NewLoginAccountEvent())
 	this.Add("LoginGateEvent", NewLoginGateEvent())
-	this.AddById(5, NewLoginGateEvent())
+	//this.AddById(5, NewLoginGateEvent())
 
 }
 
@@ -46,4 +46,8 @@ func (this *EventManager) GetEvent(name string) *IBaseEvent {
 
 func (this *EventManager) GetEventById(id int) *IBaseEvent {
 	return this.events2[id]
+}
+
+func (this *EventManager) Count() int {
+	return len(this.events2)
 }

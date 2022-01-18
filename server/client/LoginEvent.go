@@ -1,11 +1,11 @@
 package main
 
 import (
-	"fmt"
 	"github.com/golang/protobuf/proto"
 	"gonet/server/cmessage"
 	"gonet/server/common"
 	"gonet/server/rpc"
+	"log"
 )
 
 type (
@@ -22,7 +22,7 @@ func NewLoginEvent() *LoginEvent {
 }
 
 func (this *LoginEvent) DoEvent(process *EventProcess) {
-	fmt.Printf("LoginEvent doEvent.......")
+	log.Printf("LoginEvent doEvent.......")
 	this.LoginGame(process)
 }
 

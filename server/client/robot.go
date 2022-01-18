@@ -25,9 +25,9 @@ type Robot struct {
 	//1:login,2:gateway
 	status uint32
 
-	chClosed chan bool
-	inittm   int64
-	PACKET   *EventProcess
+	chClosed     chan bool
+	inittm       int64
+	eventProcess *EventProcess
 }
 
 func NewRobot(ip string, port int, account string, password string) *Robot {
@@ -53,14 +53,10 @@ func NewRobot(ip string, port int, account string, password string) *Robot {
 func (robot *Robot) init() {
 
 	robot.Derived = robot
-	robot.PACKET = new(EventProcess)
-	robot.PACKET.Init()
-	robot.PACKET.Robot = robot
-	robot.BindPacketFunc(robot.PACKET.PacketFunc)
-	//robot.msgHandler.Reg(&command.RetUserVerify{}, robot.onRetUserVerify)
-	//robot.msgHandler.Reg(&command.RetUserLogin{}, robot.onRetUserLogin)
-	//robot.msgHandler.Reg(&command.RetGatewayLogin{}, robot.onRetGatewayLogin)
-	//robot.msgHandler.Reg(&command.TestBroadcastAll{}, robot.onTestBroadcastAll)
+	robot.eventProcess = new(EventProcess)
+	robot.eventProcess.Init()
+	robot.eventProcess.Robot = robot
+	robot.BindPacketFunc(robot.eventProcess.PacketFunc)
 
 }
 func (robot *Robot) Run() bool {
@@ -84,36 +80,33 @@ func (robot *Robot) OnConnected() {
 	log.Println("connected", robot.status)
 
 	if robot.status == ROBOT_LOGIN {
-
 		log.Println("请求登录服验证")
-		robot.PACKET.LoginGate()
-
+		//robot.PACKET.LoginGate()
+		e := eventmanager.GetEvent("LoginGateEvent")
+		if e != nil {
+			(*e).DoEvent(robot.eventProcess)
+		}
 	} else if robot.status == ROBOT_GATEWAY {
-
 		log.Println("登录完毕")
-
 	} else if robot.status == ROBOT_PLAYING {
-
-		robot.PACKET.SendAttack()
+		log.Println("玩家正在游戏中....")
 	}
 
 }
 
 func (robot *Robot) Do() {
-
-	rander := &utils.Rander{}
-	rander.Init()
-	num := rander.RandInt(1, 100)
-	log.Printf("随机数 : %d", num)
-	log.Printf("事件ID : %d", num/10)
-	robot.PACKET.SendAttack()
 	if robot.status == ROBOT_PLAYING {
+		rander := &utils.Rander{}
+		rander.Init()
+		num := rander.RandInt(1, 100)
+		log.Printf("随机数 : %d", num)
+		log.Printf("事件ID : %d", num/10)
 
-		//time.Sleep(time.Duration(100 * time.Millisecond))
-
-		robot.PACKET.SendAttack()
+		time.Sleep(time.Duration(600 * time.Millisecond))
+		var e *IBaseEvent = eventmanager.GetEvent("AttackEvent")
+		(*e).SendEvent(e, robot.eventProcess)
+		//robot.PACKET.SendAttack()
 	}
-
 }
 
 func (robot *Robot) GetInitSec() uint32 {

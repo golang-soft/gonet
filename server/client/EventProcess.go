@@ -10,7 +10,6 @@ import (
 	"gonet/server/common"
 	"gonet/server/game/lmath"
 	"gonet/server/rpc"
-	"sync/atomic"
 )
 
 type (
@@ -53,6 +52,7 @@ func (this *EventProcess) Init() {
 	this.Pos = lmath.Point3F{1, 1, 1}
 	this.m_Dh.Init()
 	//this.RegisterTimer((network.HEART_TIME_OUT/6)*time.Second, this.Update) //定时器
+
 	this.RegisterCall("W_C_SelectPlayerResponse", func(ctx context.Context, packet *cmessage.W_C_SelectPlayerResponse) {
 		this.AccountId = packet.GetAccountId()
 		nLen := len(packet.GetPlayerData())
@@ -61,10 +61,14 @@ func (this *EventProcess) Init() {
 			packet1 := &cmessage.C_W_CreatePlayerRequest{PacketHead: common.BuildPacketHead(cmessage.MessageID_MSG_C_W_CreatePlayerRequest, rpc.SERVICE_GATESERVER),
 				PlayerName: "我是大坏蛋",
 				Sex:        int32(0)}
-			this.SendPacket(packet1)
+			this.SendPacket(this, packet1)
 		} else {
 			this.PlayerId = packet.GetPlayerData()[0].GetPlayerID()
-			this.LoginGame()
+			//this.LoginGame()
+			e := eventmanager.GetEvent("LoginEvent")
+			if e != nil {
+				(*e).DoEvent(this)
+			}
 		}
 	})
 
@@ -72,7 +76,11 @@ func (this *EventProcess) Init() {
 		if packet.GetError() == 0 {
 			this.PlayerId = packet.GetPlayerId()
 			m_Log.Debugf("玩家 %d 登录游戏", this.PlayerId)
-			this.LoginGame()
+			//this.LoginGame()
+			e := eventmanager.GetEvent("LoginEvent")
+			if e != nil {
+				(*e).DoEvent(this)
+			}
 		} else { //创建失败
 
 		}
@@ -88,15 +96,18 @@ func (this *EventProcess) Init() {
 
 	this.RegisterCall("G_C_LoginResponse", func(ctx context.Context, packet *cmessage.G_C_LoginResponse) {
 		this.m_Dh.ExchangePubk(packet.GetKey())
-
-		this.LoginAccount()
+		e := eventmanager.GetEvent("LoginAccountEvent")
+		if e != nil {
+			(*e).DoEvent(this)
+		}
+		//this.LoginAccount()
 	})
 
 	this.RegisterCall("A_C_LoginResponse", func(ctx context.Context, packet *cmessage.A_C_LoginResponse) {
 		if packet.GetError() == base.ACCOUNT_NOEXIST {
 			packet1 := &cmessage.C_A_RegisterRequest{PacketHead: common.BuildPacketHead(0, rpc.SERVICE_GATESERVER),
 				AccountName: packet.AccountName, Password: this.PassWd}
-			this.SendPacket(packet1)
+			this.SendPacket(this, packet1)
 		} else if packet.GetError() == base.PASSWORD_ERROR {
 			fmt.Println("账号【", packet.GetAccountName(), "】密码错误")
 		}
@@ -141,6 +152,10 @@ func (this *EventProcess) Init() {
 
 	this.RegisterCall("AttackResp", func(ctx context.Context, packet *cmessage.AttackResp) {
 		fmt.Println("AttackResp")
+		e := eventmanager.GetEvent("AttackEvent")
+		if e != nil {
+			(*e).HandleEvent(e, packet)
+		}
 	})
 
 	//链接断开
@@ -150,54 +165,14 @@ func (this *EventProcess) Init() {
 	this.Actor.Start()
 }
 
-func (this *EventProcess) LoginGame() {
-	packet1 := &cmessage.C_W_Game_LoginRequset{PacketHead: common.BuildPacketHead(cmessage.MessageID_MSG_C_W_Game_LoginRequset, rpc.SERVICE_GATESERVER),
-		PlayerId: this.PlayerId}
-	this.SendPacket(packet1)
-}
-
-func (this *EventProcess) LoginAccount() {
-	id := atomic.AddInt32(&id, 1)
-	this.AccountName = fmt.Sprintf("test321%d", id)
-	this.PassWd = base.MD5(ToSlat(this.AccountName, "123456"))
-	//this.AccountName = fmt.Sprintf("test%d", base.RAND.RandI(0, 7000))
-	packet1 := &cmessage.C_A_LoginRequest{PacketHead: common.BuildPacketHead(cmessage.MessageID_MSG_C_A_LoginRequest, rpc.SERVICE_GATESERVER),
-		AccountName: this.AccountName, Password: this.PassWd, BuildNo: base.BUILD_NO, Key: this.m_Dh.ShareKey()}
-	this.SendPacket(packet1)
-	m_Log.Debugf("玩家 %d 登录账号 %s", this.PlayerId, this.AccountName)
-}
-
-func (this *EventProcess) LoginGate() {
-	packet := &cmessage.C_G_LoginResquest{PacketHead: common.BuildPacketHead(cmessage.MessageID_MSG_C_G_LoginResquest, rpc.SERVICE_GATESERVER),
-		Key: this.m_Dh.PubKey()}
-	this.SendPacket(packet)
-}
-
-//func (this *EventProcess) SendAttack() {
-//	packet := &cmessage.AttackReq{PacketHead: common.BuildPacketHead(cmessage.MessageID_MSG_AttackReq, rpc.SERVICE_GATESERVER), Round: 1}
-//	this.SendPacket(packet)
-//	m_Log.Debugf("玩家 %d 攻击", this.PlayerId)
-//}
-
-func (this *EventProcess) SendTest() {
-	aa := []int32{}
-	for i := 0; i < 10; i++ {
-		aa = append(aa, int32(1))
-	}
-
-	packet1 := &cmessage.W_C_Test{PacketHead: common.BuildPacketHead(0, rpc.SERVICE_GATESERVER),
-		Recv: aa}
-	this.SendPacket(packet1)
-}
-
 func (this *EventProcess) Move(yaw float32, time float32) {
 	packet1 := &cmessage.C_Z_Move{PacketHead: common.BuildPacketHead(cmessage.MessageID_MSG_C_Z_Move, rpc.SERVICE_GATESERVER),
 		Move: &cmessage.C_Z_Move_Move{Mode: 0, Normal: &cmessage.C_Z_Move_Move_Normal{Pos: &cmessage.Point3F{X: this.Pos.X, Y: this.Pos.Y, Z: this.Pos.Z}, Yaw: yaw, Duration: time}}}
-	this.SendPacket(packet1)
+	this.SendPacket(this, packet1)
 }
 
 func (this *EventProcess) Update() {
 	packet1 := &cmessage.HeardPacket{}
-	this.SendPacket(packet1)
+	this.SendPacket(this, packet1)
 	m_Log.Debugf("发送心跳包.........")
 }

@@ -2,24 +2,27 @@ package main
 
 import (
 	"fmt"
+	"github.com/golang/protobuf/proto"
 )
 
 type (
 	BaseEvent struct {
 		EventProcess
+		eventid int
 	}
 
 	IBaseEvent interface {
 		IEvent
-		DoEvent(event *IBaseEvent)
+		DoEvent(process *EventProcess)
 		SendEvent(event *IBaseEvent, process *EventProcess)
 		Name() string
-		HandleEvent(event *IBaseEvent)
+		HandleEvent(event *IBaseEvent, message proto.Message)
 		EventID() int
+		SetEventId(eventid int)
 	}
 )
 
-func (this *BaseEvent) DoEvent(event *BaseEvent) {
+func (this *BaseEvent) DoEvent(process *EventProcess) {
 	fmt.Printf("baseEvent doEvent.......")
 }
 
@@ -27,9 +30,13 @@ func (this *BaseEvent) Name() string {
 	return "BaseEvent"
 }
 
-func (this *BaseEvent) HandleEvent(event *IBaseEvent) {
+func (this *BaseEvent) HandleEvent(event *IBaseEvent, message proto.Message) {
 	fmt.Printf("baseEvent HandleEvent.......")
 
+}
+
+func (this *BaseEvent) SetEventId(eventid int) {
+	this.eventid = eventid
 }
 
 func (this *BaseEvent) SendEvent(event *IBaseEvent, process *EventProcess) {

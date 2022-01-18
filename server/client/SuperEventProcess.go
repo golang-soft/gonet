@@ -14,9 +14,9 @@ type SuperEventProcess struct {
 	Robot *Robot
 }
 
-func (this *SuperEventProcess) SendPacket(packet proto.Message) {
+func (this *SuperEventProcess) SendPacket(process *EventProcess, packet proto.Message) {
 	buff := common.Encode(packet)
-	this.Robot.Send(rpc.RpcHead{}, buff)
+	process.Robot.Send(rpc.RpcHead{}, buff)
 }
 
 func (this *SuperEventProcess) PacketFunc(packet1 rpc.Packet) bool {

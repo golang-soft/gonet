@@ -29,9 +29,11 @@ var (
 	CONF Config
 	//CLIENT *network.ClientWebSocket2
 	//CLIENT *network.ClientSocket
+
+	eventmanager *EventManager
 )
 
-func main00() {
+func main() {
 	common2.InitClient()
 
 	m_Log.Init("client")
@@ -80,6 +82,9 @@ func main00() {
 	//	return
 	//}
 	//m_Log.Debugf("链接成功 %s", host)
+
+	eventmanager = NewEventManager()
+	eventmanager.Init()
 
 	num := 1
 

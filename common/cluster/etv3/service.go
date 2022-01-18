@@ -91,7 +91,6 @@ func (this *Service) Lease() {
 					}
 				}
 			LEASE_OVER:
-				//log.Println("lease 监听结束")
 				this.mutex.Lock()
 				this.Grant()
 				this.Put()
@@ -101,6 +100,7 @@ func (this *Service) Lease() {
 			END:
 				time.Sleep(100 * time.Millisecond)
 			}
+			log.Println("lease 监听结束")
 		}()
 	}
 }

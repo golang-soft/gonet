@@ -45,7 +45,7 @@ func (this *Service) Run() {
 		this.Grant()
 		this.Put()
 		//for {
-		this.Lease()
+		go this.Lease()
 		//time.Sleep(time.Second * 1)
 		//}
 	} else {
@@ -77,31 +77,31 @@ func (this *Service) Lease() {
 		}
 
 		//监听租约
-		go func() {
-			for {
+		//go func() {
+		for {
 
-				select {
-				case resp := <-leaseRespChan:
-					if resp == nil {
-						log.Println("租约已经到期关闭")
-						goto LEASE_OVER
-					} else {
-						//log.Println("续租成功")
-						goto END
-					}
+			select {
+			case resp := <-leaseRespChan:
+				if resp == nil {
+					log.Println("租约已经到期关闭")
+					goto LEASE_OVER
+				} else {
+					//log.Println("续租成功")
+					goto END
 				}
-			LEASE_OVER:
-				this.mutex.Lock()
-				this.Grant()
-				this.Put()
-				leaseRespChan = this.KeepAlive()
-				this.mutex.Unlock()
-				//break
-			END:
-				time.Sleep(100 * time.Millisecond)
 			}
-			log.Println("lease 监听结束")
-		}()
+		LEASE_OVER:
+			this.mutex.Lock()
+			this.Grant()
+			this.Put()
+			leaseRespChan = this.KeepAlive()
+			this.mutex.Unlock()
+			//break
+		END:
+			time.Sleep(100 * time.Millisecond)
+		}
+		log.Println("lease 监听结束")
+		//}()
 	}
 }
 
@@ -175,7 +175,7 @@ func (this *Service) Start() bool {
 		return false
 	}
 	this.isRun = true
-	go this.Run()
+	this.Run()
 	return true
 }
 

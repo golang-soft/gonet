@@ -1,11 +1,11 @@
 package main
 
 import (
-	"fmt"
 	"github.com/golang/protobuf/proto"
 	"gonet/server/cmessage"
 	"gonet/server/common"
 	"gonet/server/rpc"
+	"log"
 )
 
 type (
@@ -33,7 +33,7 @@ func (this *TestEvent) SendTest(event *EventProcess) {
 }
 
 func (this *TestEvent) DoEvent(event *EventProcess) {
-	fmt.Printf("LoginEvent doEvent.......")
+	log.Printf("TestEvent doEvent.......")
 	this.SendTest(event)
 }
 
@@ -50,5 +50,6 @@ func (this *TestEvent) EventID() int {
 }
 
 func (this *TestEvent) SendEvent(event *IBaseEvent, process *EventProcess) {
-
+	log.Printf("TestEvent doEvent.......")
+	this.SendTest(process)
 }

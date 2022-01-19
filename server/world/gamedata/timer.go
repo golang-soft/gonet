@@ -3,7 +3,7 @@ package gamedata
 import (
 	"gonet/actor"
 	"gonet/server/common/data"
-	"gonet/server/world/logger"
+	glogger2 "gonet/server/glogger"
 	"gonet/server/world/sender"
 	"gonet/server/world/wcluster"
 	"time"
@@ -22,14 +22,14 @@ type (
 var OnloadTimer = &SOnloadTimer{}
 
 func (this *SOnloadTimer) Init() {
-	logger.M_Log.Debugf("数据库初始化 ...................................")
+	glogger2.M_Log.Debugf("数据库初始化 ...................................")
 	this.Actor.Init()
 	this.RegisterTimer(100*time.Second, this.OnloadGameCheckTimer) //定时器
 	this.Actor.Start()
 }
 
 func (this *SOnloadTimer) OnloadGameCheckTimer() {
-	logger.M_Log.Debugf("触发定时器 ...................................")
+	glogger2.M_Log.Debugf("触发定时器 ...................................")
 
 	GameCtrl.CheckGame()
 	GMatch.CheckMatch()

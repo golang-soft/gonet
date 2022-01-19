@@ -5,6 +5,7 @@ import (
 	"gonet/actor"
 	"gonet/network"
 	"gonet/server/cmessage"
+	"gonet/server/glogger"
 )
 
 type (
@@ -24,7 +25,7 @@ func (this *CenterProcess) Init() {
 
 	this.RegisterCall("W_C_Test", func(ctx context.Context, packet *cmessage.W_C_Test) {
 		head := this.GetRpcHead(ctx)
-		SERVER.M_Log.Debugf("head[%v]", head)
+		glogger.M_Log.Debugf("head[%v]", head)
 	})
 
 	this.Actor.Start()

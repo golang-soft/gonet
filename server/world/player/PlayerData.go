@@ -29,12 +29,15 @@ const (
 type (
 	PlayerData struct {
 		model.SimplePlayerData
+		SocketId uint32
 
-		AccountId            int64
-		PlayerId             int64
-		GateClusterId        uint32
-		m_PlayerRaft         rpc.PlayerClusterInfo
-		AccountName          string
+		AccountId   int64
+		AccountName string
+
+		PlayerId      int64
+		GateClusterId uint32
+		m_PlayerRaft  rpc.PlayerClusterInfo
+
 		PlayerNum            int
 		PlayerIdList         []int64
 		PlayerSimpleDataList []*model.SimplePlayerData

@@ -92,7 +92,7 @@ func GetRoomUsersByPart(round int, part int32) []string {
 	return userList
 }
 
-func getConnSockets() map[int]*socket.Socket {
+func getConnSockets() map[int64]*socket.Socket {
 	return socket.FetchSockets()
 }
 
@@ -128,19 +128,19 @@ func SocketJoin2BattleRoom(users []string, round int64, userPart map[string]int3
 
 func SocketLeaveBattleRoom(users []string, round int) {
 	sockets := socket.FetchSockets()
-	var delId int
+	//var delId uint32
 	for _, socket := range sockets {
 		if socket.Data.Round == round {
 			socket.Leave(fmt.Sprintf("Battle%d", round))
-			delId = socket.Data.Round
+			//delId = uint32(socket.Data.Round)
 			break
 		}
 	}
 
-	delete(sockets, delId)
+	//delete(sockets, delId)
 }
 
-func In(sockets map[int]*socket.Socket, battleName string) *socket.Socket {
+func In(sockets map[int64]*socket.Socket, battleName string) *socket.Socket {
 	if sockets != nil {
 		for _, socket := range sockets {
 			if socket.Room.Name == battleName {
@@ -201,18 +201,18 @@ func gvgRoomBroadcastToSelf(env string, roomId int64, user string, data proto.Me
 }
 
 func SocketLeaveGvgRoom(users []string, roomId int) {
-	var delId int = 0
+	//var delId uint32 = 0
 	sockets := socket.FetchSockets()
 	if sockets != nil {
 		for _, socket := range sockets {
 			if IncludeUsers(users, socket.Data.User) {
 				battleName := fmt.Sprintf("Battle%d", roomId)
 				socket.Leave(battleName)
-				delId = socket.Data.Round
+				//delId = uint32(socket.Data.Round)
 			}
 		}
 	}
-	delete(sockets, delId)
+	//delete(sockets, delId)
 }
 
 //房间广播，自己

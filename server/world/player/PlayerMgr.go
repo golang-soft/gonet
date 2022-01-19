@@ -10,6 +10,8 @@ import (
 	"gonet/db"
 	"gonet/server/rpc"
 	"gonet/server/world"
+	"gonet/server/world/players"
+	"gonet/server/world/socket"
 	"gonet/server/world/wcluster"
 )
 
@@ -23,7 +25,6 @@ var (
 type (
 	PlayerMgr struct {
 		actor.ActorPool //玩家actor线城池
-		SocketId        int32
 		m_db            *sql.DB
 		m_Log           *base.CLog
 		m_PingTimer     common.ISimpleTimer
@@ -56,7 +57,7 @@ func (this *PlayerMgr) Init() {
 			this.RemovePlayer(accountId)
 		}
 
-		pPlayer = this.AddPlayer(accountId)
+		pPlayer = this.AddPlayer(accountId, socketId)
 		pPlayer.SendMsg(rpc.RpcHead{SocketId: socketId}, "Login", gateClusterId, clusterInfo)
 	})
 
@@ -118,7 +119,7 @@ func (this *PlayerMgr) GetPlayer(accountId int64) actor.IActor {
 	return this.GetActor(accountId)
 }
 
-func (this *PlayerMgr) AddPlayer(accountId int64) actor.IActor {
+func (this *PlayerMgr) AddPlayer(accountId int64, socketId uint32) actor.IActor {
 	LoadPlayerDB := func(accountId int64) ([]int64, int) {
 		PlayerList := make([]int64, 0)
 		PlayerNum := 0
@@ -136,9 +137,12 @@ func (this *PlayerMgr) AddPlayer(accountId int64) actor.IActor {
 	PlayerList, PlayerNum := LoadPlayerDB(accountId)
 	pPlayer := &Player{}
 	pPlayer.AccountId = accountId
+	pPlayer.SocketId = socketId
 	pPlayer.PlayerIdList = PlayerList
 	pPlayer.PlayerNum = PlayerNum
 	this.AddActor(accountId, pPlayer)
+	players.Init()
+	players.Players[accountId] = pPlayer.AccountName
 	pPlayer.Init()
 	return pPlayer
 }
@@ -147,5 +151,6 @@ func (this *PlayerMgr) RemovePlayer(accountId int64) {
 	if accountId > 0 {
 		this.m_Log.Printf("移除帐号数据[%d]", accountId)
 		this.DelActor(accountId)
+		socket.RemoveOne(accountId)
 	}
 }

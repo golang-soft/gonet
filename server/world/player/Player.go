@@ -9,11 +9,17 @@ import (
 	"gonet/common"
 	"gonet/common/cluster"
 	"gonet/db"
+	"gonet/network"
 	"gonet/server/cmessage"
 	common2 "gonet/server/common"
 	"gonet/server/rpc"
 	"gonet/server/world"
+
+	//"gonet/server/world"
+	"gonet/server/glogger"
+	"gonet/server/world/socket"
 	"gonet/server/world/wcluster"
+	"gonet/server/world/wserver"
 	"time"
 
 	"github.com/golang/protobuf/proto"
@@ -41,7 +47,7 @@ func (this *Player) Init() {
 	this.m_ItemMgr = &ItemMgr{}
 	this.m_ItemMgr.Init(this)
 	actor.MGR.BindActor(this)
-
+	glogger.M_Log.Debugf("玩家 %d %s 注册事件", this.PlayerData.PlayerId, this.PlayerData.AccountName)
 	//玩家登录
 	this.RegisterCall("Login", func(ctx context.Context, gateClusterId uint32, clusterInfo rpc.PlayerClusterInfo) {
 		head := this.GetRpcHead(ctx)
@@ -56,13 +62,27 @@ func (this *Player) Init() {
 			this.PlayerIdList = append(this.PlayerIdList, v.PlayerId)
 		}
 
-		this.m_Log.Println("玩家[%d]登录成功", this.AccountId)
+		glogger.M_Log.Debugf("玩家[%d]登录成功", this.AccountId)
 		this.SetGateClusterId(gateClusterId)
 		this.m_PlayerRaft = clusterInfo
 		this.SendToClient(head.SocketId, &cmessage.W_C_SelectPlayerResponse{PacketHead: common2.BuildPacketHead(cmessage.MessageID_MSG_W_C_SelectPlayerResponse, rpc.SERVICE_GATESERVER),
 			AccountId:  this.AccountId,
 			PlayerData: PlayerDataList,
 		})
+
+		var socketid uint32 = head.SocketId
+		data := &socket.SocketData{
+			User:   this.AccountName,
+			RoomId: 0,
+			Round:  1,
+			Part:   1,
+		}
+		room := &socket.Room{
+			Name: "Room001",
+		}
+		client := &network.ClientSocket{}
+
+		socket.AddOne(socketid, this.AccountId, data, room, client)
 	})
 
 	//玩家登录到游戏
@@ -71,7 +91,7 @@ func (this *Player) Init() {
 
 		nPlayerId := packet.GetPlayerId()
 		if !this.SetPlayerId(nPlayerId) {
-			this.m_Log.Printf("帐号[%d]登入的玩家[%d]不存在", this.AccountId, nPlayerId)
+			glogger.M_Log.Debugf("帐号[%d]登入的玩家[%d]不存在", this.AccountId, nPlayerId)
 			return
 		}
 
@@ -86,6 +106,9 @@ func (this *Player) Init() {
 		this.SendToClient(head.SocketId, &cmessage.C_W_Game_LoginResponse{PacketHead: common2.BuildPacketHead(cmessage.MessageID_MSG_C_W_Game_LoginResponse, rpc.SERVICE_GATESERVER),
 			PlayerId: nPlayerId,
 		})
+
+		wserver.GameServer.HandleConnection(this.AccountId)
+
 	})
 
 	//创建玩家
@@ -131,10 +154,11 @@ func (this *Player) Init() {
 
 	//玩家断开链接
 	this.RegisterCall("Logout", func(ctx context.Context, accountId int64) {
-		world.SERVER.GetLog().Printf("[%d] 断开链接", accountId)
+		glogger.M_Log.Debugf("[%d] 断开链接", accountId)
 		this.SetGateClusterId(0)
 		this.Stop()
 		this.LeaveMap()
+		socket.RemoveOne(this.AccountId)
 	})
 
 	this.Actor.Start()

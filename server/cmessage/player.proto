@@ -56,9 +56,9 @@ message AttackReq {
     string to  = 4;
     int32 skill = 5;
     int32 skillId = 6;
-    float x = 7;
-    float y = 8;
-    float z = 9;
+    double x = 7;
+    double y = 8;
+    double z = 9;
     string msg = 10;
 }
 message AttackResp {

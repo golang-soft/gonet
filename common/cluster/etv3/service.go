@@ -55,7 +55,7 @@ func (this *Service) Run() {
 
 //设置租约时间
 func (this *Service) Grant() {
-	leaseResp, _ := this.m_Lease.Grant(context.Background(), 2)
+	leaseResp, _ := this.m_Lease.Grant(context.Background(), 30)
 	this.m_LeaseId = leaseResp.ID
 }
 

@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"gonet/server/common"
 	"gonet/server/common/data"
+	glogger2 "gonet/server/glogger"
 	table2 "gonet/server/table"
-	"gonet/server/world/logger"
 	"gonet/server/world/table"
 	"math"
 	"math/rand"
@@ -130,7 +130,7 @@ func getObjectValue(key string) int {
 	}
 
 	if !hasKey {
-		logger.M_Log.Debugf("found key from WORLD_CONFIG faild")
+		glogger2.M_Log.Debugf("found key from WORLD_CONFIG faild")
 	}
 	return val
 }

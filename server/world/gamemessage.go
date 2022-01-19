@@ -6,6 +6,13 @@ import (
 	"gonet/base/logger"
 	"gonet/network"
 	"gonet/server/cmessage"
+	"gonet/server/glogger"
+	"gonet/server/world/param"
+	"gonet/server/world/players"
+
+	//"gonet/server/world/player"
+	"gonet/server/world/router"
+	"gonet/server/world/socket"
 )
 
 type (
@@ -23,7 +30,31 @@ type (
 func (this *GameProcess) AttackReq(ctx context.Context, packet *cmessage.AttackReq) {
 	head := this.GetRpcHead(ctx)
 
-	logger.Debug("AttackReq %v", head)
+	glogger.M_Log.Debugf("AttackReq %v", head)
+
+	sock := socket.GetOneBySocketid(head.SocketId)
+	//, acountId := socket.GetPlayer(sock.AccountId)
+	if sock == nil {
+		return
+	}
+	accountName := players.GetPlayerByAccountId(sock.AccountId)
+
+	param := param.UserParam{
+		User:     accountName,
+		BattleId: 0,
+		Name:     accountName,
+		To:       packet.To,
+		Msg:      packet.Msg,
+		Round:    int(packet.Round),
+		Skill:    packet.Skill,
+		SkillId:  packet.SkillId,
+		X:        packet.X,
+		Y:        packet.Y,
+		Z:        packet.Z,
+	}
+
+	sock.Handle(router.USER_EVENT.USER.ATTACK, *sock, param)
+
 }
 
 func (this *GameProcess) GameStartReq(ctx context.Context, packet *cmessage.GameStartReq) {

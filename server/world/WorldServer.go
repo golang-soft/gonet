@@ -13,13 +13,14 @@ import (
 	"gonet/rd"
 	_ "gonet/server/common/mredis"
 	"gonet/server/game"
+	"gonet/server/glogger"
 	"gonet/server/rpc"
 	"gonet/server/smessage"
 	"gonet/server/world/datafnc"
 	"gonet/server/world/gamedata"
 	"gonet/server/world/helper"
-	"gonet/server/world/logger"
 	"gonet/server/world/redisInstnace"
+	"gonet/server/world/socket"
 	"gonet/server/world/table"
 	"gonet/server/world/wcluster"
 	"gonet/server/world/wserver"
@@ -34,9 +35,9 @@ type (
 
 		m_pService *network.ServerSocket
 		//m_pCluster     *cluster.Cluster
-		m_pActorDB   *sql.DB
-		m_Inited     bool
-		M_Log        base.CLog
+		m_pActorDB *sql.DB
+		m_Inited   bool
+		//M_Log        base.CLog
 		m_SnowFlake  *cluster.Snowflake
 		m_PlayerRaft *cluster.PlayerRaft
 	}
@@ -110,23 +111,22 @@ func (this *ServerMgr) Init() bool {
 	})*/
 
 	//初始化log文件
-	this.M_Log.Init("world")
+	glogger.M_Log.Init("world")
 	//初始配置文件
 	//base.ReadConf("D:\\workspace-go\\gonet\\server\\bin\\gonet.yaml", &CONF)
 	this.InitConfig(&CONF)
 
 	table.Init()
 	datafnc.Init()
-	this.M_Log.Printf("初始化配置表数据成功!")
+	glogger.M_Log.Printf("初始化配置表数据成功!")
 
-	this.M_Log.Println("正在初始化数据库连接...")
+	glogger.M_Log.Println("正在初始化数据库连接...")
 	if this.InitDB() {
-		this.M_Log.Printf("[%s]数据库连接是失败...", CONF.Db.Name)
+		glogger.M_Log.Printf("[%s]数据库连接是失败...", CONF.Db.Name)
 		log.Fatalf("[%s]数据库连接是失败...", CONF.Db.Name)
 		return false
 	}
-	this.M_Log.Printf("[%s]数据库初始化成功!", CONF.Db.Name)
-	logger.M_Log = this.M_Log
+	glogger.M_Log.Printf("[%s]数据库初始化成功!", CONF.Db.Name)
 
 	helper.InitConst()
 
@@ -190,8 +190,14 @@ func (this *ServerMgr) Init() bool {
 	eventProcess.Init()
 
 	redisInstnace.InitRedis()
-	var io = &wserver.Server{}
-	io.Start()
+
+	wserver.NewGameServer()
+	wserver.GameServer.Start()
+	socket.Init()
+
+	//var io = &wserver.Server{}
+	//io.Start()
+
 	gamedata.OnloadTimer.Init()
 
 	var centerProcess CenterProcess
@@ -205,12 +211,12 @@ func (this *ServerMgr) Init() bool {
 	m_pCluster.BindPacketFunc(gameprocess.PacketFunc)
 
 	ShowMessage := func() {
-		this.M_Log.Println("**********************************************************")
-		this.M_Log.Printf("\tWorldServer Version:\t%s", base.BUILD_NO)
-		this.M_Log.Printf("\tWorldServerIP(LAN):\t%s:%d", thisip, thisport)
-		this.M_Log.Printf("\tActorDBServer(LAN):\t%s", CONF.Db.Ip)
-		this.M_Log.Printf("\tActorDBName:\t\t%s", CONF.Db.Name)
-		this.M_Log.Println("**********************************************************")
+		glogger.M_Log.Debugf("**********************************************************")
+		glogger.M_Log.Printf("\tWorldServer Version:\t%s", base.BUILD_NO)
+		glogger.M_Log.Printf("\tWorldServerIP(LAN):\t%s:%d", thisip, thisport)
+		glogger.M_Log.Printf("\tActorDBServer(LAN):\t%s", CONF.Db.Ip)
+		glogger.M_Log.Printf("\tActorDBName:\t\t%s", CONF.Db.Name)
+		glogger.M_Log.Println("**********************************************************")
 	}
 	ShowMessage()
 
@@ -240,7 +246,7 @@ func (this *ServerMgr) GetDB() *sql.DB {
 }
 
 func (this *ServerMgr) GetLog() *base.CLog {
-	return &this.M_Log
+	return &glogger.M_Log
 }
 
 func (this *ServerMgr) GetServer() *network.ServerSocket {

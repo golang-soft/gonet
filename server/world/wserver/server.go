@@ -6,8 +6,17 @@ import (
 	"gonet/server/world/socket"
 )
 
+type HandleFunc func(socket socket.Socket) bool
 type Server struct {
 	funcs map[string]interface{}
+}
+
+var (
+	GameServer *Server
+)
+
+func NewGameServer() {
+	GameServer = &Server{}
 }
 
 func LoadMiddleware(io Server) {
@@ -68,13 +77,25 @@ func handleConn(socket1 socket.Socket) bool {
 	return false
 }
 
-func (this *Server) Use(f func(socket socket.Socket) bool) {
+func (this *Server) Use(f HandleFunc) {
 	if this.funcs == nil {
 		this.funcs = make(map[string]interface{})
 	}
 	this.funcs["1"] = f
 }
 
-func (this *Server) On(s string, f func(socketdd socket.Socket) bool) {
+func (this *Server) On(s string, f HandleFunc) {
 	this.funcs[s] = f
+}
+
+func (this *Server) HandleConnection(AccountId int64) {
+	fc := this.funcs["connection"]
+	if fc != nil {
+		socket := socket.GetOne(AccountId)
+		this.Handle(fc.(HandleFunc), *socket)
+	}
+}
+
+func (this *Server) Handle(f HandleFunc, socket1 socket.Socket) {
+	f(socket1)
 }

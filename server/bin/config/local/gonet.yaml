@@ -1,6 +1,6 @@
 ﻿# accountdb
 accountDB:
-  ip: 192.168.1.29
+  ip: 127.0.0.1
   name: md_account
   user: root
   password: 123456
@@ -9,7 +9,7 @@ accountDB:
 
 # worldDB
 worldDB:
-  ip: 192.168.1.29
+  ip: 127.0.0.1
   name: md_actor
   user: root
   password: 123456
@@ -54,25 +54,28 @@ netgate:
 # 服发现
 etcd:
   endpoints:
-    - http://192.168.1.29:2379
+    - http://127.0.0.1:2379
 
 # uuid
 snowflake:
   endpoints:
-    - http://192.168.1.29:2379
+    - http://127.0.0.1:2379
 
 raft:
   endpoints:
-    - http://192.168.1.29:2379
+    - http://127.0.0.1:2381
 # nats
 nats:
-  endpoints: 192.168.1.29:4222
+  endpoints: 127.0.0.1:4222
 
 # redis配置
 redis:
+  prefix: hero
   open: true
-  ip: 192.168.1.29
+  ip: 127.0.0.1
   password: 123456
+  port: 6379
+  db: 0
 
 #login
 login:
@@ -86,8 +89,8 @@ mworld:
 #多网关服务器地址
 mnetgate:
   endpoints:
-    - 127.0.0.1:3000
-    - 127.0.0.1:3001
+    - 192.168.1.29:3000
+    - 192.168.1.29:3001
 #多服务的账号服务器地址
 maccount:
   endpoints:
@@ -96,4 +99,4 @@ maccount:
 # pvpweb服的接口地址
 pvpweb:
   endpoints:
-    - http://192.168.1.29:3002
+    - http://127.0.0.1:3002

@@ -102,7 +102,7 @@ func (robot *Robot) Do() {
 		randId := rander.RandInt(0, eventmanager.Count())
 		//log.Printf("随机数 : %d", randId)
 
-		time.Sleep(time.Duration(600 * time.Millisecond))
+		time.Sleep(time.Duration(100 * time.Millisecond))
 		//var e *IBaseEvent = eventmanager.GetEvent("AttackEvent")
 		var e *IBaseEvent = eventmanager.GetEventById(randId)
 		if e != nil {

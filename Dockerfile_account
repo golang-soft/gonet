@@ -19,11 +19,12 @@ RUN cp /xxx/server/server ./bin/
 WORKDIR /xxx/server/bin
 RUN pwd
 RUN ls -al
-EXPOSE 3000 31200 31300 31700
+EXPOSE 31500 31599 3000 31200 31300 31400 31700
 ENTRYPOINT  ["./server", "account"]
-#ENTRYPOINT  ["/bin/sh", "./start.sh"]
-#CMD ["./server", "account"]
+#CMD ["./server", "center"]
 #CMD ["./server", "world"]
+#CMD ["./server", "account"]
+#CMD ["./server", "worlddb"]
 #CMD ["./server", "netgate"]
 
 #FROM golang:latest

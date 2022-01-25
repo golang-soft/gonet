@@ -19,7 +19,7 @@ RUN cp /xxx/server/server ./bin/
 WORKDIR /xxx/server/bin
 RUN pwd
 RUN ls -al
-EXPOSE 3000 31200 31300 31700
+EXPOSE 3000 31200 31300 31700 31599 3001
 ENTRYPOINT  ["./server", "netgate"]
 #ENTRYPOINT  ["/bin/sh", "./start.sh"]
 #CMD ["./server", "account"]

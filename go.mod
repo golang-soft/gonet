@@ -40,6 +40,7 @@ require (
 	go.uber.org/zap v1.15.0 // indirect
 	golang.org/x/crypto v0.0.0-20201012173705-84dcc777aaee // indirect
 	golang.org/x/net v0.0.0-20201010224723-4f7140c49acb
+	golang.org/x/tools v0.0.0-20191029190741-b9c20aec41a5
 	google.golang.org/grpc v1.31.0
 	google.golang.org/protobuf v1.27.1
 	gopkg.in/yaml.v2 v2.2.8

@@ -29,8 +29,20 @@ func InitMgr(serverName string) {
 		player.SIMPLEMGR.Init()
 		social.MGR().Init()
 		actor.MGR.InitActorHandle(wcluster.GetCluster())
+	} else if serverName == "center" {
+
+	} else if serverName == "world" {
+
+	} else if serverName == "login" {
+
+	} else if serverName == "worlddb" {
+
+	} else if serverName == "zone" {
+
+	} else if serverName == "grpcserver" {
+
 	} else {
-		actor.MGR.InitActorHandle(wcluster.GetCluster())
+		//actor.MGR.InitActorHandle(netgate.SERVER.GetCluster())
 		cmd.Init()
 		param.InitRepository()
 		player.MGR.Init()

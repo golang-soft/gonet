@@ -42,13 +42,15 @@ func main() {
 		worlddb.SERVER.Init()
 		zone.SERVER.Init()
 		grpcserver.SERVER.Init()
-		login.SERVER.Init()
+
 	}
 
 	base.SEVERNAME = args[1]
 
 	InitMgr(args[1])
-
+	if args[1] == "all" {
+		login.SERVER.Init()
+	}
 	startServer(args[1])
 
 	ExitMgr(args[1])

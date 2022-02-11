@@ -29,6 +29,17 @@ func InitMgr(serverName string) {
 		player.SIMPLEMGR.Init()
 		social.MGR().Init()
 		actor.MGR.InitActorHandle(wcluster.GetCluster())
+	} else {
+		actor.MGR.InitActorHandle(wcluster.GetCluster())
+		cmd.Init()
+		param.InitRepository()
+		player.MGR.Init()
+		chat.MGR.Init()
+		mail.MGR.Init()
+		toprank.MGR().Init()
+		player.SIMPLEMGR.Init()
+		social.MGR().Init()
+		actor.MGR.InitActorHandle(wcluster.GetCluster())
 	}
 }
 

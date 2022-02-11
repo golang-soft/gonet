@@ -35,7 +35,14 @@ func main() {
 	} else if args[1] == "grpcserver" {
 		grpcserver.SERVER.Init()
 	} else {
+		center.SERVER.Init()
 		netgate.SERVER.Init()
+		account.SERVER.Init()
+		world.SERVER.Init()
+		worlddb.SERVER.Init()
+		zone.SERVER.Init()
+		grpcserver.SERVER.Init()
+		login.SERVER.Init()
 	}
 
 	base.SEVERNAME = args[1]

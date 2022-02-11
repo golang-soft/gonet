@@ -9,6 +9,6 @@ func TestAAA(t *testing.T) {
 	var dh Dh
 	dh.Init()
 
-	fmt.Printf("%v", dh.ShareKey())
-	fmt.Printf("%v", dh.PubKey())
+	fmt.Printf("%v\n", dh.ShareKey())
+	fmt.Printf("%v\n", dh.PubKey())
 }

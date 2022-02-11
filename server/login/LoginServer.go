@@ -128,8 +128,8 @@ func (this *ServerMgr) Init() bool {
 
 	ShowMessage := func() {
 		this.m_Log.Println("**********************************************************")
-		this.m_Log.Printf("\tNetGateServer Version:\t%s", base.BUILD_NO)
-		this.m_Log.Printf("\tNetGateServerIP(LAN):\t%s", addr)
+		this.m_Log.Printf("\tLoginServer Version:\t%s", base.BUILD_NO)
+		this.m_Log.Printf("\tLoginServerIP(LAN):\t%s", addr)
 		this.m_Log.Println("**********************************************************")
 	}
 	ShowMessage()

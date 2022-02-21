@@ -280,15 +280,14 @@ func (this *SGameCtrl) checkIsEnd(round int) {
 
 //TODO:获取所有socket 链接玩家
 func (this *SGameCtrl) allRoundUsers(round int) interface{} {
-	//return getConnSockets().then(sockets => {
-	//	let users: any = []
-	//	sockets.forEach(sc => {
-	//	if (round == sc.data.round) {
-	//	users.push(sc.data)
-	//	}
-	//	})
-	//	return users
-	//})
+	sockets := getConnSockets()
+	for _, sc := range sockets {
+		var users = make([]string, 0)
+		if round == sc.Data.Round {
+			users = append(users, sc.Data.User)
+		}
+		return users
+	}
 	return nil
 }
 

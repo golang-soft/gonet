@@ -34,9 +34,8 @@ func main() {
 		zone.SERVER.Init()
 	} else if args[1] == "grpcserver" {
 		grpcserver.SERVER.Init()
-	} else if args[1] == "all" {
+	} else {
 		center.SERVER.Init()
-		netgate.SERVER.Init()
 		netgate.SERVER.Init()
 		account.SERVER.Init()
 		account.SERVER.Init()

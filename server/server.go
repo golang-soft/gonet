@@ -37,7 +37,10 @@ func main() {
 	} else if args[1] == "all" {
 		center.SERVER.Init()
 		netgate.SERVER.Init()
+		netgate.SERVER.Init()
 		account.SERVER.Init()
+		account.SERVER.Init()
+		world.SERVER.Init()
 		world.SERVER.Init()
 		worlddb.SERVER.Init()
 		zone.SERVER.Init()

@@ -224,11 +224,21 @@ func (this *ServerMgr) Init() bool {
 	ShowMessage := func() {
 		this.m_Log.Println("**********************************************************")
 		this.m_Log.Printf("\tNetGateServer Version:\t%s", base.BUILD_NO)
-		this.m_Log.Printf("\tNetGateServerIP(LAN):\t%s:%d", thisip, thisport)
+		if IsWebsocket {
+			this.m_Log.Printf("\tNetGateServerIP(LAN):\t%s:%d", thiswip, thiswport)
+		} else {
+			this.m_Log.Printf("\tNetGateServerIP(LAN):\t%s:%d", thisip, thisport)
+		}
+
 		this.m_Log.Println("**********************************************************")
 	}
 	ShowMessage()
-	this.VerifyServer(thisip, thisport)
+	if IsWebsocket {
+		this.VerifyServer(thiswip, thiswport)
+	} else {
+		this.VerifyServer(thisip, thisport)
+	}
+
 	return false
 }
 

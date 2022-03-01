@@ -54,7 +54,7 @@ func main() {
 		port, _ := strconv.Atoi(sport)
 		ip := strings.Split(CONF.MWebsocket.Websocket[i], ":")[0]
 		thisip = ip
-		thisport = port
+		thisport, _ = strconv.Atoi(strings.Split(CONF.MWebsocket.Websocket[i], ":")[2])
 		//index := this.GetIndex(this.m_pCluster.GetService().IpString())
 		res := service.CheckExist(&common.ClusterInfo{Type: rpc.SERVICE_GATESERVER, Ip: ip, Port: int32(port)}, CONF.Etcd.Endpoints)
 		if !res {
@@ -87,7 +87,7 @@ func main() {
 	eventmanager = NewEventManager()
 	eventmanager.Init()
 
-	num := 10
+	num := 1
 
 	robotManager := NewRobotManager()
 	robotManager.Add(num, thisip, thisport)

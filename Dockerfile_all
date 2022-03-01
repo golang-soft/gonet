@@ -1,0 +1,24 @@
+FROM golang:latest
+ENV GO111MODULE=on \
+    CGO_ENABLED=0 \
+    GOOS=linux \
+    GOARCH=amd64 \
+    env=local \
+	GOPROXY="https://goproxy.cn,direct"
+
+WORKDIR /xxx
+RUN ls
+COPY . .
+RUN pwd
+RUN ls
+WORKDIR /xxx/server
+RUN go get github.com/coreos/go-systemd/journal
+RUN ls
+RUN go build -o server .
+RUN chmod +x server
+RUN cp /xxx/server/server ./bin/
+WORKDIR /xxx/server/bin
+RUN pwd
+RUN ls -al
+EXPOSE 31500 31599 3000 3100 31200 31201 31300 31301 31400 31600 31700 31800 8081
+ENTRYPOINT  ["./server", "all"]

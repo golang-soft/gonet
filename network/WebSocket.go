@@ -105,6 +105,7 @@ func (this *WebSocket) AddClinet(tcpConn *websocket.Conn, addr string, connectTy
 		this.m_ClientLocker.Lock()
 		this.m_ClientList[pClient.m_ClientId] = pClient
 		this.m_ClientLocker.Unlock()
+
 		this.m_nClientCount++
 		return pClient
 	} else {

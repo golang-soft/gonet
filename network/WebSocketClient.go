@@ -46,10 +46,11 @@ func (this *WebSocketClient) Start() bool {
 	if this.m_PacketFuncList.Len() == 0 {
 		this.m_PacketFuncList = this.m_pServer.m_PacketFuncList
 	}
-	go this.Run()
+
 	if this.m_nConnectType == CLIENT_CONNECT {
 		go this.SendLoop()
 	}
+	this.Run()
 
 	return true
 }

@@ -120,7 +120,7 @@
       <recent name="D:\workspace-go\gonet\server\world\param" />
     </key>
   </component>
-  <component name="RunManager" selected="Go Build.allserver">
+  <component name="RunManager" selected="Go Build.netgate">
     <configuration name="account (1)" type="GoApplicationRunConfiguration" factoryName="Go Application">
       <module name="gonet" />
       <working_directory value="$PROJECT_DIR$" />

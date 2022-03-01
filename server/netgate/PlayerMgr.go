@@ -52,9 +52,12 @@ func (this *PlayerManager) ReleaseSocketMap(socketId uint32, bClose bool) {
 	delete(this.m_AccountMap, accountId)
 	delete(this.m_SocketMap, socketId)
 	this.m_Locker.Unlock()
-	//if bClose{
-	SERVER.GetServer().StopClient(socketId)
-	//}
+	if SERVER.CheckIsWebsocket() {
+		SERVER.GetWebSocketServer().StopClient(socketId)
+	} else {
+		SERVER.GetServer().StopClient(socketId)
+	}
+
 }
 
 func (this *PlayerManager) AddAccountMap(socketId uint32, clusterInfo rpc.PlayerClusterInfo) int {

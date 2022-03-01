@@ -13,12 +13,15 @@ import (
 
 type IClientWebSocket2 interface {
 	ISocket
+	OnConnected()
 }
 
 type ClientWebSocket2 struct {
 	Socket
 	m_nMaxClients int
 	m_nMinClients int
+
+	Derived IClientWebSocket2
 }
 
 func (this *ClientWebSocket2) Init(ip string, port int, params ...OpOption) bool {
@@ -33,19 +36,41 @@ func (this *ClientWebSocket2) Init(ip string, port int, params ...OpOption) bool
 	return true
 }
 
-func (this *ClientWebSocket2) Start(host string) bool {
+func (this *ClientWebSocket2) Start() bool {
 	if this.m_sIP == "" {
 		this.m_sIP = "127.0.0.1"
 	}
-
-	if this.Connect(host) {
+	//var strRemote = fmt.Sprintf("%s:%d", this.m_sIP, this.m_nPort)
+	if this.Connect() {
 		go this.Run()
+
+		if this.Derived != nil {
+			this.Derived.OnConnected()
+		}
 		return true
 	}
 	//延迟，监听关闭
 	//defer ln.Close()
 	return false
 }
+
+//func (this *ClientWebSocket2) Start2(host string) bool {
+//	if this.m_sIP == "" {
+//		this.m_sIP = "127.0.0.1"
+//	}
+//
+//	if this.Connect() {
+//		go this.Run()
+//
+//		if this.Derived != nil {
+//			this.Derived.OnConnected()
+//		}
+//		return true
+//	}
+//	//延迟，监听关闭
+//	//defer ln.Close()
+//	return false
+//}
 
 func (this *ClientWebSocket2) SendMsg(head rpc.RpcHead, funcName string, params ...interface{}) {
 	buff := grpc.Marshal(head, funcName, params...)
@@ -76,7 +101,8 @@ func (this *ClientWebSocket2) Restart() bool {
 	return true
 }
 
-func (this *ClientWebSocket2) Connect(host string) bool {
+func (this *ClientWebSocket2) Connect() bool {
+	var host = fmt.Sprintf("%s:%d", this.m_sIP, this.m_nPort)
 	wshost := "ws://" + host + "/ws"
 	httphost := "http://" + host + "/"
 	ws, err := websocket.Dial(wshost, "", httphost)
@@ -132,10 +158,10 @@ func (this *ClientWebSocket2) Run() bool {
 		}
 	}
 
-	//this.Close()
+	this.Close()
 	return true
 }
 func (this *ClientWebSocket2) Close() {
 	this.Clear()
-	this.GetConn().Close()
+	//this.GetConn().Close()
 }

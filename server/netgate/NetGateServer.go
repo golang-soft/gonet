@@ -20,14 +20,15 @@ import (
 type (
 	ServerMgr struct {
 		server.BaseServer
-		m_pTcpService *network.ServerSocket
-		//m_pService       *network.WebSocket
+		m_pTcpService    *network.ServerSocket
+		m_pService       *network.WebSocket
 		m_Inited         bool
 		m_config         ini.Config
 		m_Log            base.CLog
 		m_TimeTraceTimer *time.Ticker
 		m_PlayerMgr      *PlayerManager
 		m_pCluster       *cluster.Cluster
+		m_pClusterWs     *cluster.Cluster
 		m_pEventProcess  *EventProcess
 	}
 
@@ -43,17 +44,18 @@ type (
 	}
 
 	Config struct {
-		//common.Server `yaml:"netgate"`
-		common.MServer `yaml:"mnetgate"`
-		common.Etcd    `yaml:"etcd"`
-		common.Nats    `yaml:"nats"`
-		common.Center  `yaml:"center"`
+		common.MServer    `yaml:"mnetgate"`
+		common.MWebsocket `yaml:"mnetgateweb"`
+		common.Etcd       `yaml:"etcd"`
+		common.Nats       `yaml:"nats"`
+		common.Center     `yaml:"center"`
 	}
 )
 
 var (
-	CONF   Config
-	SERVER ServerMgr
+	CONF        Config
+	SERVER      ServerMgr
+	IsWebsocket bool = true
 )
 
 func (this *ServerMgr) GetLog() *base.CLog {
@@ -66,11 +68,14 @@ func (this *ServerMgr) GetServer() *network.ServerSocket {
 }
 
 //websocket
-//func (this *ServerMgr) GetWebSocketServer() *network.WebSocket {
-//	return this.m_pService
-//}
+func (this *ServerMgr) GetWebSocketServer() *network.WebSocket {
+	return this.m_pService
+}
 
 func (this *ServerMgr) GetCluster() *cluster.Cluster {
+	if IsWebsocket {
+		return this.m_pClusterWs
+	}
 	return this.m_pCluster
 }
 
@@ -117,17 +122,19 @@ func (this *ServerMgr) InitSocket(thisip string, thisport int) bool {
 	return true
 }
 
-//func (this *ServerMgr)InitWebsocket(thisip string, thisport int) bool {
-//	this.m_pService = new(network.WebSocket)
-//	this.m_pService.Init(thisip, thisport)
-//	this.m_pService.SetConnectType(network.CLIENT_CONNECT)
-//	//this.m_pService.Start()
-//	packet := new(UserPrcoess)
-//	packet.Init()
-//	this.m_pService.BindPacketFunc(packet.PacketFunc)
-//	this.m_pService.Start()
-//	return true
-//}
+func (this *ServerMgr) InitWebsocket(thisip string, thisport int) bool {
+	this.m_pService = new(network.WebSocket)
+	this.m_pService.Init(thisip, thisport)
+	this.m_pService.SetMaxPacketLen(base.MAX_CLIENT_PACKET)
+	this.m_pService.SetConnectType(network.CLIENT_CONNECT)
+	//this.m_pService.Start()
+	packet := new(UserPrcoess)
+	packet.Init()
+	this.m_pService.BindPacketFunc(packet.PacketFunc)
+	this.m_pService.Start()
+	common2.Init()
+	return true
+}
 
 func (this *ServerMgr) Init() bool {
 	if this.m_Inited {
@@ -145,36 +152,70 @@ func (this *ServerMgr) Init() bool {
 	thisip := "127.0.0.1"
 	thisport := 31300
 
-	for i := 0; i < len(CONF.MServer.Endpoints); i++ {
-		sport := strings.Split(CONF.MServer.Endpoints[i], ":")[1]
-		port, _ := strconv.Atoi(sport)
-		ip := strings.Split(CONF.MServer.Endpoints[i], ":")[0]
-		thisip = ip
-		thisport = port
-		//index := this.GetIndex(this.m_pCluster.GetService().IpString())
-		res := service.CheckExist(&common.ClusterInfo{Type: rpc.SERVICE_GATESERVER, Ip: ip, Port: int32(port)}, CONF.Etcd.Endpoints)
-		if !res {
-			continue
-		} else {
-			break
+	if !IsWebsocket {
+		for i := 0; i < len(CONF.MServer.Endpoints); i++ {
+			sport := strings.Split(CONF.MServer.Endpoints[i], ":")[1]
+			port, _ := strconv.Atoi(sport)
+			ip := strings.Split(CONF.MServer.Endpoints[i], ":")[0]
+			thisip = ip
+			thisport = port
+			//index := this.GetIndex(this.m_pCluster.GetService().IpString())
+			res := service.CheckExist(&common.ClusterInfo{Type: rpc.SERVICE_GATESERVER, Ip: ip, Port: int32(port)}, CONF.Etcd.Endpoints)
+			if !res {
+				continue
+			} else {
+				break
+			}
 		}
+
+		this.InitCenterClient()
+		//初始化socket
+		this.InitSocket(thisip, thisport)
+
 	}
 
-	this.InitCenterClient()
-	//初始化socket
-	this.InitSocket(thisip, thisport)
-	//websocket 暂时不用
-	//this.InitWebsocket(thisip, thisport)
+	thiswip := "127.0.0.1"
+	thiswport := 31300
+
+	if IsWebsocket {
+
+		for i := 0; i < len(CONF.MWebsocket.Websocket); i++ {
+			sport := strings.Split(CONF.MWebsocket.Websocket[i], ":")[1]
+			port, _ := strconv.Atoi(sport)
+			ip := strings.Split(CONF.MWebsocket.Websocket[i], ":")[0]
+			thiswip = ip
+			thiswport = port
+			//index := this.GetIndex(this.m_pCluster.GetService().IpString())
+			res := service.CheckExist(&common.ClusterInfo{Type: rpc.SERVICE_GATESERVER, Ip: ip, Port: int32(port)}, CONF.Etcd.Endpoints)
+			if !res {
+				continue
+			} else {
+				break
+			}
+		}
+
+		//websocket 暂时不用
+		this.InitWebsocket(thiswip, thiswport)
+	}
 
 	//注册到集群服务器
 	var packet1 EventProcess
 	packet1.Init()
 	this.m_pEventProcess = &packet1
 
-	this.m_pCluster = new(cluster.Cluster)
-	this.m_pCluster.Init(&common.ClusterInfo{Type: rpc.SERVICE_GATESERVER, Ip: thisip, Port: int32(thisport)}, CONF.Etcd.Endpoints, CONF.Nats.Endpoints)
-	this.m_pCluster.BindPacketFunc(packet1.PacketFunc)
-	this.m_pCluster.BindPacketFunc(DispatchPacket)
+	if !IsWebsocket {
+		this.m_pCluster = new(cluster.Cluster)
+		this.m_pCluster.Init(&common.ClusterInfo{Type: rpc.SERVICE_GATESERVER, Ip: thisip, Port: int32(thisport)}, CONF.Etcd.Endpoints, CONF.Nats.Endpoints)
+		this.m_pCluster.BindPacketFunc(packet1.PacketFunc)
+		this.m_pCluster.BindPacketFunc(DispatchPacket)
+	}
+
+	if IsWebsocket {
+		this.m_pClusterWs = new(cluster.Cluster)
+		this.m_pClusterWs.Init(&common.ClusterInfo{Type: rpc.SERVICE_GATESERVER, Ip: thiswip, Port: int32(thiswport)}, CONF.Etcd.Endpoints, CONF.Nats.Endpoints)
+		this.m_pClusterWs.BindPacketFunc(packet1.PacketFunc)
+		this.m_pClusterWs.BindPacketFunc(DispatchPacket)
+	}
 
 	//初始玩家管理
 	this.m_PlayerMgr = new(PlayerManager)
@@ -197,4 +238,8 @@ func (this *ServerMgr) Init() bool {
 
 func (this *ServerMgr) GetEventProcess() *EventProcess {
 	return this.m_pEventProcess
+}
+
+func (this *ServerMgr) CheckIsWebsocket() bool {
+	return IsWebsocket
 }

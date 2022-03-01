@@ -19,7 +19,11 @@ var (
 )
 
 func SendToClient(socketId uint32, packet proto.Message) {
-	SERVER.GetServer().Send(rpc.RpcHead{SocketId: socketId}, common.Encode(packet))
+	if SERVER.CheckIsWebsocket() {
+		SERVER.GetWebSocketServer().Send(rpc.RpcHead{SocketId: socketId}, common.Encode(packet))
+	} else {
+		SERVER.GetServer().Send(rpc.RpcHead{SocketId: socketId}, common.Encode(packet))
+	}
 }
 
 func DispatchPacket(packet rpc.Packet) bool {
@@ -40,12 +44,21 @@ func DispatchPacket(packet rpc.Packet) bool {
 		dec.Decode(packet)
 		buff := common.Encode(packet)
 		if messageName == A_C_RegisterResponse || messageName == A_C_LoginResponse {
-			SERVER.GetServer().Send(rpc.RpcHead{SocketId: head.SocketId}, buff)
+			if SERVER.CheckIsWebsocket() {
+				SERVER.GetWebSocketServer().Send(rpc.RpcHead{SocketId: head.SocketId}, buff)
+			} else {
+				SERVER.GetServer().Send(rpc.RpcHead{SocketId: head.SocketId}, buff)
+			}
 		} else if messageName == W_C_Test {
 			SERVER.GetEventProcess().SendMsg(rpc.RpcHead{SocketId: head.SocketId}, "W_C_Test")
 		} else {
 			socketId := head.SocketId //SERVER.GetPlayerMgr().GetSocket(head.Id)
-			SERVER.GetServer().Send(rpc.RpcHead{SocketId: socketId}, buff)
+			if SERVER.CheckIsWebsocket() {
+				SERVER.GetWebSocketServer().Send(rpc.RpcHead{SocketId: socketId}, buff)
+			} else {
+				SERVER.GetServer().Send(rpc.RpcHead{SocketId: socketId}, buff)
+			}
+
 		}
 	default:
 		SERVER.GetCluster().Send(head, packet.Buff)

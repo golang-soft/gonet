@@ -41,7 +41,7 @@ func InitMgr(serverName string) {
 
 	} else if serverName == "grpcserver" {
 
-	} else {
+	} else if serverName == "all" {
 		//actor.MGR.InitActorHandle(netgate.SERVER.GetCluster())
 		cmd.Init()
 		param.InitRepository()

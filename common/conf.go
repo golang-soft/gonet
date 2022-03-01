@@ -1,6 +1,9 @@
 package common
 
 type (
+	MWebsocket struct {
+		Websocket []string `yaml:"websocket"`
+	}
 	MServer struct {
 		Endpoints []string `yaml:"endpoints"`
 	}

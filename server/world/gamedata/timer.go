@@ -19,12 +19,12 @@ type (
 	}
 )
 
-var OnloadTimer = &SOnloadTimer{}
+//var OnloadTimer = &SOnloadTimer{}
 
 func (this *SOnloadTimer) Init() {
 	glogger2.M_Log.Debugf("数据库初始化 ...................................")
 	this.Actor.Init()
-	this.RegisterTimer(100*time.Second, this.OnloadGameCheckTimer) //定时器
+	this.RegisterTimer(10*time.Second, this.OnloadGameCheckTimer) //定时器
 	this.Actor.Start()
 }
 

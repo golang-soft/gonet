@@ -162,6 +162,7 @@ func Init() {
 	RegisterPacket2(&cmessage.W_C_Test{PacketHead: BuildPacketHead(0, rpc.SERVICE_GATESERVER)}, rpc.SERVICE_GATESERVER)
 	RegisterPacket2(&cmessage.C_W_ChatMessage{PacketHead: BuildPacketHead(0, rpc.SERVICE_WORLDSERVER)}, rpc.SERVICE_WORLDSERVER)
 	RegisterPacket2(&cmessage.AttackReq{PacketHead: BuildPacketHead(0, rpc.SERVICE_WORLDSERVER)}, rpc.SERVICE_WORLDSERVER)
+	//RegisterPacket2(&cmessage.HeartPacket{PacketHead: BuildPacketHead(0, rpc.SERVICE_GATESERVER)}, rpc.SERVICE_GATESERVER)
 
 	RegisterPacket2(&cmessage.C_Z_LoginCopyMap{PacketHead: BuildPacketHead(0, rpc.SERVICE_ZONESERVER)}, rpc.SERVICE_ZONESERVER)
 	RegisterPacket2(&cmessage.C_Z_Move{PacketHead: BuildPacketHead(0, rpc.SERVICE_ZONESERVER)}, rpc.SERVICE_ZONESERVER)

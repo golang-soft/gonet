@@ -197,8 +197,8 @@ func (this *ServerMgr) Init() bool {
 
 	//var io = &wserver.Server{}
 	//io.Start()
-
-	gamedata.OnloadTimer.Init()
+	onloadTimer := &gamedata.SOnloadTimer{}
+	onloadTimer.Init()
 
 	var centerProcess CenterProcess
 	centerProcess.Init()

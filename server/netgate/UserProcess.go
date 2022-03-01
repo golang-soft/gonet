@@ -293,6 +293,11 @@ func (this *UserPrcoess) Init() {
 		this.delKey(socketid)
 	})
 
+	this.RegisterCall("HeartPacket", func(ctx context.Context, packet *cmessage.W_C_Test) {
+		head := this.GetRpcHead(ctx)
+		logger.Debug(head)
+	})
+
 	this.RegisterCall("W_C_Test", func(ctx context.Context, packet *cmessage.W_C_Test) {
 		head := this.GetRpcHead(ctx)
 		dh := base.Dh{}

@@ -6,6 +6,7 @@ import (
 	"github.com/golang/protobuf/proto"
 	"gonet/actor"
 	"gonet/base"
+	"gonet/network"
 	"gonet/server/cmessage"
 	"gonet/server/common"
 	"gonet/server/game/lmath"
@@ -52,7 +53,7 @@ func (this *EventProcess) Init() {
 	this.Actor.Init()
 	this.Pos = lmath.Point3F{1, 1, 1}
 	this.m_Dh.Init()
-	//this.RegisterTimer((network.HEART_TIME_OUT/6)*time.Second, this.Update) //定时器
+	this.RegisterTimer((network.HEART_TIME_OUT/6)*time.Second, this.Update) //定时器
 
 	this.RegisterCall("W_C_SelectPlayerResponse", func(ctx context.Context, packet *cmessage.W_C_SelectPlayerResponse) {
 		this.AccountId = packet.GetAccountId()
@@ -173,7 +174,8 @@ func (this *EventProcess) Move(yaw float32, time float32) {
 }
 
 func (this *EventProcess) Update() {
-	packet1 := &cmessage.HeartPacket{Time: time.Now().Unix()}
+	packet1 := &cmessage.HeartPacket{PacketHead: common.BuildPacketHead(cmessage.MessageID_MSG_C_HeartPacket, rpc.SERVICE_GATESERVER),
+		Time: time.Now().Unix()}
 	this.SendPacket(this, packet1)
 	m_Log.Debugf("发送心跳包.........")
 }

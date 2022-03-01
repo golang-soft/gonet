@@ -87,7 +87,7 @@ func main() {
 	eventmanager = NewEventManager()
 	eventmanager.Init()
 
-	num := 1
+	num := 10
 
 	robotManager := NewRobotManager()
 	robotManager.Add(num, thisip, thisport)

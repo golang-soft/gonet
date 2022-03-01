@@ -8,7 +8,6 @@ import (
 	"gonet/base"
 	"gonet/base/vector"
 	"gonet/common"
-	"gonet/common/cluster/etv3"
 	"gonet/grpc"
 	"gonet/network"
 	"gonet/server/rpc"
@@ -281,7 +280,7 @@ func (this *Cluster) GetService() *Service {
 }
 
 func (this *Cluster) DebugService() {
-	((*etv3.Master)(this.m_Master)).ListServices()
+	//((*etv3.Master)(this.m_Master)).ListServices()
 }
 
 func (this *Cluster) GetMaster() *(Master) {

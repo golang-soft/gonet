@@ -5,11 +5,14 @@ option go_package = "./;cmessage";
 enum MessageID {
 
     MSG_BEGIN = 0;
-
+    MSG_C_HeartPacket                = 1;
+    
     //============================================================================================
     //                 一般消息定义
     //============================================================================================
     MSG_NORMAL_MSGID_BEGIN           = 100000;
+    
+
     MSG_C_G_LoginResquest     = 101001; //请求登录
     MSG_G_C_LoginResponse =  101002; //请求登录
     MSG_W_C_CreatePlayerResponse = 101003; //响应创建角色

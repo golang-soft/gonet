@@ -96,6 +96,10 @@ func (robot *Robot) OnConnected() {
 
 func (robot *Robot) Do() {
 	if robot.status == ROBOT_PLAYING {
+		PingEvent := eventmanager.GetEvent("PingEvent")
+		if PingEvent != nil {
+			(*PingEvent).SendEvent(PingEvent, robot.eventProcess)
+		}
 		rander := &utils.Rander{}
 		rander.Init()
 

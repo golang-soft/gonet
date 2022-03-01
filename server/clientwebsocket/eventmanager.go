@@ -28,7 +28,7 @@ func (this *EventManager) Init() {
 	//this.AddById(4, NewLoginAccountEvent())
 	this.Add("LoginGateEvent", NewLoginGateEvent())
 	//this.AddById(5, NewLoginGateEvent())
-
+	this.Add("PingEvent", NewPingEvent())
 }
 
 func (this *EventManager) Add(name string, event IBaseEvent) {

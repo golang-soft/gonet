@@ -14,7 +14,8 @@ message Ipacket{
 
 //心跳包
 message HeartPacket{
-    int64 time = 1;
+    Ipacket PacketHead = 1;
+    int64 time = 2;
 }
 
 message PlayerData{

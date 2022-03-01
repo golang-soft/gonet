@@ -35,12 +35,13 @@ func main() {
 	} else if args[1] == "grpcserver" {
 		grpcserver.SERVER.Init()
 	} else if args[1] == "all" {
+		//TODO socket模式下可以打开注释，如果是websocket模式下，则需要关闭多个netgate和注释的部分
 		center.SERVER.Init()
 		netgate.SERVER.Init()
 		//netgate.SERVER.Init()
 		//netgate.SERVER.Init()
 		account.SERVER.Init()
-		//account.SERVER.Init()
+		account.SERVER.Init()
 		world.SERVER.Init()
 		world.SERVER.Init()
 		worlddb.SERVER.Init()

@@ -20,7 +20,12 @@ var (
 
 func SendToClient(socketId uint32, packet proto.Message) {
 	if SERVER.CheckIsWebsocket() {
-		SERVER.GetWebSocketServer().Send(rpc.RpcHead{SocketId: socketId}, common.Encode(packet))
+		if SERVER.WebsocketModeIsGorilla() {
+			SERVER.GetWebSocketServerG().Send(rpc.RpcHead{SocketId: socketId}, common.Encode(packet))
+		} else {
+			SERVER.GetWebSocketServer().Send(rpc.RpcHead{SocketId: socketId}, common.Encode(packet))
+		}
+
 	} else {
 		SERVER.GetServer().Send(rpc.RpcHead{SocketId: socketId}, common.Encode(packet))
 	}
@@ -45,7 +50,12 @@ func DispatchPacket(packet rpc.Packet) bool {
 		buff := common.Encode(packet)
 		if messageName == A_C_RegisterResponse || messageName == A_C_LoginResponse {
 			if SERVER.CheckIsWebsocket() {
-				SERVER.GetWebSocketServer().Send(rpc.RpcHead{SocketId: head.SocketId}, buff)
+				if SERVER.WebsocketModeIsGorilla() {
+					SERVER.GetWebSocketServerG().Send(rpc.RpcHead{SocketId: head.SocketId}, buff)
+				} else {
+					SERVER.GetWebSocketServer().Send(rpc.RpcHead{SocketId: head.SocketId}, buff)
+				}
+
 			} else {
 				SERVER.GetServer().Send(rpc.RpcHead{SocketId: head.SocketId}, buff)
 			}
@@ -54,7 +64,12 @@ func DispatchPacket(packet rpc.Packet) bool {
 		} else {
 			socketId := head.SocketId //SERVER.GetPlayerMgr().GetSocket(head.Id)
 			if SERVER.CheckIsWebsocket() {
-				SERVER.GetWebSocketServer().Send(rpc.RpcHead{SocketId: socketId}, buff)
+				if SERVER.WebsocketModeIsGorilla() {
+					SERVER.GetWebSocketServerG().Send(rpc.RpcHead{SocketId: socketId}, buff)
+				} else {
+					SERVER.GetWebSocketServer().Send(rpc.RpcHead{SocketId: socketId}, buff)
+				}
+
 			} else {
 				SERVER.GetServer().Send(rpc.RpcHead{SocketId: socketId}, buff)
 			}

@@ -53,7 +53,12 @@ func (this *PlayerManager) ReleaseSocketMap(socketId uint32, bClose bool) {
 	delete(this.m_SocketMap, socketId)
 	this.m_Locker.Unlock()
 	if SERVER.CheckIsWebsocket() {
-		SERVER.GetWebSocketServer().StopClient(socketId)
+		if SERVER.WebsocketModeIsGorilla() {
+			SERVER.GetWebSocketServerG().StopClient(socketId)
+		} else {
+			SERVER.GetWebSocketServer().StopClient(socketId)
+		}
+
 	} else {
 		SERVER.GetServer().StopClient(socketId)
 	}

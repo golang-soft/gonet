@@ -22,6 +22,7 @@ type (
 		server.BaseServer
 		m_pTcpService    *network.ServerSocket
 		m_pService       *network.WebSocket
+		m_pServiceG      *network.WebSocketG
 		m_Inited         bool
 		m_config         ini.Config
 		m_Log            base.CLog
@@ -53,9 +54,10 @@ type (
 )
 
 var (
-	CONF        Config
-	SERVER      ServerMgr
-	IsWebsocket bool = true
+	CONF          Config
+	SERVER        ServerMgr
+	IsWebsocket   bool   = true
+	WebsocketMode string = "gorilla" //gorilla 或者 golang
 )
 
 func (this *ServerMgr) GetLog() *base.CLog {
@@ -70,6 +72,9 @@ func (this *ServerMgr) GetServer() *network.ServerSocket {
 //websocket
 func (this *ServerMgr) GetWebSocketServer() *network.WebSocket {
 	return this.m_pService
+}
+func (this *ServerMgr) GetWebSocketServerG() *network.WebSocketG {
+	return this.m_pServiceG
 }
 
 func (this *ServerMgr) GetCluster() *cluster.Cluster {
@@ -135,6 +140,19 @@ func (this *ServerMgr) InitWebsocket(thisip string, thisport int) bool {
 	common2.Init()
 	return true
 }
+func (this *ServerMgr) InitWebsocketG(thisip string, thisport int) bool {
+	this.m_pServiceG = new(network.WebSocketG)
+	this.m_pServiceG.Init(thisip, thisport)
+	this.m_pServiceG.SetMaxPacketLen(base.MAX_CLIENT_PACKET)
+	this.m_pServiceG.SetConnectType(network.CLIENT_CONNECT)
+	//this.m_pService.Start()
+	packet := new(UserPrcoess)
+	packet.Init()
+	this.m_pServiceG.BindPacketFunc(packet.PacketFunc)
+	this.m_pServiceG.Start()
+	common2.Init()
+	return true
+}
 
 func (this *ServerMgr) Init() bool {
 	if this.m_Inited {
@@ -195,7 +213,8 @@ func (this *ServerMgr) Init() bool {
 		}
 
 		//websocket 暂时不用
-		this.InitWebsocket(thiswip, thiswport)
+		//this.InitWebsocket(thiswip, thiswport)
+		this.InitWebsocketG(thiswip, thiswport)
 	}
 
 	//注册到集群服务器
@@ -252,4 +271,11 @@ func (this *ServerMgr) GetEventProcess() *EventProcess {
 
 func (this *ServerMgr) CheckIsWebsocket() bool {
 	return IsWebsocket
+}
+
+func (this *ServerMgr) WebsocketModeIsGorilla() bool {
+	if WebsocketMode == "gorilla" {
+		return true
+	}
+	return false
 }

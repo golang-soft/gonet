@@ -102,7 +102,7 @@ func (this *WebSocketG) AddClinet(tcpConn *websocket.Conn, addr string, connectT
 		pClient.SetMaxPacketLen(this.GetMaxPacketLen())
 		pClient.m_ClientId = this.AssignClientId()
 		pClient.m_sIP = addr
-		pClient.SetConn(tcpConn.UnderlyingConn())
+		pClient.SetConn(tcpConn)
 		pClient.SetConnectType(connectType)
 		this.m_ClientLocker.Lock()
 		this.m_ClientList[pClient.m_ClientId] = pClient

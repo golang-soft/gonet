@@ -19,6 +19,7 @@ type IWebSocketClientG interface {
 
 type WebSocketClientG struct {
 	Socket
+	m_Conn     *websocket.Conn
 	m_pServer  *WebSocketG
 	m_SendChan chan []byte //对外缓冲队列
 	m_TimerId  *int64
@@ -79,10 +80,10 @@ func (this *WebSocketClientG) DoSend(buff []byte) int {
 		return 0
 	}
 
-	n, err := this.m_Conn.Write(this.m_PacketParser.Write(buff))
+	err := this.m_Conn.WriteMessage(1, this.m_PacketParser.Write(buff))
 	handleError(err)
-	if n > 0 {
-		return n
+	if len(buff) > 0 {
+		return len(buff)
 	}
 
 	return 0
@@ -116,7 +117,7 @@ func (this *WebSocketClientG) Close() {
 }
 
 func (this *WebSocketClientG) Run() bool {
-	var buff = make([]byte, this.m_ReceiveBufferSize)
+	//var buff = make([]byte, this.m_ReceiveBufferSize)
 	this.SetState(SSF_RUN)
 	loop := func() bool {
 		defer func() {
@@ -129,7 +130,7 @@ func (this *WebSocketClientG) Run() bool {
 			return false
 		}
 
-		n, err := this.m_Conn.Read(buff)
+		_, buff, err := this.m_Conn.ReadMessage()
 		if err == io.EOF {
 			fmt.Printf("远程链接：%s已经关闭！\n", this.m_Conn.RemoteAddr().String())
 			this.OnNetFail(0)
@@ -140,8 +141,8 @@ func (this *WebSocketClientG) Run() bool {
 			this.OnNetFail(0)
 			return false
 		}
-		if n > 0 {
-			this.m_PacketParser.Read(buff[:n])
+		if len(buff) > 0 {
+			this.m_PacketParser.Read(buff[:])
 		}
 		this.m_HeartTime = int(time.Now().Unix()) + HEART_TIME_OUT
 		return true
@@ -200,8 +201,12 @@ func (this *WebSocketClientG) Connect() bool {
 		return false
 	}
 
-	this.m_Conn = c.UnderlyingConn()
+	this.m_Conn = c
 
 	fmt.Printf("连接成功：%s\n", this.m_Conn.RemoteAddr().String())
 	return true
+}
+
+func (this *WebSocketClientG) SetConn(conn *websocket.Conn) {
+	this.m_Conn = conn
 }

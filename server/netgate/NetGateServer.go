@@ -57,7 +57,7 @@ var (
 	CONF          Config
 	SERVER        ServerMgr
 	IsWebsocket   bool   = true
-	WebsocketMode string = "golang" //gorilla 或者 golang
+	WebsocketMode string = "gorilla" //gorilla 或者 golang
 )
 
 func (this *ServerMgr) GetLog() *base.CLog {

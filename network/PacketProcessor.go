@@ -17,16 +17,16 @@ const (
 // --------------
 type (
 	PacketParser struct {
-		m_PacketLen   	int
-		m_MaxPacketLen	int
-		m_LittleEndian  bool
-		m_MaxPacketBuffer []byte//max receive buff
-		m_PacketFunc 	HandlePacket
+		m_PacketLen       int
+		m_MaxPacketLen    int
+		m_LittleEndian    bool
+		m_MaxPacketBuffer []byte //max receive buff
+		m_PacketFunc      HandlePacket
 	}
 
 	PacketConfig struct {
-		MaxPacketLen	*int
-		Func 	HandlePacket
+		MaxPacketLen *int
+		Func         HandlePacket
 	}
 )
 
@@ -35,18 +35,18 @@ func NewPacketParser(conf PacketConfig) PacketParser {
 	p.m_PacketLen = PACKET_LEN_DWORD
 	p.m_MaxPacketLen = base.MAX_PACKET
 	p.m_LittleEndian = true
-	if conf.Func != nil{
+	if conf.Func != nil {
 		p.m_PacketFunc = conf.Func
-	}else{
+	} else {
 		p.m_PacketFunc = func(buff []byte) {
 		}
 	}
 	return p
 }
 
-func (this *PacketParser) readLen(buff []byte) (bool, int){
+func (this *PacketParser) readLen(buff []byte) (bool, int) {
 	nLen := len(buff)
-	if nLen < this.m_PacketLen{
+	if nLen < this.m_PacketLen {
 		return false, 0
 	}
 
@@ -70,7 +70,7 @@ func (this *PacketParser) readLen(buff []byte) (bool, int){
 		}
 	}
 
-	if msgLen + this.m_PacketLen <= nLen{
+	if msgLen+this.m_PacketLen <= nLen {
 		return true, msgLen + this.m_PacketLen
 	}
 
@@ -88,18 +88,18 @@ ParsePacekt:
 	bFindFlag := false
 	bFindFlag, nPacketSize = this.readLen(buff[nCurSize:])
 	//fmt.Println(bFindFlag, nPacketSize, nBufferSize)
-	if bFindFlag{
-		if nBufferSize == nPacketSize{		//完整包
-			this.m_PacketFunc(buff[nCurSize + this.m_PacketLen : nCurSize + nPacketSize])
+	if bFindFlag {
+		if nBufferSize == nPacketSize { //完整包
+			this.m_PacketFunc(buff[nCurSize+this.m_PacketLen : nCurSize+nPacketSize])
 			nCurSize += nPacketSize
-		}else if ( nBufferSize > nPacketSize){
-			this.m_PacketFunc(buff[nCurSize + this.m_PacketLen : nCurSize + nPacketSize])
+		} else if nBufferSize > nPacketSize {
+			this.m_PacketFunc(buff[nCurSize+this.m_PacketLen : nCurSize+nPacketSize])
 			nCurSize += nPacketSize
 			goto ParsePacekt
 		}
-	}else if nBufferSize < this.m_MaxPacketLen{
+	} else if nBufferSize < this.m_MaxPacketLen {
 		this.m_MaxPacketBuffer = buff[nCurSize:]
-	}else{
+	} else {
 		fmt.Println("超出最大包限制，丢弃该包")
 		return false
 	}
@@ -110,11 +110,11 @@ func (this *PacketParser) Write(dat []byte) []byte {
 	// get len
 	msgLen := len(dat)
 	// check len
-	if msgLen  + this.m_PacketLen > base.MAX_PACKET{
+	if msgLen+this.m_PacketLen > base.MAX_PACKET {
 		fmt.Println("write over base.MAX_PACKET")
 	}
 
-	msg := make([]byte, this.m_PacketLen + msgLen)
+	msg := make([]byte, this.m_PacketLen+msgLen)
 	// write len
 	switch this.m_PacketLen {
 	case PACKET_LEN_BYTE:
@@ -135,6 +135,10 @@ func (this *PacketParser) Write(dat []byte) []byte {
 
 	copy(msg[this.m_PacketLen:], dat)
 	return msg
+}
+
+func (this *PacketParser) GetMaxPacketBuffer() []byte {
+	return this.m_MaxPacketBuffer
 }
 
 /*func (this *Socket) ReceivePacket(Id uint32, dat []byte) bool{

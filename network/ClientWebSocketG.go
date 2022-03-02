@@ -12,11 +12,14 @@ import (
 
 type IClientWebSocketG interface {
 	ISocket
+	SetConnw(*websocket.Conn)
 	OnConnected()
 }
 
 type ClientWebSocketG struct {
 	Socket
+
+	m_wConn       *websocket.Conn
 	m_nMaxClients int
 	m_nMinClients int
 
@@ -65,14 +68,14 @@ func (this *ClientWebSocketG) Send(head rpc.RpcHead, buff []byte) int {
 		}
 	}()
 
-	if this.m_Conn == nil {
+	if this.m_wConn == nil {
 		return 0
 	}
 
-	n, err := this.m_Conn.Write(this.m_PacketParser.Write(buff))
+	err := this.m_wConn.WriteMessage(1, this.m_PacketParser.Write(buff))
 	handleError(err)
-	if n > 0 {
-		return n
+	if len(buff) > 0 {
+		return len(buff)
 	}
 	//this.m_Writer.Flush()
 	return 0
@@ -94,7 +97,7 @@ func (this *ClientWebSocketG) Connect() bool {
 		fmt.Printf("连接失败：%s \n", err)
 		return false
 	}
-	this.SetConn(c.UnderlyingConn())
+	this.SetConnw(c)
 	fmt.Printf("%s 连接成功，请输入信息！\n", connectStr)
 	this.CallMsg("COMMON_RegisterRequest")
 	return true
@@ -110,7 +113,7 @@ func (this *ClientWebSocketG) OnNetFail(int) {
 
 func (this *ClientWebSocketG) Run() bool {
 	this.SetState(SSF_RUN)
-	var buff = make([]byte, this.m_ReceiveBufferSize)
+	//var buff = make([]byte, this.m_ReceiveBufferSize)
 	loop := func() bool {
 		defer func() {
 			if err := recover(); err != nil {
@@ -118,13 +121,13 @@ func (this *ClientWebSocketG) Run() bool {
 			}
 		}()
 
-		if this.m_Conn == nil {
+		if this.m_wConn == nil {
 			return false
 		}
 
-		n, err := this.m_Conn.Read(buff)
+		_, buff, err := this.m_wConn.ReadMessage()
 		if err == io.EOF {
-			fmt.Printf("远程链接：%s已经关闭！\n", this.m_Conn.RemoteAddr().String())
+			fmt.Printf("远程链接：%s已经关闭！\n", this.m_wConn.RemoteAddr().String())
 			this.OnNetFail(0)
 			return false
 		}
@@ -133,8 +136,8 @@ func (this *ClientWebSocketG) Run() bool {
 			this.OnNetFail(0)
 			return false
 		}
-		if n > 0 {
-			this.m_PacketParser.Read(buff[:n])
+		if len(buff) > 0 {
+			this.m_PacketParser.Read(buff[:])
 		}
 		return true
 	}
@@ -147,4 +150,8 @@ func (this *ClientWebSocketG) Run() bool {
 
 	this.Close()
 	return true
+}
+
+func (this *ClientWebSocketG) SetConnw(conn *websocket.Conn) {
+	this.m_wConn = conn
 }

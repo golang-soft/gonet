@@ -15,6 +15,7 @@ const (
 	LG_DEBUG LG_TYPE = iota
 	LG_INFO  LG_TYPE = iota
 	LG_ERROR LG_TYPE = iota
+	LG_FATAL LG_TYPE = iota
 	LG_MAX   LG_TYPE = iota
 )
 const (
@@ -92,6 +93,27 @@ func (this *CLog) Debugf(format string, params ...interface{}) {
 	log.Printf("["+this.m_FileName+"][Debug]"+format, params...)
 }
 
+func (this *CLog) Errorf(format string, params ...interface{}) {
+	this.Write(LG_ERROR)
+	format += "\r\n"
+	this.m_Logger[LG_ERROR].Output(2, fmt.Sprintf("["+this.m_FileName+"][Debug]"+format, params...))
+	log.Printf("["+this.m_FileName+"][Debug]"+format, params...)
+}
+
+func (this *CLog) Infof(format string, params ...interface{}) {
+	this.Write(LG_INFO)
+	format += "\r\n"
+	this.m_Logger[LG_INFO].Output(2, fmt.Sprintf("["+this.m_FileName+"][Debug]"+format, params...))
+	log.Printf("["+this.m_FileName+"][Debug]"+format, params...)
+}
+
+func (this *CLog) Warnf(format string, params ...interface{}) {
+	this.Write(LG_WARN)
+	format += "\r\n"
+	this.m_Logger[LG_WARN].Output(2, fmt.Sprintf("["+this.m_FileName+"][Debug]"+format, params...))
+	log.Printf("["+this.m_FileName+"][Debug]"+format, params...)
+}
+
 func (this *CLog) Println(v1 ...interface{}) {
 	this.Write(LG_WARN)
 	params := make([]interface{}, len(v1)+1)
@@ -144,9 +166,9 @@ func (this *CLog) Fatal(v1 ...interface{}) {
 }
 
 func (this *CLog) Fatalf(format string, params ...interface{}) {
-	this.Write(LG_ERROR)
+	this.Write(LG_FATAL)
 	format += "\r\n"
-	this.m_Logger[LG_ERROR].Output(2, fmt.Sprintf(format, params...))
+	this.m_Logger[LG_FATAL].Output(2, fmt.Sprintf(format, params...))
 	log.Printf(format, params...)
 }
 

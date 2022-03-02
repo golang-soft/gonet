@@ -8,6 +8,7 @@ import (
 	"gonet/server/rpc"
 	"io"
 	"net/url"
+	"strconv"
 	"time"
 
 	"github.com/gorilla/websocket"
@@ -144,6 +145,7 @@ func (this *WebSocketClient) Run() bool {
 			this.m_PacketParser.Read(buff[:n])
 		}
 		this.m_HeartTime = int(time.Now().Unix()) + HEART_TIME_OUT
+		base.GLOG.Printf("调整心跳时间: %s", strconv.Itoa(this.m_HeartTime))
 		return true
 	}
 
@@ -204,4 +206,12 @@ func (this *WebSocketClient) Connect() bool {
 
 	fmt.Printf("连接成功：%s\n", this.m_Conn.RemoteAddr().String())
 	return true
+}
+
+func (this *WebSocketClient) SetLastHeardTime(time int) {
+	this.m_HeartTime = time
+}
+
+func (this *WebSocketClient) GetLastHeardTime() int {
+	return this.m_HeartTime
 }

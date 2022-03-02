@@ -212,3 +212,11 @@ func (this *ServerSocketClient) SendLoop() bool {
 
 	return true
 }
+
+func (this *ServerSocketClient) SetLastHeardTime(time int) {
+	this.m_HeartTime = time
+}
+
+func (this *ServerSocketClient) GetLastHeardTime() int {
+	return this.m_HeartTime
+}

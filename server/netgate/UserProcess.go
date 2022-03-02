@@ -11,6 +11,7 @@ import (
 	"gonet/server/common"
 	"gonet/server/rpc"
 	"strings"
+	"time"
 )
 
 var (
@@ -119,6 +120,38 @@ func (this *UserPrcoess) DisconnectClient(stream *base.BitStream, socketid uint3
 	this.SendMsg(rpc.RpcHead{}, "DISCONNECT", socketid)
 }
 
+func (this *UserPrcoess) UpdateHeardTime(socketid uint32) bool {
+	if SERVER.CheckIsWebsocket() {
+		if SERVER.WebsocketModeIsGorilla() {
+			client := SERVER.GetWebSocketServerG().GetClientById(socketid)
+			if client == nil {
+				return true
+			}
+			if client != nil {
+				client.SetLastHeardTime(int(time.Now().Unix()) + network.HEART_TIME_OUT)
+			}
+		} else {
+			client := SERVER.GetWebSocketServer().GetClientById(socketid)
+			if client == nil {
+				return true
+			}
+			if client != nil {
+				client.SetLastHeardTime(int(time.Now().Unix()) + network.HEART_TIME_OUT)
+			}
+		}
+
+	} else {
+		client := SERVER.GetServer().GetClientById(socketid)
+		if client == nil {
+			return true
+		}
+		if client != nil {
+			client.SetLastHeardTime(int(time.Now().Unix()) + network.HEART_TIME_OUT)
+		}
+	}
+	return true
+}
+
 func (this *UserPrcoess) HandleBasicMessage(socketid uint32, packetId uint32, buff []uint8) bool {
 	//客户端主动断开
 	if packetId == network.DISCONNECTINT {
@@ -129,9 +162,14 @@ func (this *UserPrcoess) HandleBasicMessage(socketid uint32, packetId uint32, bu
 	} else if packetId == network.HEART_PACKET {
 		//心跳netsocket做处理，这里不处理
 		SERVER.GetLog().Debugf("网关收到心跳包, %d", packetId)
+
+		if !this.UpdateHeardTime(socketid) {
+			SERVER.GetLog().Errorf("玩家[%d]更新心跳包失败", socketid)
+		}
+
 	} else {
 		//未知的消息
-		SERVER.GetLog().Printf("包解析错误, 未知的消息 socket=%d, packetId = %d", socketid, packetId)
+		SERVER.GetLog().Errorf("包解析错误, 未知的消息 socket=%d, packetId = %d", socketid, packetId)
 	}
 
 	return true

@@ -57,7 +57,7 @@ var (
 	CONF          Config
 	SERVER        ServerMgr
 	IsWebsocket   bool   = true
-	WebsocketMode string = "gorilla" //gorilla 或者 golang
+	WebsocketMode string = "golang" //gorilla 或者 golang
 )
 
 func (this *ServerMgr) GetLog() *base.CLog {
@@ -212,9 +212,12 @@ func (this *ServerMgr) Init() bool {
 			}
 		}
 
-		//websocket 暂时不用
-		//this.InitWebsocket(thiswip, thiswport)
-		this.InitWebsocketG(thiswip, thiswport)
+		if this.WebsocketModeIsGorilla() {
+			this.InitWebsocketG(thiswip, thiswport)
+		} else {
+			this.InitWebsocket(thiswip, thiswport)
+		}
+
 	}
 
 	//注册到集群服务器

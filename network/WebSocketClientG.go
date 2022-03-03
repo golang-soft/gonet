@@ -4,6 +4,7 @@ import (
 	"crypto/tls"
 	"fmt"
 	"gonet/base"
+	"gonet/base/logger"
 	"gonet/common/timer"
 	"gonet/server/rpc"
 	"io"
@@ -20,11 +21,16 @@ type IWebSocketClientG interface {
 
 type WebSocketClientG struct {
 	Socket
-	m_Conn     *websocket.Conn
+	m_wConn    *websocket.Conn
 	m_pServer  *WebSocketG
 	m_SendChan chan []byte //对外缓冲队列
 	m_TimerId  *int64
 }
+
+var (
+	//是否支持心跳超时检测
+	checkHeard bool = false
+)
 
 func (this *WebSocketClientG) Init(ip string, port int, params ...OpOption) bool {
 	this.Socket.Init(ip, port, params...)
@@ -49,10 +55,10 @@ func (this *WebSocketClientG) Start() bool {
 		this.m_PacketFuncList = this.m_pServer.m_PacketFuncList
 	}
 
+	go this.Run()
 	if this.m_nConnectType == CLIENT_CONNECT {
 		go this.SendLoop()
 	}
-	this.Run()
 
 	return true
 }
@@ -73,15 +79,15 @@ func (this *WebSocketClientG) Send(head rpc.RpcHead, buff []byte) int {
 	} else {
 		return this.DoSend(buff)
 	}
-	return 0
+	return len(buff)
 }
 
 func (this *WebSocketClientG) DoSend(buff []byte) int {
-	if this.m_Conn == nil {
+	if this.m_wConn == nil {
 		return 0
 	}
 
-	err := this.m_Conn.WriteMessage(1, this.m_PacketParser.Write(buff))
+	err := this.m_wConn.WriteMessage(websocket.BinaryMessage, this.m_PacketParser.Write(buff))
 	handleError(err)
 	if len(buff) > 0 {
 		return len(buff)
@@ -106,6 +112,14 @@ func (this *WebSocketClientG) OnNetFail(error int) {
 	}
 }
 
+func (this *WebSocketClientG) OnNetClose() {
+	err := this.m_wConn.WriteMessage(websocket.CloseMessage, websocket.FormatCloseMessage(websocket.CloseNormalClosure, ""))
+	if err != nil {
+		logger.Error("write close error : %v", err)
+		return
+	}
+}
+
 func (this *WebSocketClientG) Close() {
 	if this.m_nConnectType == CLIENT_CONNECT {
 		//close(this.m_SendChan)
@@ -127,18 +141,24 @@ func (this *WebSocketClientG) Run() bool {
 			}
 		}()
 
-		if this.m_Conn == nil {
+		if this.m_wConn == nil {
 			return false
 		}
 
-		_, buff, err := this.m_Conn.ReadMessage()
+		_, buff, err := this.m_wConn.ReadMessage()
 		if err == io.EOF {
-			fmt.Printf("远程链接：%s已经关闭！\n", this.m_Conn.RemoteAddr().String())
+			fmt.Printf("远程链接：%s已经关闭！\n", this.m_wConn.RemoteAddr().String())
+			this.OnNetFail(0)
+			return false
+		}
+		if err == io.ErrUnexpectedEOF {
+			fmt.Printf("远程链接：%s已经关闭！\n", this.m_wConn.RemoteAddr().String())
 			this.OnNetFail(0)
 			return false
 		}
 		if err != nil {
 			handleError(err)
+			this.OnNetClose()
 			this.OnNetFail(0)
 			return false
 		}
@@ -164,7 +184,7 @@ func (this *WebSocketClientG) Run() bool {
 // heart
 func (this *WebSocketClientG) Update() bool {
 	now := int(time.Now().Unix())
-	if this.m_HeartTime > 0 && this.m_HeartTime < now {
+	if this.m_HeartTime > 0 && this.m_HeartTime < now && checkHeard {
 		this.OnNetFail(2)
 		return false
 	}
@@ -204,14 +224,14 @@ func (this *WebSocketClientG) Connect() bool {
 		return false
 	}
 
-	this.m_Conn = c
+	this.SetConn(c)
 
-	fmt.Printf("连接成功：%s\n", this.m_Conn.RemoteAddr().String())
+	fmt.Printf("连接成功：%s\n", this.m_wConn.RemoteAddr().String())
 	return true
 }
 
 func (this *WebSocketClientG) SetConn(conn *websocket.Conn) {
-	this.m_Conn = conn
+	this.m_wConn = conn
 }
 
 func (this *WebSocketClientG) SetLastHeardTime(time int) {

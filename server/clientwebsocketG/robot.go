@@ -95,6 +95,12 @@ func (robot *Robot) OnConnected() {
 }
 
 func (robot *Robot) Do() {
+
+	AttackEvent := eventmanager.GetEvent("AttackEvent")
+	if AttackEvent != nil {
+		(*AttackEvent).SendEvent(AttackEvent, robot.eventProcess)
+	}
+
 	if robot.status == ROBOT_PLAYING {
 		PingEvent := eventmanager.GetEvent("PingEvent")
 		if PingEvent != nil {

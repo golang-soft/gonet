@@ -138,7 +138,7 @@ func (this *WebSocketG) LoadClient() *WebSocketClientG {
 func (this *WebSocketG) Send(head rpc.RpcHead, buff []byte) int {
 	pClient := this.GetClientById(head.SocketId)
 	if pClient != nil {
-		pClient.Send(head, buff)
+		return pClient.Send(head, buff)
 	}
 	return 0
 }

@@ -10,6 +10,7 @@ import (
 	"gonet/server/cmessage"
 	"gonet/server/common"
 	"gonet/server/rpc"
+	"log"
 	"strings"
 	"time"
 )
@@ -328,6 +329,7 @@ func (this *UserPrcoess) Init() {
 	})
 
 	this.RegisterCall("DISCONNECT", func(ctx context.Context, socketid uint32) {
+		log.Println("DISCONNECT")
 		this.delKey(socketid)
 	})
 
@@ -348,9 +350,11 @@ func (this *UserPrcoess) Init() {
 	})
 
 	this.RegisterCall("AttackReq", func(ctx context.Context, packet *cmessage.AttackReq) {
+		logger.Debug("")
+
 		head := this.GetRpcHead(ctx)
 		SendToClient(head.SocketId, &cmessage.AttackResp{PacketHead: common.BuildPacketHead(cmessage.MessageID_MSG_AttackResp, rpc.SERVICE_NONE)})
-		this.SwtichSendToWorld(head.SocketId, base.ToLower("AttackReq"), head, grpc.Marshal(head, base.ToLower("AttackReq"), packet))
+		//this.SwtichSendToWorld(head.SocketId, base.ToLower("AttackReq"), head, grpc.Marshal(head, base.ToLower("AttackReq"), packet))
 	})
 
 	this.RegisterCall("GameTimeReq", func(ctx context.Context, packet *cmessage.GameTimeReq) {

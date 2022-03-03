@@ -161,7 +161,7 @@ func Init() {
 	RegisterPacket2(&cmessage.C_W_Game_LoginRequset{PacketHead: BuildPacketHead(0, rpc.SERVICE_WORLDSERVER)}, rpc.SERVICE_WORLDSERVER)
 	RegisterPacket2(&cmessage.W_C_Test{PacketHead: BuildPacketHead(0, rpc.SERVICE_GATESERVER)}, rpc.SERVICE_GATESERVER)
 	RegisterPacket2(&cmessage.C_W_ChatMessage{PacketHead: BuildPacketHead(0, rpc.SERVICE_WORLDSERVER)}, rpc.SERVICE_WORLDSERVER)
-	RegisterPacket2(&cmessage.AttackReq{PacketHead: BuildPacketHead(0, rpc.SERVICE_WORLDSERVER)}, rpc.SERVICE_WORLDSERVER)
+	RegisterPacket2(&cmessage.AttackReq{PacketHead: BuildPacketHead(0, rpc.SERVICE_GATESERVER)}, rpc.SERVICE_GATESERVER)
 	//RegisterPacket2(&cmessage.HeartPacket{PacketHead: BuildPacketHead(0, rpc.SERVICE_GATESERVER)}, rpc.SERVICE_GATESERVER)
 
 	RegisterPacket2(&cmessage.C_Z_LoginCopyMap{PacketHead: BuildPacketHead(0, rpc.SERVICE_ZONESERVER)}, rpc.SERVICE_ZONESERVER)
@@ -182,4 +182,5 @@ func InitClient() {
 	RegisterPacket2(&cmessage.A_C_RegisterResponse{}, rpc.SERVICE_GATESERVER)
 	RegisterPacket2(&cmessage.G_C_LoginResponse{}, rpc.SERVICE_GATESERVER)
 	RegisterPacket2(&cmessage.C_W_Game_LoginResponse{}, rpc.SERVICE_GATESERVER)
+	RegisterPacket2(&cmessage.AttackResp{}, rpc.SERVICE_GATESERVER)
 }

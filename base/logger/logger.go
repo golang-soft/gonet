@@ -67,3 +67,7 @@ func Notice(v ...interface{}) {
 func Debug(v ...interface{}) {
 	log.Debug(getLogMsg(v))
 }
+
+func Fatalf(v ...interface{}) {
+	log.Trace(getLogMsg(v))
+}

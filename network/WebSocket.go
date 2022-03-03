@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"gonet/server/rpc"
 
-	//"github.com/gorilla/websocket"
 	"golang.org/x/net/websocket"
 	"gonet/grpc"
 	"log"

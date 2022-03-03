@@ -78,9 +78,8 @@ func (this *PacketParser) readLen(buff []byte) (bool, int) {
 }
 
 func (this *PacketParser) Read(dat []byte) bool {
-	this.m_MaxPacketBuffer = []byte{}
 	buff := append(this.m_MaxPacketBuffer, dat...)
-
+	this.m_MaxPacketBuffer = []byte{}
 	nCurSize := 0
 	//fmt.Println(this.m_MaxPacketBuffer)
 ParsePacekt:

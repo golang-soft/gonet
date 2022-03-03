@@ -4,7 +4,6 @@ import (
 	"crypto/tls"
 	"fmt"
 	"gonet/base"
-	"gonet/base/logger"
 	"gonet/common/timer"
 	"gonet/server/rpc"
 	"io"
@@ -115,7 +114,7 @@ func (this *WebSocketClientG) OnNetFail(error int) {
 func (this *WebSocketClientG) OnNetClose() {
 	err := this.m_wConn.WriteMessage(websocket.CloseMessage, websocket.FormatCloseMessage(websocket.CloseNormalClosure, ""))
 	if err != nil {
-		logger.Error("write close error : %v", err)
+		m_Log.Errorf("write close error : %v", err)
 		return
 	}
 }

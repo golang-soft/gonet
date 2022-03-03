@@ -6,6 +6,7 @@ import (
 	"github.com/nats-io/nats.go"
 	"gonet/actor"
 	"gonet/base"
+	"gonet/base/logger"
 	"gonet/base/vector"
 	"gonet/common"
 	"gonet/grpc"
@@ -89,12 +90,12 @@ func (this *Cluster) Init(info *common.ClusterInfo, Endpoints []string, natsUrl 
 		this.m_DieChan,
 	)
 	if err != nil {
-		base.GLOG.Fatalln("nats connect error!!!!")
+		logger.Fatalf("nats connect error!!!!")
 	}
 	this.m_Conn = conn
-	base.GLOG.Debugf(">>>>>>>>>>>>>>>>>>>>>>>>>>>> 订阅 : %s", getChannel(*info))
-	base.GLOG.Debugf(">>>>>>>>>>>>>>>>>>>>>>>>>>>> 订阅 : %s", getTopicChannel(*info))
-	base.GLOG.Debugf(">>>>>>>>>>>>>>>>>>>>>>>>>>>> 订阅 : %s", getCallChannel(*info))
+	logger.Debugf(">>>>>>>>>>>>>>>>>>>>>>>>>>>> 订阅 : %s", getChannel(*info))
+	logger.Debugf(">>>>>>>>>>>>>>>>>>>>>>>>>>>> 订阅 : %s", getTopicChannel(*info))
+	logger.Debugf(">>>>>>>>>>>>>>>>>>>>>>>>>>>> 订阅 : %s", getCallChannel(*info))
 
 	this.m_Conn.Subscribe(getChannel(*info), func(msg *nats.Msg) {
 		this.HandlePacket(rpc.Packet{Buff: msg.Data})

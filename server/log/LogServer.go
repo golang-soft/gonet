@@ -84,7 +84,7 @@ func (this *ServerMgr) Init() bool {
 	this.InitConfig(&CONF)
 
 	ShowMessage := func() {
-		this.m_Log.Debug("**********************************************************")
+		this.m_Log.Debugf("**********************************************************")
 		this.m_Log.Debugf("\tServer Version:\t%s", base.BUILD_NO)
 		this.m_Log.Debugf("\tLogServerIP(LAN):\t%s:%d", CONF.Server.Ip, CONF.Server.Port)
 		this.m_Log.Debugf("\tEnv:\t\t%s", system.Args.Env)

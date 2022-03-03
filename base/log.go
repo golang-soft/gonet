@@ -56,11 +56,12 @@ func (this *CLog) Init(fileName string) bool {
 	this.m_LogSuffix = "log"
 	this.m_ErrSuffix = "err"
 	GLOG = this
+	//logger.InitLog(this)
 	return true
 }
 
 func (this *CLog) GetSuffix(nType LG_TYPE) string {
-	if nType == LG_WARN {
+	if nType <= LG_MAX {
 		return this.m_LogSuffix
 	} else {
 		return this.m_ErrSuffix
@@ -75,42 +76,78 @@ func (this *CLog) Write(nType LG_TYPE) {
 }
 
 func (this *CLog) Debug(v1 ...interface{}) {
-	this.Write(LG_WARN)
+	this.Write(LG_DEBUG)
 	params := make([]interface{}, len(v1)+2)
 	params[0] = "[" + this.m_FileName + "][Debug]"
 	for i, v := range v1 {
 		params[i+1] = v
 	}
 	params[len(v1)+1] = "\r"
-	this.m_Logger[LG_WARN].Output(2, "["+this.m_FileName+"][Debug]"+fmt.Sprintln(params...))
+	this.m_Logger[LG_DEBUG].Output(2, "["+this.m_FileName+"][Debug]"+fmt.Sprintln(params...))
+	log.Println(params...)
+}
+
+func (this *CLog) Info(v1 ...interface{}) {
+	this.Write(LG_INFO)
+	params := make([]interface{}, len(v1)+2)
+	params[0] = "[" + this.m_FileName + "][Info]"
+	for i, v := range v1 {
+		params[i+1] = v
+	}
+	params[len(v1)+1] = "\r"
+	this.m_Logger[LG_INFO].Output(2, "["+this.m_FileName+"][Info]"+fmt.Sprintln(params...))
 	log.Println(params...)
 }
 
 func (this *CLog) Debugf(format string, params ...interface{}) {
-	this.Write(LG_WARN)
+	this.Write(LG_DEBUG)
 	format += "\r\n"
-	this.m_Logger[LG_WARN].Output(2, fmt.Sprintf("["+this.m_FileName+"][Debug]"+format, params...))
+	this.m_Logger[LG_DEBUG].Output(2, fmt.Sprintf("["+this.m_FileName+"][Debug]"+format, params...))
 	log.Printf("["+this.m_FileName+"][Debug]"+format, params...)
+}
+
+func (this *CLog) Error(v1 ...interface{}) {
+	this.Write(LG_ERROR)
+	params := make([]interface{}, len(v1)+2)
+	params[0] = "[" + this.m_FileName + "][Error]"
+	for i, v := range v1 {
+		params[i+1] = v
+	}
+	params[len(v1)+1] = "\r"
+	this.m_Logger[LG_ERROR].Output(2, "["+this.m_FileName+"][Error]"+fmt.Sprintln(params...))
+	log.Println(params...)
 }
 
 func (this *CLog) Errorf(format string, params ...interface{}) {
 	this.Write(LG_ERROR)
 	format += "\r\n"
-	this.m_Logger[LG_ERROR].Output(2, fmt.Sprintf("["+this.m_FileName+"][Debug]"+format, params...))
+	this.m_Logger[LG_ERROR].Output(2, fmt.Sprintf("["+this.m_FileName+"][Error]"+format, params...))
 	log.Printf("["+this.m_FileName+"][Debug]"+format, params...)
 }
 
 func (this *CLog) Infof(format string, params ...interface{}) {
 	this.Write(LG_INFO)
 	format += "\r\n"
-	this.m_Logger[LG_INFO].Output(2, fmt.Sprintf("["+this.m_FileName+"][Debug]"+format, params...))
+	this.m_Logger[LG_INFO].Output(2, fmt.Sprintf("["+this.m_FileName+"][Info]"+format, params...))
 	log.Printf("["+this.m_FileName+"][Debug]"+format, params...)
+}
+
+func (this *CLog) Warn(v1 ...interface{}) {
+	this.Write(LG_WARN)
+	params := make([]interface{}, len(v1)+2)
+	params[0] = "[" + this.m_FileName + "][Warn]"
+	for i, v := range v1 {
+		params[i+1] = v
+	}
+	params[len(v1)+1] = "\r"
+	this.m_Logger[LG_WARN].Output(2, "["+this.m_FileName+"][Warn]"+fmt.Sprintln(params...))
+	log.Println(params...)
 }
 
 func (this *CLog) Warnf(format string, params ...interface{}) {
 	this.Write(LG_WARN)
 	format += "\r\n"
-	this.m_Logger[LG_WARN].Output(2, fmt.Sprintf("["+this.m_FileName+"][Debug]"+format, params...))
+	this.m_Logger[LG_WARN].Output(2, fmt.Sprintf("["+this.m_FileName+"][Warn]"+format, params...))
 	log.Printf("["+this.m_FileName+"][Debug]"+format, params...)
 }
 

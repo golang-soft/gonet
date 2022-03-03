@@ -1,73 +1,37 @@
 package logger
 
 import (
-	"fmt"
-	"gonet/base/system"
-	"strings"
-
-	"github.com/astaxie/beego/logs"
+	"gonet/base"
 )
 
-var (
-	prefix = "log"
-	log    = logs.GetBeeLogger()
-)
-
-func init() {
-	logs.Async(10000)
+func Debug(v ...interface{}) {
+	base.GLOG.Debug(v...)
 }
-
-func SetLogDebug(debug bool) {
-	if debug {
-		logs.SetLevel(logs.LevelDebug)
-	} else {
-		logs.SetLevel(logs.LevelInfo)
-	}
+func Debugf(f string, v ...interface{}) {
+	base.GLOG.Debugf(f, v...)
 }
-
-func SetLogFile(fileName string, log_output string) {
-	prefix = fileName
-	startLogger(fileName+".log", log_output)
+func Info(v ...interface{}) {
+	base.GLOG.Info(v...)
 }
-
-func startLogger(path string, log_output string) {
-	path = system.Root + "/logs/" + path
-
-	switch log_output {
-	case "both":
-		logs.SetLogger("console", "")
-	case "file":
-		logs.SetLogger("file", `{"filename":"`+path+`"}`)
-	case "both&file":
-		logs.SetLogger("console", "")
-		logs.SetLogger("file", `{"filename":"`+path+`"}`)
-	}
+func Infof(f string, v ...interface{}) {
+	base.GLOG.Infof(f, v...)
 }
-
-func getLogMsg(v ...interface{}) string {
-	return "[" + prefix + "] " + strings.TrimRight(fmt.Sprintln(v...), "\n")
+func Warn(v ...interface{}) {
+	base.GLOG.Warn(v...)
+}
+func Warnf(f string, v ...interface{}) {
+	base.GLOG.Warnf(f, v...)
 }
 
 func Error(v ...interface{}) {
-	log.Error(getLogMsg(v))
+	base.GLOG.Error(v...)
 }
-
-func Warn(v ...interface{}) {
-	log.Warn(getLogMsg(v))
+func Errorf(f string, v ...interface{}) {
+	base.GLOG.Errorf(f, v...)
 }
-
-func Info(v ...interface{}) {
-	log.Info(getLogMsg(v))
+func Fatal(v ...interface{}) {
+	base.GLOG.Fatal(v...)
 }
-
-func Notice(v ...interface{}) {
-	log.Notice(getLogMsg(v))
-}
-
-func Debug(v ...interface{}) {
-	log.Debug(getLogMsg(v))
-}
-
-func Fatalf(v ...interface{}) {
-	log.Trace(getLogMsg(v))
+func Fatalf(f string, v ...interface{}) {
+	base.GLOG.Fatalf(f, v...)
 }

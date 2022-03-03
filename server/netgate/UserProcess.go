@@ -4,7 +4,6 @@ import (
 	"context"
 	"gonet/actor"
 	"gonet/base"
-	"gonet/base/logger"
 	"gonet/grpc"
 	"gonet/network"
 	"gonet/server/cmessage"
@@ -324,7 +323,7 @@ func (this *UserPrcoess) Init() {
 				SERVER.GetLog().Println("client key cheat", dh.ShareKey(), packet.GetKey())
 			}
 		} else {
-			logger.Debug("找不到對應的客戶端 socketid : %d", head.SocketId)
+			SERVER.GetLog().Debugf("找不到對應的客戶端 socketid : %d", head.SocketId)
 		}
 	})
 
@@ -335,7 +334,7 @@ func (this *UserPrcoess) Init() {
 
 	this.RegisterCall("HeartPacket", func(ctx context.Context, packet *cmessage.W_C_Test) {
 		head := this.GetRpcHead(ctx)
-		logger.Debug(head)
+		SERVER.GetLog().Debug(head)
 	})
 
 	this.RegisterCall("W_C_Test", func(ctx context.Context, packet *cmessage.W_C_Test) {
@@ -350,7 +349,6 @@ func (this *UserPrcoess) Init() {
 	})
 
 	this.RegisterCall("AttackReq", func(ctx context.Context, packet *cmessage.AttackReq) {
-		logger.Debug("")
 
 		head := this.GetRpcHead(ctx)
 		SendToClient(head.SocketId, &cmessage.AttackResp{PacketHead: common.BuildPacketHead(cmessage.MessageID_MSG_AttackResp, rpc.SERVICE_NONE), Hp: 9999})

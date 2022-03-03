@@ -32,5 +32,5 @@ gonet核心思想是actor模式,消息驱动,采用无锁队列mailbox替换chan
 ##### smessage 服务器内部协议， 支持protobuf 
 ##### xconf 统一配置中心，暂时不支持，没有实现
 # 服务器架构如下：
-![image](框架.jpg)
+![image](新框架图.jpg)
 

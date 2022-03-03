@@ -1,9 +1,9 @@
 package common
 
 import (
-	"github.com/golang/glog"
 	"github.com/golang/protobuf/proto"
 	"gonet/base"
+	"gonet/base/logger"
 	"gonet/server/cmessage"
 	"gonet/server/rpc"
 	"google.golang.org/protobuf/reflect/protoreflect"
@@ -75,7 +75,7 @@ func RegisterPacket(packet proto.Message) {
 
 	Packet_CreateFactorStringMap[packetName] = packetFunc
 	Packet_CreateFactorMap[base.GetMessageCode1(packetName)] = packetFunc
-	glog.Infof("注册协议 %s %v", packetName, base.GetMessageCode1(packetName))
+	logger.Infof("注册协议 %s %d", packetName, base.GetMessageCode1(packetName))
 }
 
 func RegisterPacket2(packet proto.Message, destservertype rpc.SERVICE) {
@@ -94,7 +94,7 @@ func RegisterPacket2(packet proto.Message, destservertype rpc.SERVICE) {
 	Packet_CreateFactorMap[base.GetMessageCode1(packetName)] = packetFunc
 	Packet_CrcDestMap[base.GetMessageCode1(packetName)] = destservertype
 
-	glog.Infof("注册协议 %s %v", packetName, base.GetMessageCode1(packetName))
+	logger.Infof("注册协议 %s %d", packetName, base.GetMessageCode1(packetName))
 }
 
 func GetPakcet(packetId uint32) proto.Message {

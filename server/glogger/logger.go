@@ -1,5 +1,7 @@
 package glogger
 
-import "gonet/base"
+import (
+	"gonet/base"
+)
 
 var M_Log base.CLog

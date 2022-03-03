@@ -3,7 +3,6 @@ package network
 import (
 	"fmt"
 	"gonet/base"
-	"gonet/base/logger"
 	"gonet/common/timer"
 	"gonet/server/rpc"
 	"io"
@@ -11,6 +10,10 @@ import (
 	"time"
 
 	"golang.org/x/net/websocket"
+)
+
+var (
+	m_Log base.CLog
 )
 
 type IWebSocketClient interface {
@@ -195,7 +198,7 @@ func (this *WebSocketClient) Connect() bool {
 	httphost := "http://" + host + "/"
 	ws, err := websocket.Dial(wshost, "", httphost)
 	if err != nil {
-		logger.Fatalf(err)
+		m_Log.Fatal("%v", err)
 	}
 	this.SetConn(ws)
 

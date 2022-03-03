@@ -3,7 +3,6 @@ package network
 import (
 	"flag"
 	"fmt"
-	"gonet/base/logger"
 	"gonet/server/rpc"
 
 	"github.com/gorilla/websocket"
@@ -199,7 +198,7 @@ func (this *WebSocketG) wserverRoutine2(w http.ResponseWriter, r *http.Request) 
 	)
 	if conn, err = upgrader.Upgrade(w, r, nil); err != nil {
 		//报错了，直接返回底层的websocket链接就会终断掉
-		logger.Debug("error[%v]", err)
+		m_Log.Debugf("error[%v]", err)
 		return
 	}
 	//type SS struct {

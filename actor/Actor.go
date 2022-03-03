@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"gonet/base"
+	"gonet/base/logger"
 	"gonet/base/mpsc"
 	"gonet/common/timer"
 	"gonet/grpc"
@@ -167,7 +168,7 @@ func (this *Actor) RegisterCall(funcName string, call interface{}) {
 	}
 
 	callfunc := &CallFunc{Func: call, FuncVal: reflect.ValueOf(call), FuncType: reflect.TypeOf(call), FuncParams: reflect.TypeOf(call).String()}
-	log.Printf("注册协议 %s", funcName)
+	logger.Debugf("注册协议 %s", funcName)
 	this.m_CallMap[funcName] = callfunc
 }
 

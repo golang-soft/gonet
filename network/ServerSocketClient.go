@@ -55,9 +55,9 @@ func (this *ServerSocketClient) Start() bool {
 		this.m_SendChan = make(chan []byte, MAX_SEND_CHAN)
 		this.m_TimerId = new(int64)
 		*this.m_TimerId = int64(this.m_ClientId)
-		//timer.RegisterTimer(this.m_TimerId, (HEART_TIME_OUT)*time.Second, func() {
-		//	this.Update()
-		//})
+		timer.RegisterTimer(this.m_TimerId, (HEART_TIME_OUT)*time.Second, func() {
+			this.Update()
+		})
 	}
 
 	if this.m_PacketFuncList.Len() == 0 {

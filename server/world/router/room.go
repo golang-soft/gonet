@@ -45,12 +45,12 @@ func ROOM_CTEATE(socket socket.Socket, param param.RoomParam) {
 	}
 
 	if name == "" {
-		logger.Error("error error_name")
+		logger.Errorf("error error_name")
 		socket.Emit(USER_EVENT.ERROR.ERROR, &cmessage.ErrorResp{Code: int32(common.ErrorCode.Error_name)})
 		return
 	}
 	if !Includes(datafnc.Hero_Role_Type, role) {
-		logger.Error("error role")
+		logger.Errorf("error role")
 		socket.Emit(USER_EVENT.ERROR.ERROR, &cmessage.ErrorResp{Code: int32(common.ErrorCode.Not_hero)})
 		return
 	}
@@ -79,14 +79,14 @@ func ROOM_JOIN(socket socket.Socket, param param.RoomParam) {
 	var hero_id = param.HeroId
 
 	if socket.Data.RoomId != 0 {
-		logger.Error("has room")
+		logger.Errorf("has room")
 		socket.Emit(USER_EVENT.ERROR.ERROR, &cmessage.ErrorResp{Code: int32(common.ErrorCode.Already_in)})
 		return
 	}
 
 	//const { user, room_id, hero_id, pwd, role } = data
 	if !Includes(datafnc.Hero_Role_Type, role) {
-		logger.Error("error role")
+		logger.Errorf("error role")
 		socket.Emit(USER_EVENT.ERROR.ERROR, &cmessage.ErrorResp{Code: int32(common.ErrorCode.Not_hero)})
 		return
 	}
@@ -127,12 +127,12 @@ func ROOM_JOIN_QUICK(socket socket.Socket, param param.RoomParam) {
 	var role = param.Role
 
 	if socket.Data.RoomId != 0 {
-		logger.Error("has room")
+		logger.Errorf("has room")
 		socket.Emit(USER_EVENT.ERROR.ERROR, &cmessage.ErrorResp{Code: int32(common.ErrorCode.Already_in)})
 		return
 	}
 	if !Includes(datafnc.Hero_Role_Type, role) {
-		logger.Error("error role")
+		logger.Errorf("error role")
 		socket.Emit(USER_EVENT.ERROR.ERROR, &cmessage.ErrorResp{Code: int32(common.ErrorCode.Not_hero)})
 		return
 	}
@@ -154,7 +154,7 @@ func ROOM_LEAVE(socket socket.Socket, param param.RoomParam) {
 	var user = param.User
 
 	if socket.Data.RoomId == 0 {
-		logger.Error("no room")
+		logger.Errorf("no room")
 		socket.Emit(USER_EVENT.ERROR.ERROR, &cmessage.ErrorResp{Code: int32(common.ErrorCode.No_room)})
 		return
 	}
@@ -194,7 +194,7 @@ func ROOM_MATCH(socket socket.Socket, param param.RoomParam) {
 	//const { user, room_id } = data
 	var roomData = gamedata.RoomCtrl.GetRoomById(room_id)
 	if socket.Data.RoomId == 0 || roomData == nil || roomData.OwnerId != user {
-		logger.Error("no room")
+		logger.Errorf("no room")
 		socket.Emit(USER_EVENT.ERROR.ERROR, &cmessage.ErrorResp{Code: int32(common.ErrorCode.Not_owner)})
 		return
 	}

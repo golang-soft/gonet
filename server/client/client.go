@@ -34,9 +34,8 @@ var (
 )
 
 func main() {
-	common2.InitClient()
-
 	m_Log.Init("client")
+	common2.InitClient()
 
 	//base.ReadConf("D:\\workspace-go\\gonet\\server\\client\\gonet.yaml", &CONF)
 	config.Init(system.Args.Env, &CONF)

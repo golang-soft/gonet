@@ -7,3 +7,5 @@ docker build -f Dockerfile_all  -t all . && docker run -d -p 31500:31500 31599:3
 ::docker run -d -p 0.0.0.0:3100:3100 -p 0.0.0.0:8081:8081 --name allserver all
 docker run -d -P --name allserver all
 pause
+
+::docker run -d -p 0.0.0.0:3100:3100 --name allserver  --network=allserver-net   all

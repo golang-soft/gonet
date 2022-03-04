@@ -352,7 +352,7 @@ func (this *UserPrcoess) Init() {
 
 		head := this.GetRpcHead(ctx)
 		SendToClient(head.SocketId, &cmessage.AttackResp{PacketHead: common.BuildPacketHead(cmessage.MessageID_MSG_AttackResp, rpc.SERVICE_NONE), Hp: 9999})
-		//this.SwtichSendToWorld(head.SocketId, base.ToLower("AttackReq"), head, grpc.Marshal(head, base.ToLower("AttackReq"), packet))
+		this.SwtichSendToWorld(head.SocketId, base.ToLower("AttackReq"), head, grpc.Marshal(head, base.ToLower("AttackReq"), packet))
 	})
 
 	this.RegisterCall("GameTimeReq", func(ctx context.Context, packet *cmessage.GameTimeReq) {

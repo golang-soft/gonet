@@ -37,7 +37,7 @@ type UserParam struct {
 	X         float64
 	Y         float64
 	Z         float64
-	Speed     float32
+	Speed     float64
 	Direction float64
 	Barrier   int32
 	Pos       data.Pos

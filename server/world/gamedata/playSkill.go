@@ -19,17 +19,17 @@ func Skill(attack data.AttackData) bool {
 	atkTimes := skillCfg.Last_Time
 	if atkTimes != 0 && atkTimes >= 1 {
 		for index := 0; index < atkTimes; index++ {
-			deBattleDelay(attack, int64(index+1))
+			DeBattleDelay(attack, int64(index+1))
 		}
 	} else {
-		deBattleImmed(attack)
+		DeBattleImmed(attack)
 	}
 	return true
 }
 
 const skill_interval = 1000
 
-func deBattleDelay(attack data.AttackData, time int64) {
+func DeBattleDelay(attack data.AttackData, time int64) {
 	switch attack.SkillId {
 	case int32(common.Skill.Skill_1101):
 		setTimeout(skill_1101, time*skill_interval, attack)
@@ -123,7 +123,7 @@ func RegisterTimer2(duration time.Duration, fun func(attack *data.AttackData, da
 }
 
 //瞬发
-func deBattleImmed(attack data.AttackData) {
+func DeBattleImmed(attack data.AttackData) {
 	switch attack.SkillId {
 	case int32((common.Skill.Skill_1101)):
 		// setTimeout(skill_1101, time * skill_interval, attack, fromAttr)

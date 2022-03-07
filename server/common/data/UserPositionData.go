@@ -3,7 +3,7 @@ package data
 type UserPositionData struct {
 	X             float64
 	Y             float64
-	Speed         float32
+	Speed         float64
 	ReduceSpeedTs int64
 	Dizzy         int32
 	DizzyTs       int64

@@ -7,6 +7,7 @@ import (
 	"gonet/server/world/gamedata"
 	"gonet/server/world/helper"
 	"gonet/server/world/param"
+	"gonet/server/world/public"
 	"gonet/server/world/sender"
 	"gonet/server/world/socket"
 )
@@ -16,7 +17,7 @@ func LOGIN(socket socket.Socket, param param.UserParam) {
 	var user = param.User
 	var heroId = param.HeroId
 	//logger.Debug("LOGIN: ", JSON.stringify(data))
-	socket.Emit(USER_EVENT.USER.LOGIN, &cmessage.LoginResp{
+	socket.Emit(public.USER_EVENT.USER.LOGIN, &cmessage.LoginResp{
 		User:   user,
 		HeroId: heroId,
 	})
@@ -37,7 +38,7 @@ func MOVING(socket socket.Socket, param param.UserParam) {
 	//const { user, round, role, part, roomId } = socket.data
 	////TODO:判断比赛时长
 	////TODO:倒计时不能行动
-	var funcName = USER_EVENT.USER.MOVING
+	var funcName = public.USER_EVENT.USER.MOVING
 	var userInfo = gamedata.GGame.GetUserById(round, user)
 	if userInfo == nil {
 		return
@@ -61,7 +62,7 @@ func MOVING(socket socket.Socket, param param.UserParam) {
 		Direction: direction,
 		SkillId:   skillId,
 	})
-	gamedata.GvgBattleBroadcastAll(USER_EVENT.USER.MOVING,
+	gamedata.GvgBattleBroadcastAll(public.USER_EVENT.USER.MOVING,
 		round, &cmessage.MovingResp{
 			Speed:         realSpeed,
 			ReduceSpeedTs: 0,
@@ -80,7 +81,7 @@ func MOVING(socket socket.Socket, param param.UserParam) {
 func JUMP(socket socket.Socket, param param.UserParam) {
 	var user = param.User
 	var round = param.Round
-	gamedata.GvgBattleBroadcastAll(USER_EVENT.USER.JUMP, round, &cmessage.JumpResp{
+	gamedata.GvgBattleBroadcastAll(public.USER_EVENT.USER.JUMP, round, &cmessage.JumpResp{
 		User:       user,
 		PacketHead: common.BuildPacketHead(cmessage.MessageID(cmessage.MessageID_MSG_JumpResp), 0),
 	})
@@ -100,7 +101,7 @@ func ATTACK(socket socket.Socket, param param.UserParam) {
 	var skillId = param.SkillId
 
 	var mode = common.Mode.Skill
-	var funcName = USER_EVENT.USER.ATTACK
+	var funcName = public.USER_EVENT.USER.ATTACK
 
 	sender.AddAttackTask(data.AttackData{
 		From:     user,
@@ -124,7 +125,7 @@ func FLAG(socket socket.Socket, param param.UserParam) {
 	var round = param.Round
 	var itemId = param.ItemId
 	var mode = common.Mode.Map
-	var funcName = USER_EVENT.USER.FLAG
+	var funcName = public.USER_EVENT.USER.FLAG
 
 	sender.AddAttackTask(data.AttackData{
 		From:     user,
@@ -172,7 +173,7 @@ func USE_ITEM(socket socket.Socket, param param.UserParam) {
 	var round = param.Round
 
 	var mode = common.Mode.Item
-	var funcName = USER_EVENT.USER.USE_ITEM
+	var funcName = public.USER_EVENT.USER.USE_ITEM
 	sender.AddAttackTask(data.AttackData{
 		From:     user,
 		Msg:      msg,
@@ -192,7 +193,7 @@ func GAME_END(socket socket.Socket, param param.UserParam) {
 	var round = param.Round
 
 	var mode = common.Mode.Item
-	var funcName = USER_EVENT.USER.USE_ITEM
+	var funcName = public.USER_EVENT.USER.USE_ITEM
 	sender.AddAttackTask(data.AttackData{
 		From:     user,
 		Msg:      msg,
@@ -206,19 +207,19 @@ func GAME_END(socket socket.Socket, param param.UserParam) {
 
 func HandleUser(socket socket.Socket) {
 
-	socket.On(USER_EVENT.USER.LOGIN, LOGIN)
+	socket.On(public.USER_EVENT.USER.LOGIN, LOGIN)
 
-	socket.On(USER_EVENT.USER.MOVING, MOVING)
+	socket.On(public.USER_EVENT.USER.MOVING, MOVING)
 
-	socket.On(USER_EVENT.USER.JUMP, JUMP)
+	socket.On(public.USER_EVENT.USER.JUMP, JUMP)
 
-	socket.On(USER_EVENT.USER.ATTACK, ATTACK)
+	socket.On(public.USER_EVENT.USER.ATTACK, ATTACK)
 
-	socket.On(USER_EVENT.USER.FLAG, FLAG)
+	socket.On(public.USER_EVENT.USER.FLAG, FLAG)
 
-	socket.On(USER_EVENT.USER.RELIVE, RELIVE)
+	socket.On(public.USER_EVENT.USER.RELIVE, RELIVE)
 
-	socket.On(USER_EVENT.USER.USE_ITEM, USE_ITEM)
+	socket.On(public.USER_EVENT.USER.USE_ITEM, USE_ITEM)
 
-	socket.On(USER_EVENT.GLOBAL.GAME_END, GAME_END)
+	socket.On(public.USER_EVENT.GLOBAL.GAME_END, GAME_END)
 }

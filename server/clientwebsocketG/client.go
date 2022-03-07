@@ -57,12 +57,15 @@ func main() {
 		//index := this.GetIndex(this.m_pCluster.GetService().IpString())
 		res := service.CheckExist(&common.ClusterInfo{Type: rpc.SERVICE_GATESERVER, Ip: ip, Port: int32(port)}, CONF.Etcd.Endpoints)
 		if !res {
+			thisip = strings.Split(CONF.MWebsocket.Websocket[i], ":")[3]
 			break
 		} else {
 			continue
 		}
 	}
+
 	//thisip = "192.168.1.206"
+
 	//CLIENT.Init(thisip, thisport)
 	//PACKET := new(EventProcess)
 	//PACKET.Init()

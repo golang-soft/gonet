@@ -52,7 +52,7 @@ type UserGameAttrData struct {
 	ReduceSpeedTs int64
 	Dizzy         int32
 	DizzyTs       int64
-	Speed         float32
+	Speed         float64
 	Item          map[int]ItemData
 	Equip         map[int]int
 	Direction     float64
@@ -71,4 +71,6 @@ type UserGameAttrData struct {
 	Skill_1102Cd  int32
 	Skill_1103Cd  int32
 	Skill_1104Cd  int32
+	DisConnTs     int32
+	ReliveTs      int64
 }

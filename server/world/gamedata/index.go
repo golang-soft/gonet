@@ -21,8 +21,8 @@ var (
 )
 
 type Position struct {
-	Min float32
-	Max float32
+	Min float64
+	Max float64
 }
 type PositionConfig struct {
 	SPEED Position

@@ -22,7 +22,7 @@ func NewAttackEvent() *AttackEvent {
 }
 
 func (this *AttackEvent) SendAttack(process *EventProcess) {
-	packet := &cmessage.AttackReq{PacketHead: common.BuildPacketHead(cmessage.MessageID_MSG_AttackReq, rpc.SERVICE_GATESERVER), Round: 1}
+	packet := &cmessage.AttackReq{PacketHead: common.BuildPacketHead(cmessage.MessageID_MSG_AttackReq, rpc.SERVICE_GATESERVER), Round: 1, SkillId: 1101}
 	this.SendPacket(process, packet)
 	m_Log.Debugf("玩家 %d 攻击", process.PlayerId)
 }

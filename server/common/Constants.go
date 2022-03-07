@@ -127,8 +127,8 @@ var EquipAttr = &SEquipAttr{
 //职业枚举
 type SRole struct {
 	All        int
-	Hunter     int
-	Wizard     int
+	Ranger     int
+	Alchemist  int
 	Warrior    int
 	Adventurer int
 	Rogue      int
@@ -136,8 +136,8 @@ type SRole struct {
 
 var Role = &SRole{
 	All:        0,
-	Hunter:     1,
-	Wizard:     2,
+	Ranger:     1,
+	Alchemist:  2,
 	Warrior:    3,
 	Adventurer: 4,
 	Rogue:      5,

@@ -238,7 +238,7 @@ func (m *MovingReq) GetDir() float32 {
 
 type MovingResp struct {
 	PacketHead           *Ipacket `protobuf:"bytes,1,opt,name=PacketHead,proto3" json:"PacketHead,omitempty"`
-	Speed                float32  `protobuf:"fixed32,2,opt,name=speed,proto3" json:"speed,omitempty"`
+	Speed                float64  `protobuf:"fixed32,2,opt,name=speed,proto3" json:"speed,omitempty"`
 	ReduceSpeedTs        int64    `protobuf:"varint,3,opt,name=reduceSpeedTs,proto3" json:"reduceSpeedTs,omitempty"`
 	Direction            float64  `protobuf:"fixed64,4,opt,name=direction,proto3" json:"direction,omitempty"`
 	Barrier              int32    `protobuf:"varint,5,opt,name=barrier,proto3" json:"barrier,omitempty"`
@@ -288,7 +288,7 @@ func (m *MovingResp) GetPacketHead() *Ipacket {
 	return nil
 }
 
-func (m *MovingResp) GetSpeed() float32 {
+func (m *MovingResp) GetSpeed() float64 {
 	if m != nil {
 		return m.Speed
 	}

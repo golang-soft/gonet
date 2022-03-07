@@ -113,7 +113,7 @@ func (this *SPositionCtrl) GetPos(round int, user string) *data.UserPositionData
 
 		pos.X = (posArr.Val()[0]).(float64)
 		pos.Y = (posArr.Val()[1]).(float64)
-		pos.Speed = (posArr.Val()[2]).(float32)
+		pos.Speed = (posArr.Val()[2]).(float64)
 		pos.Direction = (posArr.Val()[3]).(float64)
 		pos.Barrier = (posArr.Val()[4]).(int32)
 		pos.Dizzy = (posArr.Val()[5]).(int32)
@@ -132,7 +132,7 @@ func (this *SPositionCtrl) updataPos(round int, user string, newPos data.UserPos
 
 func (this *SPositionCtrl) calPos(obj *data.UserPositionData) *data.UserPositionData {
 	//let { x, y, speed, reduceSpeedTs, direction, posUpdateTs, barrier, dizzy, dizzyTs, stopmove, stopmoveTs } = obj
-	var speed float32
+	var speed float64
 	if obj.Speed < POSITION_CONFIG.SPEED.Min {
 		speed = POSITION_CONFIG.SPEED.Min
 	}
@@ -169,7 +169,7 @@ func (this *SPositionCtrl) calPos(obj *data.UserPositionData) *data.UserPosition
 }
 
 func (this *SPositionCtrl) skillPos(obj data.UserPositionData) *data.UserPositionData {
-	var speed float32
+	var speed float64
 	if obj.Speed < POSITION_CONFIG.SPEED.Min {
 		speed = POSITION_CONFIG.SPEED.Min
 	}

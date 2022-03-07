@@ -10,7 +10,7 @@ type HeroAttrTableCfg struct {
 	Crit           float64 `json:"Crit"`
 	Crit_Damage    float64 `json:"Crit_Damage"`
 	Dodge          float64 `json:"Dodge"`
-	Speed          float32 `json:"Speed"`
+	Speed          float64 `json:"Speed"`
 	DMG            int     `json:"DMG"`
 	DEF            int     `json:"DEF"`
 	SPD            int     `json:"SPD"`

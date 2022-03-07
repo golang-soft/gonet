@@ -8,6 +8,7 @@ import (
 	"gonet/server/world/datafnc"
 	"gonet/server/world/gamedata"
 	"gonet/server/world/param"
+	"gonet/server/world/public"
 	"gonet/server/world/sender"
 	"gonet/server/world/socket"
 )
@@ -23,7 +24,7 @@ func Includes(datas []int, role int32) bool {
 
 func ROOM_ALL(socket socket.Socket, param param.RoomParam) {
 	var mode = common.Mode.Room
-	funcName := USER_EVENT.ROOM.ROOM_ALL
+	funcName := public.USER_EVENT.ROOM.ROOM_ALL
 	sender.AddRoomTask(data.RoomData{
 		Mode:     mode,
 		FuncName: funcName,
@@ -46,17 +47,17 @@ func ROOM_CTEATE(socket socket.Socket, param param.RoomParam) {
 
 	if name == "" {
 		logger.Errorf("error error_name")
-		socket.Emit(USER_EVENT.ERROR.ERROR, &cmessage.ErrorResp{Code: int32(common.ErrorCode.Error_name)})
+		socket.Emit(public.USER_EVENT.ERROR.ERROR, &cmessage.ErrorResp{Code: int32(common.ErrorCode.Error_name)})
 		return
 	}
 	if !Includes(datafnc.Hero_Role_Type, role) {
 		logger.Errorf("error role")
-		socket.Emit(USER_EVENT.ERROR.ERROR, &cmessage.ErrorResp{Code: int32(common.ErrorCode.Not_hero)})
+		socket.Emit(public.USER_EVENT.ERROR.ERROR, &cmessage.ErrorResp{Code: int32(common.ErrorCode.Not_hero)})
 		return
 	}
 
 	var mode = common.Mode.Room
-	var funcName = USER_EVENT.ROOM.ROOM_CTEATE
+	var funcName = public.USER_EVENT.ROOM.ROOM_CTEATE
 	sender.AddRoomTask(data.RoomData{
 		Mode:      mode,
 		FuncName:  funcName,
@@ -80,32 +81,32 @@ func ROOM_JOIN(socket socket.Socket, param param.RoomParam) {
 
 	if socket.Data.RoomId != 0 {
 		logger.Errorf("has room")
-		socket.Emit(USER_EVENT.ERROR.ERROR, &cmessage.ErrorResp{Code: int32(common.ErrorCode.Already_in)})
+		socket.Emit(public.USER_EVENT.ERROR.ERROR, &cmessage.ErrorResp{Code: int32(common.ErrorCode.Already_in)})
 		return
 	}
 
 	//const { user, room_id, hero_id, pwd, role } = data
 	if !Includes(datafnc.Hero_Role_Type, role) {
 		logger.Errorf("error role")
-		socket.Emit(USER_EVENT.ERROR.ERROR, &cmessage.ErrorResp{Code: int32(common.ErrorCode.Not_hero)})
+		socket.Emit(public.USER_EVENT.ERROR.ERROR, &cmessage.ErrorResp{Code: int32(common.ErrorCode.Not_hero)})
 		return
 	}
 
 	var roomData = gamedata.RoomCtrl.GetRoomById(room_id)
 	if roomData == nil || len(roomData.List) >= datafnc.Camp_Player_Amount {
-		socket.Emit(USER_EVENT.ERROR.ERROR, &cmessage.ErrorResp{Code: int32(common.ErrorCode.No_room)})
+		socket.Emit(public.USER_EVENT.ERROR.ERROR, &cmessage.ErrorResp{Code: int32(common.ErrorCode.No_room)})
 		return
 	}
 
 	for _, data := range roomData.List {
 		if data.User == user {
-			socket.Emit(USER_EVENT.ERROR.ERROR, &cmessage.ErrorResp{Code: int32(common.ErrorCode.Already_in)})
+			socket.Emit(public.USER_EVENT.ERROR.ERROR, &cmessage.ErrorResp{Code: int32(common.ErrorCode.Already_in)})
 			return
 		}
 	}
 
 	var mode = common.Mode.Room
-	var funcName = USER_EVENT.ROOM.ROOM_JOIN
+	var funcName = public.USER_EVENT.ROOM.ROOM_JOIN
 	sender.AddRoomTask(data.RoomData{
 		Mode:     mode,
 		FuncName: funcName,
@@ -128,16 +129,16 @@ func ROOM_JOIN_QUICK(socket socket.Socket, param param.RoomParam) {
 
 	if socket.Data.RoomId != 0 {
 		logger.Errorf("has room")
-		socket.Emit(USER_EVENT.ERROR.ERROR, &cmessage.ErrorResp{Code: int32(common.ErrorCode.Already_in)})
+		socket.Emit(public.USER_EVENT.ERROR.ERROR, &cmessage.ErrorResp{Code: int32(common.ErrorCode.Already_in)})
 		return
 	}
 	if !Includes(datafnc.Hero_Role_Type, role) {
 		logger.Errorf("error role")
-		socket.Emit(USER_EVENT.ERROR.ERROR, &cmessage.ErrorResp{Code: int32(common.ErrorCode.Not_hero)})
+		socket.Emit(public.USER_EVENT.ERROR.ERROR, &cmessage.ErrorResp{Code: int32(common.ErrorCode.Not_hero)})
 		return
 	}
 	var mode = common.Mode.Room
-	var funcName = USER_EVENT.ROOM.ROOM_JOIN_QUICK
+	var funcName = public.USER_EVENT.ROOM.ROOM_JOIN_QUICK
 	sender.AddRoomTask(data.RoomData{
 		Mode:     mode,
 		FuncName: funcName,
@@ -155,12 +156,12 @@ func ROOM_LEAVE(socket socket.Socket, param param.RoomParam) {
 
 	if socket.Data.RoomId == 0 {
 		logger.Errorf("no room")
-		socket.Emit(USER_EVENT.ERROR.ERROR, &cmessage.ErrorResp{Code: int32(common.ErrorCode.No_room)})
+		socket.Emit(public.USER_EVENT.ERROR.ERROR, &cmessage.ErrorResp{Code: int32(common.ErrorCode.No_room)})
 		return
 	}
 	var roomData = gamedata.RoomCtrl.GetRoomById(room_id)
 	if roomData == nil {
-		socket.Emit(USER_EVENT.ERROR.ERROR, &cmessage.ErrorResp{Code: int32(common.ErrorCode.No_room)})
+		socket.Emit(public.USER_EVENT.ERROR.ERROR, &cmessage.ErrorResp{Code: int32(common.ErrorCode.No_room)})
 		return
 	}
 
@@ -172,12 +173,12 @@ func ROOM_LEAVE(socket socket.Socket, param param.RoomParam) {
 		}
 	}
 	if !inRoom {
-		socket.Emit(USER_EVENT.ERROR.ERROR, &cmessage.ErrorResp{Code: int32(common.ErrorCode.No_room)})
+		socket.Emit(public.USER_EVENT.ERROR.ERROR, &cmessage.ErrorResp{Code: int32(common.ErrorCode.No_room)})
 		return
 	}
 
 	var mode = common.Mode.Room
-	var funcName = USER_EVENT.ROOM.ROOM_LEAVE
+	var funcName = public.USER_EVENT.ROOM.ROOM_LEAVE
 	sender.AddRoomTask(data.RoomData{
 		Mode:     mode,
 		FuncName: funcName,
@@ -195,11 +196,11 @@ func ROOM_MATCH(socket socket.Socket, param param.RoomParam) {
 	var roomData = gamedata.RoomCtrl.GetRoomById(room_id)
 	if socket.Data.RoomId == 0 || roomData == nil || roomData.OwnerId != user {
 		logger.Errorf("no room")
-		socket.Emit(USER_EVENT.ERROR.ERROR, &cmessage.ErrorResp{Code: int32(common.ErrorCode.Not_owner)})
+		socket.Emit(public.USER_EVENT.ERROR.ERROR, &cmessage.ErrorResp{Code: int32(common.ErrorCode.Not_owner)})
 		return
 	}
 	var mode = common.Mode.Room
-	var funcName = USER_EVENT.ROOM.ROOM_MATCH
+	var funcName = public.USER_EVENT.ROOM.ROOM_MATCH
 	sender.AddRoomTask(data.RoomData{
 		Mode:     mode,
 		FuncName: funcName,
@@ -217,7 +218,7 @@ func ROOM_KICK_OFF(socket socket.Socket, param param.RoomParam) {
 	//房间踢人
 	var roomData = gamedata.RoomCtrl.GetRoomById(room_id)
 	if socket.Data.RoomId == 0 || roomData == nil || roomData.OwnerId != user {
-		socket.Emit(USER_EVENT.ERROR.ERROR, &cmessage.ErrorResp{Code: int32(common.ErrorCode.Not_owner)})
+		socket.Emit(public.USER_EVENT.ERROR.ERROR, &cmessage.ErrorResp{Code: int32(common.ErrorCode.Not_owner)})
 		return
 	}
 	var inRoom = false
@@ -228,12 +229,12 @@ func ROOM_KICK_OFF(socket socket.Socket, param param.RoomParam) {
 		}
 	}
 	if !inRoom {
-		socket.Emit(USER_EVENT.ERROR.ERROR, &cmessage.ErrorResp{Code: int32(common.ErrorCode.Not_owner)})
+		socket.Emit(public.USER_EVENT.ERROR.ERROR, &cmessage.ErrorResp{Code: int32(common.ErrorCode.Not_owner)})
 		return
 	}
 
 	var mode = common.Mode.Room
-	var funcName = USER_EVENT.ROOM.ROOM_KICK_OFF
+	var funcName = public.USER_EVENT.ROOM.ROOM_KICK_OFF
 	sender.AddRoomTask(data.RoomData{
 		Mode:     mode,
 		FuncName: funcName,
@@ -253,11 +254,11 @@ func ROOM_RENAME(socket socket.Socket, param param.RoomParam) {
 	var roomData = gamedata.RoomCtrl.GetRoomById(room_id)
 
 	if socket.Data.RoomId == 0 || roomData == nil || roomData.OwnerId != user {
-		socket.Emit(USER_EVENT.ERROR.ERROR, &cmessage.ErrorResp{Code: int32(common.ErrorCode.Not_owner)})
+		socket.Emit(public.USER_EVENT.ERROR.ERROR, &cmessage.ErrorResp{Code: int32(common.ErrorCode.Not_owner)})
 		return
 	}
 	var mode = common.Mode.Room
-	var funcName = USER_EVENT.ROOM.ROOM_RENAME
+	var funcName = public.USER_EVENT.ROOM.ROOM_RENAME
 	sender.AddRoomTask(data.RoomData{
 		Mode:     mode,
 		FuncName: funcName,
@@ -275,18 +276,18 @@ func ROOM_CHANGE_PWD(socket socket.Socket, param param.RoomParam) {
 	var pwd = param.Pwd
 
 	if socket.Data.RoomId == 0 || int64(room_id) != socket.Data.RoomId {
-		socket.Emit(USER_EVENT.ERROR.ERROR, &cmessage.ErrorResp{Code: int32(common.ErrorCode.Not_owner)})
+		socket.Emit(public.USER_EVENT.ERROR.ERROR, &cmessage.ErrorResp{Code: int32(common.ErrorCode.Not_owner)})
 		return
 	}
 
 	var roomData = gamedata.RoomCtrl.GetRoomById(room_id)
 
 	if roomData == nil || roomData.OwnerId != user {
-		socket.Emit(USER_EVENT.ERROR.ERROR, &cmessage.ErrorResp{Code: int32(common.ErrorCode.Not_owner)})
+		socket.Emit(public.USER_EVENT.ERROR.ERROR, &cmessage.ErrorResp{Code: int32(common.ErrorCode.Not_owner)})
 		return
 	}
 	var mode = common.Mode.Room
-	var funcName = USER_EVENT.ROOM.ROOM_CHANGE_PWD
+	var funcName = public.USER_EVENT.ROOM.ROOM_CHANGE_PWD
 	sender.AddRoomTask(data.RoomData{
 		Mode:     mode,
 		FuncName: funcName,
@@ -299,28 +300,28 @@ func ROOM_CHANGE_PWD(socket socket.Socket, param param.RoomParam) {
 func HandleRoom(socket socket.Socket) {
 
 	//全部房间
-	socket.On(USER_EVENT.ROOM.ROOM_ALL, ROOM_ALL)
+	socket.On(public.USER_EVENT.ROOM.ROOM_ALL, ROOM_ALL)
 
 	//房间创建
-	socket.On(USER_EVENT.ROOM.ROOM_CTEATE, ROOM_CTEATE)
+	socket.On(public.USER_EVENT.ROOM.ROOM_CTEATE, ROOM_CTEATE)
 
 	//房间加入
-	socket.On(USER_EVENT.ROOM.ROOM_JOIN, ROOM_JOIN)
+	socket.On(public.USER_EVENT.ROOM.ROOM_JOIN, ROOM_JOIN)
 
 	//快速加入
-	socket.On(USER_EVENT.ROOM.ROOM_JOIN_QUICK, ROOM_JOIN_QUICK)
+	socket.On(public.USER_EVENT.ROOM.ROOM_JOIN_QUICK, ROOM_JOIN_QUICK)
 
 	//房间离开
-	socket.On(USER_EVENT.ROOM.ROOM_LEAVE, ROOM_LEAVE)
+	socket.On(public.USER_EVENT.ROOM.ROOM_LEAVE, ROOM_LEAVE)
 
 	//房间匹配
-	socket.On(USER_EVENT.ROOM.ROOM_MATCH, ROOM_MATCH)
+	socket.On(public.USER_EVENT.ROOM.ROOM_MATCH, ROOM_MATCH)
 
 	//房间踢人
-	socket.On(USER_EVENT.ROOM.ROOM_KICK_OFF, ROOM_KICK_OFF)
+	socket.On(public.USER_EVENT.ROOM.ROOM_KICK_OFF, ROOM_KICK_OFF)
 	//房间更名
-	socket.On(USER_EVENT.ROOM.ROOM_RENAME, ROOM_RENAME)
+	socket.On(public.USER_EVENT.ROOM.ROOM_RENAME, ROOM_RENAME)
 
 	//房间修改密码
-	socket.On(USER_EVENT.ROOM.ROOM_CHANGE_PWD, ROOM_CHANGE_PWD)
+	socket.On(public.USER_EVENT.ROOM.ROOM_CHANGE_PWD, ROOM_CHANGE_PWD)
 }

@@ -9,11 +9,11 @@ import (
 	"gonet/server/common/data"
 	"gonet/server/common/mredis"
 	"gonet/server/world/cache"
-	common2 "gonet/server/world/common"
 	"gonet/server/world/datafnc"
 	"gonet/server/world/redisInstnace"
 	"gonet/server/world/socket"
 	"gonet/server/world/table"
+	"gonet/server/world/utils"
 	"reflect"
 	"sync"
 	"time"
@@ -111,7 +111,7 @@ func (this *ServerGame) GetUserById(round int, uuid string) *data.UserGameAttrDa
 		return nil
 	}
 
-	if this.Game[round].user != nil {
+	if this.Game[round] != nil && this.Game[round].user != nil {
 		this.Game[round].user[uuid] = &userInfo
 		return &userInfo
 	}
@@ -149,13 +149,13 @@ func (this *ServerGame) registerGame(round int, userIdx []string, userObj map[st
 	this.Game[round].userIdx = userIdx
 
 	v := make(map[string]interface{})
-	common2.ConvertRoundData(v, game)
+	utils.ConvertRoundData(v, game)
 	cache.BattleCache.NewRoundGameData(round, "", v)
 	cache.BattleCache.NewRoundUserIdx(round, userIdx)
 
 	for key, obj := range userObj {
 		//初始化用户
-		maps := common2.ConvertStructToMap(obj)
+		maps := utils.ConvertStructToMap(obj)
 		cache.BattleCache.NewRoundPlayer(round, userObj[key].User, maps)
 		//装载道具
 		// await this.itemInit(round, key)
@@ -213,7 +213,7 @@ func (this *ServerGame) addRobot(round int, user string) {
 func (this *ServerGame) newRoundPlayer(round int, user string, player *data.UserGameAttrData) {
 	if this.Game[round] != nil && this.Game[round].user != nil {
 		this.Game[round].user[user] = player
-		data := common2.ConvertStructToMap(player)
+		data := utils.ConvertStructToMap(player)
 		cache.BattleCache.NewRoundPlayer(round, user, data)
 	}
 }
@@ -241,7 +241,7 @@ func (this *ServerGame) relivePlayer(round int, user string, player *data.UserGa
 		this.Game[round].user[user].PosUpdateTs = now
 		this.Game[round].user[user].UpdateTs = now
 		//重制玩家数据
-		data := common2.ConvertStructToMap(this.Game[round].user[user])
+		data := utils.ConvertStructToMap(this.Game[round].user[user])
 		cache.BattleCache.NewRoundPlayer(round, user, data)
 		return this.Game[round].user[user]
 	}
@@ -494,7 +494,7 @@ func (this *ServerGame) setSpeed(round int, id string, percent int, time0 int) {
 }
 
 //恢复速度
-func (this *ServerGame) recoverSpeed(round int, id string, speed float32, time0 int) {
+func (this *ServerGame) recoverSpeed(round int, id string, speed float64, time0 int) {
 	if this.Game[round].user[id] != nil {
 		this.Game[round].user[id].Speed = speed
 		this.Game[round].user[id].ReduceSpeedTs = int64(time0)
@@ -591,7 +591,7 @@ func (this *ServerGame) reduceDef(round int, uuid string, def int, time0 int) {
 }
 
 //扣速度
-func (this *ServerGame) reduceSpeed(round int, uuid string, speed float32, time0 int) {
+func (this *ServerGame) reduceSpeed(round int, uuid string, speed float64, time0 int) {
 	if this.Game[round].user[uuid] != nil {
 		this.Game[round].user[uuid].Speed -= speed
 	}
@@ -627,7 +627,7 @@ func (this *ServerGame) updateGameUserPos(round int, uuid string, pos data.UserP
 		this.Game[round].user[uuid].StopmoveTs = pos.StopMoveTs
 		this.Game[round].user[uuid].PosUpdateTs = pos.PosUpdateTs
 		key := mredis.REDIS_KEYS[mredis.KEYS_user_round_basic] + common.GetRoundKey(uuid, round)
-		posMap := common2.ConvertStructToMap(pos)
+		posMap := utils.ConvertStructToMap(pos)
 		redisInstnace.M_pRedisClient.HMSet(key, posMap)
 	}
 }
@@ -641,7 +641,7 @@ func (this *ServerGame) updateGameUserSkillPos(round int, uuid string, pos data.
 		this.Game[round].user[uuid].PosUpdateTs = time.Now().Unix()
 		// pos.speed = 0
 		key := mredis.REDIS_KEYS[mredis.KEYS_user_round_basic] + common.GetRoundKey(uuid, round)
-		posMap := common2.ConvertStructToMap(pos)
+		posMap := utils.ConvertStructToMap(pos)
 		redisInstnace.M_pRedisClient.HMSet(key, posMap)
 	}
 

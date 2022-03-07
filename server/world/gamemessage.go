@@ -9,9 +9,8 @@ import (
 	"gonet/server/glogger"
 	"gonet/server/world/param"
 	"gonet/server/world/players"
+	"gonet/server/world/public"
 
-	//"gonet/server/world/player"
-	"gonet/server/world/router"
 	"gonet/server/world/socket"
 )
 
@@ -53,7 +52,7 @@ func (this *GameProcess) AttackReq(ctx context.Context, packet *cmessage.AttackR
 		Z:        packet.Z,
 	}
 
-	sock.Handle(router.USER_EVENT.USER.ATTACK, *sock, param)
+	sock.Handle(public.USER_EVENT.USER.ATTACK, *sock, param)
 
 }
 

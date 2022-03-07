@@ -2,11 +2,13 @@ package gamedata
 
 import (
 	"fmt"
+	"gonet/base/logger"
 	"gonet/server/cmessage"
 	"gonet/server/common"
 	"gonet/server/common/data"
 	"gonet/server/world/cache"
 	"gonet/server/world/helper"
+	"gonet/server/world/public"
 	"reflect"
 	"time"
 )
@@ -43,6 +45,9 @@ func (this *SUserCtrl) canAttack(message data.AttackData) bool {
 	}
 	//TODO: 判断游戏
 	formUserAttr := GGame.GetUserById(round, from)
+	if formUserAttr == nil {
+		return false
+	}
 	// hp
 	if (formUserAttr.Hp) <= 0 {
 		return false
@@ -59,6 +64,20 @@ func (this *SUserCtrl) canAttack(message data.AttackData) bool {
 	if skillCfg.Need_Target == 1 {
 		//  需要目标
 		toUser := GGame.GetUserById(round, to)
+
+		if toUser == nil {
+			logger.Errorf("找不到攻击目标 %d, %d", round, to)
+			return false
+		}
+		if toUser.DisConnTs > 0 {
+			logger.Errorf("掉线石化 %d, %d", round, to)
+			return false
+		}
+		//TODO 配置部分
+		//if time.Now().Unix() - toUser.ReliveTs < helper.GAME_CONFIG.reliveProtect {
+		//	logger.Errorf("复活无敌时间 %d, %d", round, to)
+		//	return false
+		//}
 		//同阵营不做攻击
 		if toUser.Part == formUserAttr.Part {
 			return false
@@ -69,26 +88,29 @@ func (this *SUserCtrl) canAttack(message data.AttackData) bool {
 		}
 		// 距离
 		distance := getDistance(round, from, to)
+		toAttr := helper.USER_BASIC_INFO[toUser.Itype]
 		// 有攻击目标,只需要判断攻击的距离是否满足即可
-		if distance > skillCfg.Range {
+		//技能距离+额外两秒移动身位
+		if distance > skillCfg.Range+toAttr.Speed*1.5 {
 			// await broadcastToSelf(USER_EVENT.USER.OUT_RANGE, from, {})
-			// gvgBattleBroadcastAll(USER_EVENT.USER.OUT_RANGE, round, {
-			//     from: from,
-			//     to: to,
-			//     skill: skill,
-			//     skillId: skillId,
-			//     x: x,
-			//     y: y,
-			//     z: z,
-			//     msg: msg
-			// })
+			GvgBattleBroadcastAll(public.USER_EVENT.USER.OUT_RANGE, round, &cmessage.AttackSuccessResp{
+				PacketHead: common.BuildPacketHead(cmessage.MessageID(cmessage.MessageID_MSG_AttackSuccessResp), 0),
+				From:       from,
+				To:         to,
+				Skill:      skill,
+				SkillId:    skillId,
+				X:          x,
+				Y:          y,
+				Z:          z,
+				Msg:        msg,
+			})
 			return false
 		}
 	}
 	// 更新技能冷却时间
 	GGame.updateSkillCD(round, from, skillId, time.Now().Unix())
 
-	GvgBattleBroadcastAll("ATTACK_SUCCESS", round,
+	GvgBattleBroadcastAll(public.USER_EVENT.USER.ATTACK_SUCCESS, round,
 		&cmessage.AttackSuccessResp{
 			PacketHead: common.BuildPacketHead(cmessage.MessageID(cmessage.MessageID_MSG_AttackSuccessResp), 0),
 			From:       from,
@@ -108,14 +130,14 @@ func (this *SUserCtrl) attack(attack data.AttackData) {
 	// const keyFrom = REDIS_KEYS.user_round_basic + getRoundKey(attack.from, attack.round)
 	fromUser := GGame.GetUserById(attack.Round, attack.From)
 	itype := fromUser.Itype
-	if itype == common.Role.Hunter {
+	if itype == common.Role.Ranger {
 		//猎人
 		v := reflect.ValueOf(Hunter)
 		method := fmt.Sprintf("skill_%d", attack.SkillId)
 		m := v.MethodByName(method)
 
 		m.Call([]reflect.Value{reflect.ValueOf(attack)})
-	} else if itype == common.Role.Wizard {
+	} else if itype == common.Role.Alchemist {
 		//法师
 		v := reflect.ValueOf(Wizard)
 		method := fmt.Sprintf("skill_%d", attack.SkillId)

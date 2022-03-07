@@ -25,7 +25,7 @@ type BasicInfo struct {
 	Dodge          float64
 	Critical       float64
 	CriticalDamage float64
-	Speed          float32
+	Speed          float64
 	Skill          []int
 	Skills         map[string]interface{}
 }

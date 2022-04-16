@@ -29,50 +29,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="48577825-a92d-4c0c-b73f-4177e3909d59" name="Default Changelist" comment="调整log代码">
-      <change afterPath="$PROJECT_DIR$/server/config/local/static/ActTable.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/config/local/static/BattlePassRankRewardTable.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/config/local/static/ErrorTable.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/config/local/static/ExpTable.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/config/local/static/ProbabilityTable.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/config/local/static/RanRm.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/config/local/static/SuiTable.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/config/local/static/TipsTable.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dockerfile_netgate" beforeDir="false" afterPath="$PROJECT_DIR$/Dockerfile_netgate" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/local/gonet.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/config/local/gonet.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/bin/config/local/gonet.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/server/bin/config/local/gonet.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/clientwebsocketG/AttackEvent.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/clientwebsocketG/AttackEvent.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/clientwebsocketG/client.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/clientwebsocketG/client.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/cmessage/player.pb.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/cmessage/player.pb.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/common/Constants.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/common/Constants.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/common/data/UserGameAttrData.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/common/data/UserGameAttrData.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/common/data/UserPositionData.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/common/data/UserPositionData.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/config/local/static/BoxTable.json" beforeDir="false" afterPath="$PROJECT_DIR$/server/config/local/static/BoxTable.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/config/local/static/HeroAttrTable.json" beforeDir="false" afterPath="$PROJECT_DIR$/server/config/local/static/HeroAttrTable.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/config/local/static/ItemTable.json" beforeDir="false" afterPath="$PROJECT_DIR$/server/config/local/static/ItemTable.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/config/local/static/Map.json" beforeDir="false" afterPath="$PROJECT_DIR$/server/config/local/static/Map.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/config/local/static/SkillTable.json" beforeDir="false" afterPath="$PROJECT_DIR$/server/config/local/static/SkillTable.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/config/local/static/StrTable.json" beforeDir="false" afterPath="$PROJECT_DIR$/server/config/local/static/StrTable.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/config/local/static/StrengthenTable.json" beforeDir="false" afterPath="$PROJECT_DIR$/server/config/local/static/StrengthenTable.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/config/local/static/WorldParamTable.json" beforeDir="false" afterPath="$PROJECT_DIR$/server/config/local/static/WorldParamTable.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/table/HeroAttrTable.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/table/HeroAttrTable.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/world/common/KV.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/world/utils/KV.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/world/common/common.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/world/utils/common.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/world/common/convert.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/world/utils/convert.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/world/gamedata/1.puml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/world/gamedata/11.puml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/world/gamedata/gGame.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/world/gamedata/gGame.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/world/gamedata/index.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/world/gamedata/index.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/world/gamedata/playSkill.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/world/gamedata/playSkill.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/world/gamedata/pos.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/world/gamedata/pos.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/world/gamedata/user.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/world/gamedata/user.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/world/gamemessage.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/world/gamemessage.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/world/helper/const.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/world/helper/const.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/world/param/param.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/world/param/param.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/world/router/action.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/world/public/action.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/world/router/helper.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/world/router/helper.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/world/router/room.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/world/router/room.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/world/router/user.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/world/router/user.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/world/table/LoadConfigTable.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/world/table/LoadConfigTable.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -135,7 +93,7 @@
     <property name="go.gopath.indexing.explicitly.defined" value="true" />
     <property name="go.import.settings.migrated" value="true" />
     <property name="go.sdk.automatically.set" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../workspace-svn/backend/gonet" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -556,7 +514,6 @@
       <screen x="0" y="0" width="1600" height="819" />
     </state>
     <state x="585" y="339" key="#GOROOT/0.0.1600.819@0.0.1600.819" timestamp="1638535687733" />
-    <state x="702" y="414" key="#GOROOT/1920.0.1920.999/0.0.1920.999@0.0.1920.999" timestamp="1637739217572" />
     <state x="592" y="212" key="#Log_Highlighting_(ideolog)" timestamp="1646296596015">
       <screen x="0" y="0" width="1920" height="999" />
     </state>
@@ -602,88 +559,87 @@
     <state x="133" y="160" width="1416" height="635" key="DiffContextDialog/0.0.1600.819@0.0.1600.819" timestamp="1638633002223" />
     <state x="164" y="274" width="1700" height="775" key="DiffContextDialog/0.0.1920.999/1920.0.1920.1040@0.0.1920.999" timestamp="1646222001934" />
     <state x="160" y="195" width="1700" height="775" key="DiffContextDialog/0.0.1920.999@0.0.1920.999" timestamp="1639203450926" />
-    <state x="688" y="196" key="FileChooserDialogImpl" timestamp="1646206562505">
-      <screen x="0" y="0" width="1920" height="999" />
+    <state x="2608" y="204" key="FileChooserDialogImpl" timestamp="1646638413293">
+      <screen x="1920" y="0" width="1920" height="1040" />
     </state>
     <state x="573" y="161" key="FileChooserDialogImpl/0.0.1600.819@0.0.1600.819" timestamp="1638677894553" />
     <state x="688" y="196" key="FileChooserDialogImpl/0.0.1920.999/1920.0.1920.1040@0.0.1920.999" timestamp="1646206562505" />
-    <state x="2608" y="204" key="FileChooserDialogImpl/0.0.1920.999/1920.0.1920.1040@1920.0.1920.1040" timestamp="1639468116972" />
+    <state x="2608" y="204" key="FileChooserDialogImpl/0.0.1920.999/1920.0.1920.1040@1920.0.1920.1040" timestamp="1646638413293" />
     <state x="688" y="196" key="FileChooserDialogImpl/0.0.1920.999@0.0.1920.999" timestamp="1639207959052" />
     <state x="917" y="275" key="FileChooserDialogImpl/0.0.2560.1400@0.0.2560.1400" timestamp="1638765514852" />
-    <state x="687" y="196" key="FileChooserDialogImpl/1920.0.1920.999/0.0.1920.999@0.0.1920.999" timestamp="1637821282851" />
     <state x="738" y="377" key="Github.CreateGistDialog" timestamp="1646391266682">
       <screen x="0" y="0" width="1920" height="999" />
     </state>
     <state x="738" y="377" key="Github.CreateGistDialog/0.0.1920.999/1920.0.1920.1040@0.0.1920.999" timestamp="1646391266682" />
-    <state width="1867" height="341" key="GridCell.Tab.0.bottom" timestamp="1646625500806">
+    <state width="1867" height="253" key="GridCell.Tab.0.bottom" timestamp="1646637660013">
       <screen x="1920" y="0" width="1920" height="1040" />
     </state>
     <state width="1557" height="148" key="GridCell.Tab.0.bottom/0.0.1600.819@0.0.1600.819" timestamp="1642415676467" />
     <state width="1867" height="404" key="GridCell.Tab.0.bottom/0.0.1920.999/1920.0.1920.1040@0.0.1920.999" timestamp="1646391189867" />
-    <state width="1867" height="341" key="GridCell.Tab.0.bottom/0.0.1920.999/1920.0.1920.1040@1920.0.1920.1040" timestamp="1646625500806" />
+    <state width="1867" height="253" key="GridCell.Tab.0.bottom/0.0.1920.999/1920.0.1920.1040@1920.0.1920.1040" timestamp="1646637660013" />
     <state width="1867" height="379" key="GridCell.Tab.0.bottom/0.0.1920.999/1920.0.1920.999@0.0.1920.999" timestamp="1645784509247" />
     <state width="1867" height="296" key="GridCell.Tab.0.bottom/0.0.1920.999/1920.0.1920.999@1920.0.1920.999" timestamp="1646015400213" />
     <state width="1867" height="174" key="GridCell.Tab.0.bottom/0.0.1920.999@0.0.1920.999" timestamp="1639370727786" />
-    <state width="1867" height="341" key="GridCell.Tab.0.center" timestamp="1646625500805">
+    <state width="1867" height="253" key="GridCell.Tab.0.center" timestamp="1646637660012">
       <screen x="1920" y="0" width="1920" height="1040" />
     </state>
     <state width="1557" height="148" key="GridCell.Tab.0.center/0.0.1600.819@0.0.1600.819" timestamp="1642415676466" />
     <state width="1867" height="404" key="GridCell.Tab.0.center/0.0.1920.999/1920.0.1920.1040@0.0.1920.999" timestamp="1646391189867" />
-    <state width="1867" height="341" key="GridCell.Tab.0.center/0.0.1920.999/1920.0.1920.1040@1920.0.1920.1040" timestamp="1646625500805" />
+    <state width="1867" height="253" key="GridCell.Tab.0.center/0.0.1920.999/1920.0.1920.1040@1920.0.1920.1040" timestamp="1646637660012" />
     <state width="1867" height="379" key="GridCell.Tab.0.center/0.0.1920.999/1920.0.1920.999@0.0.1920.999" timestamp="1645784509247" />
     <state width="1867" height="296" key="GridCell.Tab.0.center/0.0.1920.999/1920.0.1920.999@1920.0.1920.999" timestamp="1646015400213" />
     <state width="1867" height="174" key="GridCell.Tab.0.center/0.0.1920.999@0.0.1920.999" timestamp="1639370727786" />
-    <state width="1867" height="341" key="GridCell.Tab.0.left" timestamp="1646625500805">
+    <state width="1867" height="253" key="GridCell.Tab.0.left" timestamp="1646637660011">
       <screen x="1920" y="0" width="1920" height="1040" />
     </state>
     <state width="1557" height="148" key="GridCell.Tab.0.left/0.0.1600.819@0.0.1600.819" timestamp="1642415676466" />
     <state width="1867" height="404" key="GridCell.Tab.0.left/0.0.1920.999/1920.0.1920.1040@0.0.1920.999" timestamp="1646391189867" />
-    <state width="1867" height="341" key="GridCell.Tab.0.left/0.0.1920.999/1920.0.1920.1040@1920.0.1920.1040" timestamp="1646625500805" />
+    <state width="1867" height="253" key="GridCell.Tab.0.left/0.0.1920.999/1920.0.1920.1040@1920.0.1920.1040" timestamp="1646637660011" />
     <state width="1867" height="379" key="GridCell.Tab.0.left/0.0.1920.999/1920.0.1920.999@0.0.1920.999" timestamp="1645784509247" />
     <state width="1867" height="296" key="GridCell.Tab.0.left/0.0.1920.999/1920.0.1920.999@1920.0.1920.999" timestamp="1646015400213" />
     <state width="1867" height="174" key="GridCell.Tab.0.left/0.0.1920.999@0.0.1920.999" timestamp="1639370727786" />
-    <state width="1867" height="341" key="GridCell.Tab.0.right" timestamp="1646625500806">
+    <state width="1867" height="253" key="GridCell.Tab.0.right" timestamp="1646637660012">
       <screen x="1920" y="0" width="1920" height="1040" />
     </state>
     <state width="1557" height="148" key="GridCell.Tab.0.right/0.0.1600.819@0.0.1600.819" timestamp="1642415676466" />
     <state width="1867" height="404" key="GridCell.Tab.0.right/0.0.1920.999/1920.0.1920.1040@0.0.1920.999" timestamp="1646391189867" />
-    <state width="1867" height="341" key="GridCell.Tab.0.right/0.0.1920.999/1920.0.1920.1040@1920.0.1920.1040" timestamp="1646625500806" />
+    <state width="1867" height="253" key="GridCell.Tab.0.right/0.0.1920.999/1920.0.1920.1040@1920.0.1920.1040" timestamp="1646637660012" />
     <state width="1867" height="379" key="GridCell.Tab.0.right/0.0.1920.999/1920.0.1920.999@0.0.1920.999" timestamp="1645784509247" />
     <state width="1867" height="296" key="GridCell.Tab.0.right/0.0.1920.999/1920.0.1920.999@1920.0.1920.999" timestamp="1646015400213" />
     <state width="1867" height="174" key="GridCell.Tab.0.right/0.0.1920.999@0.0.1920.999" timestamp="1639370727786" />
-    <state width="1867" height="341" key="GridCell.Tab.1.bottom" timestamp="1646625378958">
+    <state width="1867" height="253" key="GridCell.Tab.1.bottom" timestamp="1646637660014">
       <screen x="1920" y="0" width="1920" height="1040" />
     </state>
     <state width="1557" height="210" key="GridCell.Tab.1.bottom/0.0.1600.819@0.0.1600.819" timestamp="1642414145730" />
     <state width="1867" height="404" key="GridCell.Tab.1.bottom/0.0.1920.999/1920.0.1920.1040@0.0.1920.999" timestamp="1646391189821" />
-    <state width="1867" height="341" key="GridCell.Tab.1.bottom/0.0.1920.999/1920.0.1920.1040@1920.0.1920.1040" timestamp="1646625378958" />
+    <state width="1867" height="253" key="GridCell.Tab.1.bottom/0.0.1920.999/1920.0.1920.1040@1920.0.1920.1040" timestamp="1646637660014" />
     <state width="1867" height="379" key="GridCell.Tab.1.bottom/0.0.1920.999/1920.0.1920.999@0.0.1920.999" timestamp="1645784509163" />
     <state width="1867" height="296" key="GridCell.Tab.1.bottom/0.0.1920.999/1920.0.1920.999@1920.0.1920.999" timestamp="1646015400213" />
     <state width="1867" height="174" key="GridCell.Tab.1.bottom/0.0.1920.999@0.0.1920.999" timestamp="1639370727786" />
-    <state width="1867" height="341" key="GridCell.Tab.1.center" timestamp="1646625378958">
+    <state width="1867" height="253" key="GridCell.Tab.1.center" timestamp="1646637660014">
       <screen x="1920" y="0" width="1920" height="1040" />
     </state>
     <state width="1557" height="210" key="GridCell.Tab.1.center/0.0.1600.819@0.0.1600.819" timestamp="1642414145730" />
     <state width="1867" height="404" key="GridCell.Tab.1.center/0.0.1920.999/1920.0.1920.1040@0.0.1920.999" timestamp="1646391189821" />
-    <state width="1867" height="341" key="GridCell.Tab.1.center/0.0.1920.999/1920.0.1920.1040@1920.0.1920.1040" timestamp="1646625378958" />
+    <state width="1867" height="253" key="GridCell.Tab.1.center/0.0.1920.999/1920.0.1920.1040@1920.0.1920.1040" timestamp="1646637660014" />
     <state width="1867" height="379" key="GridCell.Tab.1.center/0.0.1920.999/1920.0.1920.999@0.0.1920.999" timestamp="1645784509163" />
     <state width="1867" height="296" key="GridCell.Tab.1.center/0.0.1920.999/1920.0.1920.999@1920.0.1920.999" timestamp="1646015400213" />
     <state width="1867" height="174" key="GridCell.Tab.1.center/0.0.1920.999@0.0.1920.999" timestamp="1639370727786" />
-    <state width="1867" height="341" key="GridCell.Tab.1.left" timestamp="1646625378958">
+    <state width="1867" height="253" key="GridCell.Tab.1.left" timestamp="1646637660013">
       <screen x="1920" y="0" width="1920" height="1040" />
     </state>
     <state width="1557" height="210" key="GridCell.Tab.1.left/0.0.1600.819@0.0.1600.819" timestamp="1642414145730" />
     <state width="1867" height="404" key="GridCell.Tab.1.left/0.0.1920.999/1920.0.1920.1040@0.0.1920.999" timestamp="1646391189821" />
-    <state width="1867" height="341" key="GridCell.Tab.1.left/0.0.1920.999/1920.0.1920.1040@1920.0.1920.1040" timestamp="1646625378958" />
+    <state width="1867" height="253" key="GridCell.Tab.1.left/0.0.1920.999/1920.0.1920.1040@1920.0.1920.1040" timestamp="1646637660013" />
     <state width="1867" height="379" key="GridCell.Tab.1.left/0.0.1920.999/1920.0.1920.999@0.0.1920.999" timestamp="1645784509163" />
     <state width="1867" height="296" key="GridCell.Tab.1.left/0.0.1920.999/1920.0.1920.999@1920.0.1920.999" timestamp="1646015400213" />
     <state width="1867" height="174" key="GridCell.Tab.1.left/0.0.1920.999@0.0.1920.999" timestamp="1639370727786" />
-    <state width="1867" height="341" key="GridCell.Tab.1.right" timestamp="1646625378958">
+    <state width="1867" height="253" key="GridCell.Tab.1.right" timestamp="1646637660014">
       <screen x="1920" y="0" width="1920" height="1040" />
     </state>
     <state width="1557" height="210" key="GridCell.Tab.1.right/0.0.1600.819@0.0.1600.819" timestamp="1642414145730" />
     <state width="1867" height="404" key="GridCell.Tab.1.right/0.0.1920.999/1920.0.1920.1040@0.0.1920.999" timestamp="1646391189821" />
-    <state width="1867" height="341" key="GridCell.Tab.1.right/0.0.1920.999/1920.0.1920.1040@1920.0.1920.1040" timestamp="1646625378958" />
+    <state width="1867" height="253" key="GridCell.Tab.1.right/0.0.1920.999/1920.0.1920.1040@1920.0.1920.1040" timestamp="1646637660014" />
     <state width="1867" height="379" key="GridCell.Tab.1.right/0.0.1920.999/1920.0.1920.999@0.0.1920.999" timestamp="1645784509163" />
     <state width="1867" height="296" key="GridCell.Tab.1.right/0.0.1920.999/1920.0.1920.999@1920.0.1920.999" timestamp="1646015400213" />
     <state width="1867" height="174" key="GridCell.Tab.1.right/0.0.1920.999@0.0.1920.999" timestamp="1639370727786" />
@@ -756,6 +712,14 @@
     <state x="539" y="-1" width="840" height="1034" key="search.everywhere.popup/0.0.1920.999/1920.0.1920.1040@0.0.1920.999" timestamp="1646134330496" />
     <state x="2459" y="-1" width="840" height="1077" key="search.everywhere.popup/0.0.1920.999/1920.0.1920.1040@1920.0.1920.1040" timestamp="1642492530851" />
     <state x="539" y="-1" width="840" height="1034" key="search.everywhere.popup/0.0.1920.999@0.0.1920.999" timestamp="1639053681387" />
+    <state x="2668" y="402" key="svn.upgradeDialog" timestamp="1646638416108">
+      <screen x="1920" y="0" width="1920" height="1040" />
+    </state>
+    <state x="2668" y="402" key="svn.upgradeDialog/0.0.1920.999/1920.0.1920.1040@1920.0.1920.1040" timestamp="1646638416108" />
+    <state x="2605" y="357" key="svn4idea.checkout.options" timestamp="1646638414450">
+      <screen x="1920" y="0" width="1920" height="1040" />
+    </state>
+    <state x="2605" y="357" key="svn4idea.checkout.options/0.0.1920.999/1920.0.1920.1040@1920.0.1920.1040" timestamp="1646638414450" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
